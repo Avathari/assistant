@@ -42,37 +42,36 @@ class _ElectrocardiogramasGestionState
 
   @override
   void initState() {
-    Terminal.printWarning(
-        message:
-            " . . . Iniciando Actividad - Repositorio Electrocardiogramas del Pacientes");
-    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
-      setState(() {
-        Pacientes.Electros = value;
+    Future.microtask(() async{
+      Terminal.printWarning(
+          message:
+          " . . . Iniciando Actividad - Repositorio Electrocardiogramas del Pacientes");
+      Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+        setState(() {
+          Pacientes.Electros = value;
+          //
+          values = value;
+          // Terminal.printData(message: values.toString());
+          Terminal.printSuccess(
+              message: 'Repositorio Electrocardiogramas del Pacientes Obtenido');
+        });
+      }).onError((error, stackTrace) {
+        textDateEstudyController.text =
+            DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
         //
-        values = value;
-        // Terminal.printData(message: values.toString());
-        Terminal.printSuccess(
-            message: 'Repositorio Electrocardiogramas del Pacientes Obtenido');
+        _reiniciar();
+        toBaseImage();
       });
-    }).onError((error, stackTrace) {
-      textDateEstudyController.text =
-          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-      //
-      reiniciar();
-      toBaseImage();
+      Terminal.printOther(message: " . . . Actividad Iniciada");
     });
-    Terminal.printOther(message: " . . . Actividad Iniciada");
 
     super.initState();
-
   }
 
   // ******************************************************
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   @override
   Widget build(BuildContext context) {
-    var progress;
-
     return Scaffold(
       key: _key,
       appBar: AppBar(
@@ -90,10 +89,10 @@ class _ElectrocardiogramasGestionState
             iconData: Icons.replay_outlined,
             labelButton: Sentences.reload,
             onPress: () {
-              reiniciar();
+              _reiniciar();
             },
           ),
-          CrossLine(isHorizontal: false, height: 4),
+          CrossLine(isHorizontal: false, height: 10),
           // GrandIcon(
           //   iconData: Icons.dataset_linked_outlined,
           //   labelButton: "Registro de electrocardiogramas",
@@ -120,7 +119,7 @@ class _ElectrocardiogramasGestionState
                 //         operationActivity: operationActivity));
               },
             ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 22),
           // GrandIcon(
           //   iconData: Icons.photo_camera_back_outlined,
           //   labelButton: 'Imagen del Electrocardiograma',
@@ -153,131 +152,138 @@ class _ElectrocardiogramasGestionState
         ],
       ),
       endDrawer: drawerForm(context),
-      body: Column(
-        children: [
-          if (!isMobile(context))
-            Expanded(
-              flex: 2,
-              child: Container(
-                padding: const EdgeInsets.all(5),
-                margin: const EdgeInsets.all(5),
-                decoration: ContainerDecoration.roundedDecoration(),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: GrandButton(
-                          weigth: 100,
-                          labelButton: "Registro de electrocardiogramas",
-                          onPress: () {
-                            carouselController.jumpToPage(0);
-                          }),
-                    ),
-                    Expanded(
-                      child: GrandButton(
-                          weigth: 100,
-                          labelButton: "Gestion del Registro",
-                          onPress: () {
-                            carouselController.jumpToPage(1);
-                          }),
-                    ),
-                    Expanded(
-                      child: GrandButton(
-                          weigth: 100,
-                          labelButton: "Imagen del Registro",
-                          onPress: () {
-                            carouselController.jumpToPage(2);
-                          }),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          Expanded(
-            flex: 8,
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              decoration: ContainerDecoration.roundedDecoration(),
-              child: CarouselSlider(
-                carouselController: carouselController,
-                options: Carousel.carouselOptions(context: context),
-                items: [
-                  Column(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            if (!isMobile(context))
+              Expanded(
+                flex: 2,
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                  margin: const EdgeInsets.all(5),
+                  decoration: ContainerDecoration.roundedDecoration(),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
-                        child: EditTextArea(
-                          keyBoardType: TextInputType.number,
-                          inputFormat: MaskTextInputFormatter(
-                              mask: '####/##/## ##:##:##',
-                              filter: {"#": RegExp(r'[0-9]')},
-                              type: MaskAutoCompletionType.lazy),
-                          labelEditText: "Fecha de realización",
-                          textController: textDateController,
-                          numOfLines: 1,
-                          onChange: (value) {
-                            setState(
-                              () {
-                                Valores.fechaElectrocardiograma = value;
-                              },
-                            );
-                          },
-                        ),
+                        child: GrandButton(
+                            weigth: 100,
+                            labelButton: "Registro de electrocardiogramas",
+                            onPress: () {
+                              carouselController.jumpToPage(0);
+                            }),
                       ),
                       Expanded(
-                        flex: 10,
-                        child: FutureBuilder<List>(
-                            initialData: values!,
-                            future: Future.value(values!),
-                            builder: (context, AsyncSnapshot snapshot) {
-                              if (snapshot.hasError) print(snapshot.error);
-                              return snapshot.hasData
-                                  ? GridView.builder(
-                                      padding: const EdgeInsets.all(8.0),
-                                      gridDelegate:
-                                          GridViewTools.gridDelegate(
-                                        crossAxisCount:
-                                            isMobile(context) ? 1 : 2,
-                                        mainAxisExtent:
-                                            isMobile(context) ? 170 : 150,
-                                        crossAxisSpacing: 4.0,
-                                        mainAxisSpacing: 4.0,
-                                      ),
-                                      shrinkWrap: true,
-                                      itemCount: snapshot.data == null
-                                          ? 0
-                                          : snapshot.data.length,
-                                      itemBuilder: (context, posicion) {
-                                        return itemSelected(
-                                            context: context,
-                                            data: snapshot.data,
-                                            index: posicion);
-                                      })
-                                  : Container();
+                        child: GrandButton(
+                            weigth: 100,
+                            labelButton: "Gestion del Registro",
+                            onPress: () {
+                              carouselController.jumpToPage(1);
+                            }),
+                      ),
+                      Expanded(
+                        child: GrandButton(
+                            weigth: 100,
+                            labelButton: "Imagen del Registro",
+                            onPress: () {
+                              carouselController.jumpToPage(2);
                             }),
                       ),
                     ],
                   ),
-                  operationScreen(),
-                  PhotoView(
-                    imageProvider: MemoryImage(base64Decode(stringImage!)),
-                    loadingBuilder: (context, progress) => Center(
-                      child: SizedBox(
-                        width: 20.0,
-                        height: 20.0,
-                        child: CircularProgressIndicator(
-                          value: progress == null
-                              ? null
-                              : progress.cumulativeBytesLoaded /
-                                  progress.expectedTotalBytes!,
+                ),
+              ),
+            Expanded(
+              flex: 8,
+              child: Container(
+                padding: const EdgeInsets.all(8.0),
+                decoration: ContainerDecoration.roundedDecoration(),
+                child: CarouselSlider(
+                  carouselController: carouselController,
+                  options: Carousel.carouselOptions(context: context),
+                  items: [
+                    Column(
+                      children: [
+                        Expanded(
+                          child: EditTextArea(
+                            keyBoardType: TextInputType.number,
+                            inputFormat: MaskTextInputFormatter(
+                                mask: '####/##/## ##:##:##',
+                                filter: {"#": RegExp(r'[0-9]')},
+                                type: MaskAutoCompletionType.lazy),
+                            labelEditText: "Fecha de realización",
+                            textController: textDateController,
+                            numOfLines: 1,
+                            onChange: (value) {
+                              setState(
+                                () {
+                                  Valores.fechaElectrocardiograma = value;
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          flex: 10,
+                          child: RefreshIndicator(
+                            onRefresh: _reiniciar,
+                            child: FutureBuilder<List>(
+                                initialData: values!,
+                                future: Future.value(values!),
+                                builder: (context, AsyncSnapshot snapshot) {
+                                  if (snapshot.hasError) print(snapshot.error);
+                                  return snapshot.hasData
+                                      ? GridView.builder(
+                                          padding: const EdgeInsets.all(8.0),
+                                          gridDelegate:
+                                              GridViewTools.gridDelegate(
+                                            crossAxisCount:
+                                                isMobile(context) ? 1 : 2,
+                                            mainAxisExtent:
+                                                isMobile(context) ? 170 : 150,
+                                            crossAxisSpacing: 4.0,
+                                            mainAxisSpacing: 4.0,
+                                          ),
+                                          shrinkWrap: true,
+                                          itemCount: snapshot.data == null
+                                              ? 0
+                                              : snapshot.data.length,
+                                          itemBuilder: (context, posicion) {
+                                            return itemSelected(
+                                                context: context,
+                                                data: snapshot.data,
+                                                index: posicion);
+                                          })
+                                      : Container();
+                                }),
+                          ),
+                        ),
+                      ],
+                    ),
+                    PhotoView(
+                      imageProvider: MemoryImage(base64Decode(stringImage!)),
+                      loadingBuilder: (context, progress) => Center(
+                        child: SizedBox(
+                          width: 20.0,
+                          height: 20.0,
+                          child: CircularProgressIndicator(
+                            value: progress == null
+                                ? null
+                                : progress.cumulativeBytesLoaded /
+                                progress.expectedTotalBytes!,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    operationScreen(),
+
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: isMobile(context)
           ? BottomAppBar(
@@ -367,7 +373,7 @@ class _ElectrocardiogramasGestionState
     );
   }
 
-  Future<void> reiniciar() async {
+  Future<void> _reiniciar() async {
     Terminal.printExpected(message: "Reinicio de los valores . . .");
     Actividades.consultarAllById(
             Databases.siteground_database_reggabo,
@@ -1576,7 +1582,7 @@ class _ElectrocardiogramasGestionState
   Map<String, dynamic>? elementSelected;
   //
   bool operationActivity = true; // Si true entonces REGISTER.register.
-  String tittle = "Registro de electrocardiogramas del paciente";
+  String tittle = "Electrocardiogramas . . . ";
   String idWidget = 'ID_Pace_GAB_EC';
 
   // Variables de Ejecución // ############################ ####### ####### #############################
@@ -2035,7 +2041,7 @@ class _ElectrocardiogramasGestionState
             context: context,
             tittle: "Registro de los Valores",
             message: 'Los registros fueron agregados');
-        reiniciar().then((value) {
+        _reiniciar().then((value) {
           setState(() {
             carouselController.jumpToPage(0);
           });
@@ -2054,7 +2060,7 @@ class _ElectrocardiogramasGestionState
             context: context,
             tittle: "Actualizacion de los Valores",
             message: 'Los registros fueron Actualizados');
-        reiniciar().then((value) {
+        _reiniciar().then((value) {
           setState(() {
             carouselController.jumpToPage(0);
           });

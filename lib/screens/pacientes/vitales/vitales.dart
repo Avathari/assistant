@@ -79,13 +79,13 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
           gluAyuTextController.text = Valores.horasAyuno!.toString();
           insulinaTextController.text = Valores.insulinaGastada!.toString();
           //
-          fraccionInspiratoriaOxigenoTextController.text=
-          Valores.fraccionInspiratoriaOxigeno.toString();
-          presionVenosaCentralTextController.text=
+          fraccionInspiratoriaOxigenoTextController.text =
+              Valores.fraccionInspiratoriaOxigeno.toString();
+          presionVenosaCentralTextController.text =
               Valores.presionVenosaCentral.toString();
-          presionIntraCerebralTextController.text=
+          presionIntraCerebralTextController.text =
               Valores.presionIntraCerebral.toString();
-          presionIntraabdominalTextController.text=
+          presionIntraabdominalTextController.text =
               Valores.presionIntraabdominal.toString();
           // Variables Antropométricas ********* *************** **********
           cueTextController.text = Valores.circunferenciaCuello!.toString();
@@ -103,7 +103,8 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
           factorEstresValue = Valores.factorEstres!.toString();
           //
 
-          pectTextController.text = Valores.circunferenciaPectoral!.toString() ?? "";
+          pectTextController.text =
+              Valores.circunferenciaPectoral!.toString() ?? "";
           //
           pcbTextController.text = Valores.pliegueCutaneoBicipital!.toString();
           //
@@ -160,6 +161,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                     carouselController.jumpToPage(0);
                   },
                 ),
+                SizedBox(width: 10),
                 GrandIcon(
                   iconData: Icons.volunteer_activism_outlined,
                   labelButton: 'Medidas Antropométricas',
@@ -167,14 +169,16 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                     carouselController.jumpToPage(1);
                   },
                 ),
-                GrandIcon(
-                  iconData: Icons.candlestick_chart,
-                  labelButton: 'Análisis de Parámetros',
-                  onPress: () {
-                    Operadores.openActivity(
-                        context: context, chyldrim: const Antropometricos());
-                  },
-                ),
+                SizedBox(width: 5),
+                // GrandIcon(
+                //   iconData: Icons.candlestick_chart,
+                //   labelButton: 'Análisis de Parámetros',
+                //   onPress: () {
+                //     Operadores.openActivity(
+                //         context: context, chyldrim: const Antropometricos());
+                //   },
+                // ),
+                SizedBox(width: 15),
               ]
             : null,
       ),
@@ -267,7 +271,6 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                 child: Row(
                   children: [
                     Expanded(
-
                       child: Container(
                         decoration: ContainerDecoration.roundedDecoration(),
                         child: CarouselSlider(
@@ -276,11 +279,13 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                                 controller: ScrollController(),
                                 padding: const EdgeInsets.all(8.0),
                                 gridDelegate: GridViewTools.gridDelegate(
-                                  crossAxisCount:
-                                      isTablet(context)
-                                          ? 1 :isMobile(context) ? 2
+                                  crossAxisCount: isTablet(context)
+                                      ? 1
+                                      : isMobile(context)
+                                          ? 2
                                           : 2,
                                   crossAxisSpacing: 1.0,
+                                  mainAxisSpacing: 5.0,
                                   mainAxisExtent: isMobile(context) ? 60 : 50,
                                 ),
                                 children: component(context),
@@ -289,11 +294,14 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                                 controller: ScrollController(),
                                 padding: const EdgeInsets.all(8.0),
                                 gridDelegate: GridViewTools.gridDelegate(
-                                  crossAxisCount:
-                                      isMobile(context) || isTablet(context)
-                                          ? 1
+                                  crossAxisCount: isTablet(context)
+                                      ? 1
+                                      : isMobile(context)
+                                          ? 2
                                           : 2,
-                                  mainAxisExtent: isMobile(context) ? 80 : 70,
+                                  crossAxisSpacing: 1.0,
+                                  mainAxisSpacing: 5.0,
+                                  mainAxisExtent: isMobile(context) ? 60 : 70,
                                 ),
                                 children: secondComponent(context),
                               ),
@@ -306,8 +314,8 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                     isMobile(context)
                         ? Container()
                         : Expanded(
-                      flex: isTablet(context) ? 2 : 1,
-                      child: Container(
+                            flex: isTablet(context) ? 2 : 1,
+                            child: Container(
                                 padding: const EdgeInsets.all(8.0),
                                 decoration: const BoxDecoration(
                                     color: Colors.black,
@@ -410,133 +418,128 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
       EditTextArea(
         keyBoardType: TextInputType.number,
         inputFormat: MaskTextInputFormatter(
-              mask: '###',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
+            mask: '###',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
         labelEditText: 'Tensión arterial sistólica',
-          textController:tasTextController,
-        onChange: (value) => Valores.tensionArterialSystolica = int.parse(value),
+        textController: tasTextController,
+        onChange: (value) =>
+            Valores.tensionArterialSystolica = int.parse(value),
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
         inputFormat: MaskTextInputFormatter(
-              mask: '###',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
+            mask: '###',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
         labelEditText: 'Tensión arterial diastólica',
-          textController:tadTextController,
-        onChange: (value) => Valores.tensionArterialDyastolica = int.parse(value),
+        textController: tadTextController,
+        onChange: (value) =>
+            Valores.tensionArterialDyastolica = int.parse(value),
       ),
       EditTextArea(
         keyBoardType: TextInputType.number,
         inputFormat: MaskTextInputFormatter(
-              mask: '###',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
+            mask: '###',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
         labelEditText: 'Frecuencia cardiaca',
-          textController:fcTextController,
+        textController: fcTextController,
         onChange: (value) => Valores.frecuenciaCardiaca = int.parse(value),
-          ),
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-              mask: '##',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
-        labelEditText:
-        'Frecuencia respiratoria',
-          textController:frTextController,
-        onChange: (value) => Valores.frecuenciaRespiratoria = int.parse(value),
-          ),
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-              mask: '##.#',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
-        labelEditText:
-        'Temperatura corporal',
-          textController:tcTextController,
-        onChange: (value) => Valores.temperaturCorporal = double.parse(value),
       ),
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-              mask: '##',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
-        labelEditText:
-        'Saturación periférica de oxígeno',
-          textController:spoTextController,
-        onChange: (value) => Valores.saturacionPerifericaOxigeno = int.parse(value),
-          ),
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-              mask: '###.##',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
-        labelEditText:
-        'Peso corporal total',
-        textController:pctTextController,
-        onChange: (value) => Valores.pesoCorporalTotal = double.parse(value),
-          ),
-      EditTextArea(
-        keyBoardType: TextInputType.number,
-        inputFormat: MaskTextInputFormatter(
-              mask: '#.##',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Estatura (mts)',
-        textController:estTextController,
-        onChange: (value) => Valores.alturaPaciente = double.parse(value),
-          ),
-      EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(
-              mask: '###',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
-        labelEditText: 'Glucemia capilar',
-        textController: gluTextController,
-        onChange: (value) => Valores.glucemiaCapilar = int.parse(value),
-          ),
-      EditTextArea(
-          keyBoardType: TextInputType.number,
-          inputFormat: MaskTextInputFormatter(
-              mask: '##',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
-          labelEditText:
-          'Horas de ayuno',
-        textController: gluAyuTextController,
-        onChange: (value) => Valores.horasAyuno = int.parse(value),
-          ),
       EditTextArea(
         keyBoardType: TextInputType.number,
         inputFormat: MaskTextInputFormatter(
             mask: '##',
             filter: {"#": RegExp(r'[0-9]')},
             type: MaskAutoCompletionType.lazy),
-        labelEditText:
-        'Insulina Gastada (UI/Día)',
+        labelEditText: 'Frecuencia respiratoria',
+        textController: frTextController,
+        onChange: (value) => Valores.frecuenciaRespiratoria = int.parse(value),
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '##.#',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Temperatura corporal',
+        textController: tcTextController,
+        onChange: (value) => Valores.temperaturCorporal = double.parse(value),
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '##',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Saturación periférica de oxígeno',
+        textController: spoTextController,
+        onChange: (value) =>
+            Valores.saturacionPerifericaOxigeno = int.parse(value),
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '###.##',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Peso corporal total',
+        textController: pctTextController,
+        onChange: (value) => Valores.pesoCorporalTotal = double.parse(value),
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '#.##',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Estatura (mts)',
+        textController: estTextController,
+        onChange: (value) => Valores.alturaPaciente = double.parse(value),
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '###',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Glucemia capilar',
+        textController: gluTextController,
+        onChange: (value) => Valores.glucemiaCapilar = int.parse(value),
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '##',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Horas de ayuno',
+        textController: gluAyuTextController,
+        onChange: (value) => Valores.horasAyuno = int.parse(value),
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '##',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Insulina Gastada (UI/Día)',
         textController: insulinaTextController,
         onChange: (value) => Valores.insulinaGastada = int.parse(value),
       ),
       if (!isMobile(context)) CrossLine(),
-      if (!isMobile(context) && !isTablet(context))   CrossLine(),
+      if (!isMobile(context) && !isTablet(context)) CrossLine(),
       EditTextArea(
         keyBoardType: TextInputType.number,
         inputFormat: MaskTextInputFormatter(),
         numOfLines: 1,
         labelEditText: 'Fracción Insp. O2',
-        textController:
-        fraccionInspiratoriaOxigenoTextController,
+        textController: fraccionInspiratoriaOxigenoTextController,
         onChange: (value) {
           setState(() {
             Valores.fraccionInspiratoriaOxigeno =
-                Valores.fraccionInspiratoriaVentilatoria =
-                int.parse(value);
+                Valores.fraccionInspiratoriaVentilatoria = int.parse(value);
           });
         },
       ),
@@ -548,8 +551,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
         textController: presionVenosaCentralTextController,
         onChange: (value) {
           setState(() {
-            Valores.presionVenosaCentral =
-                int.parse(value);
+            Valores.presionVenosaCentral = int.parse(value);
           });
         },
       ),
@@ -561,8 +563,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
         textController: presionIntraCerebralTextController,
         onChange: (value) {
           setState(() {
-            Valores.presionIntraCerebral =
-                int.parse(value);
+            Valores.presionIntraCerebral = int.parse(value);
           });
         },
       ),
@@ -574,8 +575,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
         textController: presionIntraabdominalTextController,
         onChange: (value) {
           setState(() {
-            Valores.presionIntraabdominal =
-                int.parse(value);
+            Valores.presionIntraabdominal = int.parse(value);
           });
         },
       ),
@@ -584,46 +584,42 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
 
   List<Widget> secondComponent(BuildContext context) {
     return [
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
-              mask: '###',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
-          false,
-          'Circunferencia cervical',
-          cueTextController,
-          false),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
-              mask: '###',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
-          false,
-          'Circunferencia cintura',
-          cinTextController,
-          false),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
-              mask: '###',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
-          false,
-          'Circunferencia cadera',
-          cadTextController,
-          false),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
-              mask: '###',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
-          false,
-          'Circunferencia medio braquial',
-          cmbTextController,
-          false),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '###',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Circunferencia cervical',
+        textController: cueTextController,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '###',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Circunferencia cintura',
+        textController: cinTextController,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '###',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Circunferencia cadera',
+        textController: cadTextController,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '###',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Circunferencia medio braquial',
+        textController: cmbTextController,
+      ),
       Spinner(
           isRow: true,
           width: isMobile(context) ? 60 : 40,
@@ -646,86 +642,78 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
               factorEstresValue = newValue!;
             });
           }),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
-              mask: '##',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
-          false,
-          'Pliegue subcutáneo escapular',
-          pseTextController,
-          false),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
-              mask: '##',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
-          false,
-          'Pliegue subcutáneo iliaco',
-          psiTextController,
-          false),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
-              mask: '###',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
-          false,
-          'Pliegue subcutáneo tricipital',
-          pstTextController,
-          false),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
-              mask: '###',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
-          false,
-          'Circunferencia pectoral',
-          pectTextController,
-          false),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
-              mask: '###',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
-          false,
-          'Circunferencia femoral izquierdo',
-          femIzqTextController,
-          false),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
-              mask: '###',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
-          false,
-          'Circunferencia femoral derecho',
-          femDerTextController,
-          false),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
-              mask: '###',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
-          false,
-          'Circunferencia sural izquierda',
-          suroIzqTextController,
-          false),
-      editFormattedText(
-          TextInputType.number,
-          MaskTextInputFormatter(
-              mask: '###',
-              filter: {"#": RegExp(r'[0-9]')},
-              type: MaskAutoCompletionType.lazy),
-          false,
-          'Circunferencia sural derecho',
-          suroDerTextController,
-          false),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '##',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Pliegue subcutáneo escapular',
+        textController: pseTextController,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '##',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Pliegue subcutáneo iliaco',
+        textController: psiTextController,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '###',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Pliegue subcutáneo tricipital',
+        textController: pstTextController,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '###',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Circunferencia pectoral',
+        textController: pectTextController,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '###',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Circunferencia femoral izquierdo',
+        textController: femIzqTextController,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '###',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Circunferencia femoral derecho',
+        textController: femDerTextController,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '###',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Circunferencia sural izquierda',
+        textController: suroIzqTextController,
+      ),
+      EditTextArea(
+        keyBoardType: TextInputType.number,
+        inputFormat: MaskTextInputFormatter(
+            mask: '###',
+            filter: {"#": RegExp(r'[0-9]')},
+            type: MaskAutoCompletionType.lazy),
+        labelEditText: 'Circunferencia sural derecho',
+        textController: suroDerTextController,
+      ),
     ];
   }
 
@@ -924,13 +912,15 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
                 //         }))
                 .then((value) {
               Archivos.deleteFile(filePath: Vitales.fileAssocieted);
-              reiniciar().then((value) => Operadores.alertActivity(
-                  context: context,
-                  tittle: "Actualización de registros",
-                  message: "Registros Actualizados",
-                  onAcept: () {
-                    returnGestion(context);
-                  })).onError((error, stackTrace) => null);
+              reiniciar()
+                  .then((value) => Operadores.alertActivity(
+                      context: context,
+                      tittle: "Actualización de registros",
+                      message: "Registros Actualizados",
+                      onAcept: () {
+                        returnGestion(context);
+                      }))
+                  .onError((error, stackTrace) => null);
             }); // );
           });
           break;
@@ -940,11 +930,13 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
       showDialog(
           context: context,
           builder: (context) {
-            return alertDialog("Error al operar con los valores : ", "$ex : $sta", () {
+            return alertDialog(
+                "Error al operar con los valores : ", "$ex : $sta", () {
               Navigator.of(context).pop();
             }, () {});
           });
-      Terminal.printAlert(message: "Error al operar con los valores : $ex : $sta");
+      Terminal.printAlert(
+          message: "Error al operar con los valores : $ex : $sta");
     }
   }
 }
@@ -994,6 +986,7 @@ class _GestionVitalesState extends State<GestionVitales> {
                     reiniciar();
                   },
                 ),
+                SizedBox(width: 20),
               ],
             )
           : null,
@@ -1141,7 +1134,6 @@ class _GestionVitalesState extends State<GestionVitales> {
         } else {
           reiniciar();
         }
-
       });
     }).onError((error, stackTrace) {
       reiniciar();
@@ -1150,63 +1142,114 @@ class _GestionVitalesState extends State<GestionVitales> {
     Terminal.printWarning(message: " . . . Actividad Iniciada");
   }
 
-  void reiniciar() {
+  Future<void> reiniciar() async {
     Terminal.printAlert(
         message: "Re-iniciando actividad : : \n "
             "Repositorio de Signos Vitales del Paciente . . .");
     List result = [];
     //
     Pacientes.Vitales!.clear();
-    Actividades.consultarAllById(Databases.siteground_database_regpace,
-            Vitales.vitales['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
-        .then((value) {
-      // print(value.length);
-      if (value[0]['Error'] != "No se encontraron datos") {
-        result.addAll(value);
-      }
-      // Terminal.printExpected(
-      //     message: value!.toString());
-      Actividades.consultarAllById(Databases.siteground_database_regpace,
-              Vitales.antropo['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
-          .then((value) {
-        // Terminal.printData(
-        //     message: value!.toString());
-        int index = 0;
-        //
-        try {
-          for (var item in result) {
-            if (index <= result.length) {
-              //
-              var thirdMap = {};
-              //
-                thirdMap.addAll(item);
-                thirdMap.addAll(value[index]);
-                Pacientes.Vitales!.add(thirdMap); // Adición a Vitales ********** ************ ************** ********
-                //
-                index++;
-            }
-          }
-          setState(() {
-            foundedItems = Pacientes.Vitales!;
-          });
-        } catch (error, stackTrace) {
-          Operadores.alertActivity(context: context,
-              tittle: "$error", message: "$stackTrace", onAcept: ()=>Navigator.of(context).pop());
-        }
+    // Actividades.consultarAllById(Databases.siteground_database_regpace,
+    //         Vitales.vitales['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
+    //     .then((value) {
+    //   // print(value.length);
+    //   if (value[0]['Error'] != "No se encontraron datos") {
+    //     result.addAll(value);
+    //   }
+    //   // Terminal.printExpected(
+    //   //     message: value!.toString());
+    //   Actividades.consultarAllById(Databases.siteground_database_regpace,
+    //           Vitales.antropo['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
+    //       .then((value) {
+    //     // Terminal.printData(
+    //     //     message: value!.toString());
+    //     int index = 0;
+    //     //
+    //     try {
+    //       for (var item in result) {
+    //         if (index <= result.length) {
+    //           //
+    //           var thirdMap = {};
+    //           //
+    //           thirdMap.addAll(item);
+    //           thirdMap.addAll(value[index]);
+    //           Pacientes.Vitales!.add(
+    //               thirdMap); // Adición a Vitales ********** ************ ************** ********
+    //           //
+    //           index++;
+    //         }
+    //       }
+    //       setState(() {
+    //         foundedItems = Pacientes.Vitales!;
+    //       });
+    //     } catch (error, stackTrace) {
+    //       Operadores.alertActivity(
+    //           context: context,
+    //           tittle: "$error",
+    //           message: "$stackTrace",
+    //           onAcept: () => Navigator.of(context).pop());
+    //     }
+    //
+    //     Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
+    //     //
+    //     Terminal.printSuccess(
+    //         message:
+    //             "Actualizando Repositorio de Signos Vitales del Paciente . . . ");
+    //   }).catchError((error, stackTrace) {
+    //     Operadores.alertActivity(
+    //         context: context,
+    //         tittle: "$error",
+    //         message: "$stackTrace",
+    //         onAcept: () => Navigator.of(context).pop());
+    //   });
+    // }).catchError((error, stackTrace) {
+    //   Operadores.alertActivity(
+    //       context: context,
+    //       tittle: "$error",
+    //       message: "$stackTrace",
+    //       onAcept: () => Navigator.of(context).pop());
+    // });
 
-        Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
-        //
-        Terminal.printSuccess(
-            message:
-            "Actualizando Repositorio de Signos Vitales del Paciente . . . ");
-      }).catchError((error, stackTrace) {
-        Operadores.alertActivity(context: context,
-            tittle: "$error", message: "$stackTrace", onAcept: ()=>Navigator.of(context).pop());
+    try {
+      final vitalesData = await Actividades.consultarAllById(
+        Databases.siteground_database_regpace,
+        Vitales.vitales['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente,
+      );
+
+      if (vitalesData[0]['Error'] == "No se encontraron datos") return;
+
+      final antropoData = await Actividades.consultarAllById(
+        Databases.siteground_database_regpace,
+        Vitales.antropo['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente,
+      );
+
+      final List<Map<String, dynamic>> combinados = [];
+
+      for (int i = 0; i < vitalesData.length; i++) {
+        final item = {...vitalesData[i], ...antropoData[i]};
+        combinados.add(item);
+      }
+
+      setState(() {
+        Pacientes.Vitales = combinados;
+        foundedItems = combinados;
       });
-    }).catchError((error, stackTrace) {
-      Operadores.alertActivity(context: context,
-          tittle: "$error", message: "$stackTrace", onAcept: ()=>Navigator.of(context).pop());
-    });
+
+      await Archivos.createJsonFromMap(combinados, filePath: fileAssocieted);
+
+      Terminal.printSuccess(
+          message:
+              "Actualizando Repositorio de Signos Vitales del Paciente...");
+    } catch (e, stack) {
+      Operadores.alertActivity(
+        context: context,
+        tittle: "$e",
+        message: "$stack",
+        onAcept: () => Navigator.of(context).pop(),
+      );
+    }
   }
 
   Container itemListView(

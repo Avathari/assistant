@@ -153,37 +153,65 @@ class Actividades {
   static Future<Map<String, dynamic>> consultarId(
       String database, String query, int id,
       {bool emulated = false}) async {
-    final response = await http.post(
-      Uri.parse("${Env.URL_PREFIX}/consultarId.php"),
-      encoding: Encoding.getByName('utf-8'),
-      headers: {
-        "Accept-Encoding": "gzip", // 📌 Solicitamos respuesta comprimida
-      },
-      body: <String, String>{
-        "query": query,
-        "database": database,
-        "host": hostname,
-        "username": username,
-        "password": password,
-        "emulated": emulated.toString(),
-        "id": id.toString()
-      },
-    );
+    try {
+      final response = await http.post(
+        Uri.parse("${Env.URL_PREFIX}/consultarId.php"),
+        encoding: Encoding.getByName('utf-8'),
+        headers: {
+          "Accept-Encoding": "gzip",
+        },
+        body: <String, String>{
+          "query": query,
+          "database": database,
+          "host": hostname,
+          "username": username,
+          "password": password,
+          "emulated": emulated.toString(),
+          "id": id.toString()
+        },
+      );
 
-    // 📌 Verificar si la respuesta está comprimida y descomprimir si es necesario
-    if (response.statusCode == 200) {
-      if (response.headers["content-encoding"] == "gzip") {
-        List<int> bytes = response.bodyBytes;
-        var decompressed = utf8.decode(gzip.decode(bytes));
+      if (response.statusCode == 200) {
+        String jsonString;
 
-        return json.decode(decompressed) as Map<String, dynamic>;
+        // Revisamos si la respuesta está comprimida
+        if (response.headers["content-encoding"] == "gzip") {
+          List<int> bytes = response.bodyBytes;
+          jsonString = utf8.decode(gzip.decode(bytes));
+        } else {
+          jsonString = response.body;
+        }
+
+        // Validamos si el JSON no está vacío
+        if (jsonString.trim().isEmpty) {
+          print("⚠️ Respuesta vacía del servidor");
+          return {'Error': 'Respuesta vacía del servidor'};
+        }
+
+        // Intentamos decodificar el JSON
+        try {
+          final decoded = json.decode(jsonString);
+          if (decoded is Map<String, dynamic>) {
+            return decoded;
+          } else {
+            print("⚠️ Respuesta no es un mapa JSON válido");
+            return {'Error': 'Formato JSON no válido'};
+          }
+        } catch (e) {
+          print("⚠️ Error al decodificar JSON: $e");
+          print("🔹Contenido recibido: $jsonString");
+          return {'Error': 'Error al procesar JSON'};
+        }
       } else {
-        return json.decode(response.body) as Map<String, dynamic>;
+        print("⚠️ Código de respuesta HTTP: ${response.statusCode}");
+        return {'Error': 'Respuesta no exitosa del servidor'};
       }
-    } else {
-      return {'Error': 'Hubo un error'};
+    } catch (e) {
+      print("❌ Excepción: $e");
+      return {'Error': 'Excepción en la solicitud'};
     }
   }
+
 
   static Future<Map<String, dynamic>> detalles(String database, String query,
       {bool emulated = false}) async {

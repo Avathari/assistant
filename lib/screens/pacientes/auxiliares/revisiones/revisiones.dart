@@ -48,20 +48,9 @@ class _RevisionesState extends State<Revisiones> {
             "Pacientes.localPath ${Pacientes.localPath} : . . . \n"
             "ID Paciente . : . ${Pacientes.ID_Paciente}");
     //
-        Archivos.readJsonToMap(filePath: Vitales.fileAssocieted).then((value) {
-      Vitales.fromJson(value.last)
-          .whenComplete(() => setState(() => Pacientes.Vitales = value));
-    }).onError((error, stackTrace) {
-      // Vitales.ultimoRegistro()
-      //     .then((value) => Vitales.fromJson(value))
-      //     .whenComplete(() => setState(() {}))
-      //     .onError((error, stackTrace) => Operadores.alertActivity(
-      //           context: context,
-      //           tittle: "ERROR al consultar último registro",
-      //           message: "ERROR : $error : : $stackTrace",
-      //           onAcept: () => Navigator.of(context).pop(),
-      //         ));
-    });
+    Archivos.readJsonToMap(filePath: Vitales.fileAssocieted)
+        .then((onValue) => Vitales.fromJson(onValue!.last))
+        .whenComplete(() => setState(() => {}));
     //
     setState(() {
       Terminal.printNotice(message: "${Valores.fechaVitales!}");

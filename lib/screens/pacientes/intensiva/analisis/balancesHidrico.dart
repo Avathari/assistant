@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -22,6 +23,9 @@ class _BalanceHidricoState extends State<BalanceHidrico> {
 
   @override
   void initState() {
+      Archivos.readJsonToMap(filePath: Vitales.fileAssocieted)
+          .then((onValue) => Vitales.fromJson(onValue!.last)).whenComplete(() => setState(() => {}));
+      //
     setState(() {
       //
       ingresos = Valores.ingresosBalances;

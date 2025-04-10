@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/hidrometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
@@ -31,15 +32,8 @@ class _HidricosState extends State<Hidricos> {
 
   @override
   void initState() {
-    //
-  //   Terminal.printAlert(message: "ERROR : : ${Pacientes.ID_Paciente}");
-  //   //
-  // Auxiliares.ultimoRegistro()
-  //     .then((value) => Auxiliares.fromJson(value))
-  //     .whenComplete(() => setState(() {}))
-  //     .onError((error, stackTrace) =>
-  //     Terminal.printAlert(message: "ERROR : : $error : $stackTrace"));
-
+    Archivos.readJsonToMap(filePath: Vitales.fileAssocieted)
+        .then((onValue) => Vitales.fromJson(onValue!.last)).whenComplete(() => setState(() => {}));
     //
     super.initState();
   }
@@ -54,7 +48,8 @@ class _HidricosState extends State<Hidricos> {
         children: [
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(left: 4.0, right: 4.0, top: 10.0, bottom: 8.0),
+              padding: const EdgeInsets.only(
+                  left: 4.0, right: 4.0, top: 10.0, bottom: 8.0),
               child: Wrap(
                 spacing: 18.0,
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -123,10 +118,18 @@ class _HidricosState extends State<Hidricos> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                    flex: widget.isLateral == true? 2: isTablet(context) || isMobile(context) ? 2 : 1,
+                    flex: widget.isLateral == true
+                        ? 2
+                        : isTablet(context) || isMobile(context)
+                            ? 2
+                            : 1,
                     child: valoresIniciales(context)),
                 Expanded(
-                  flex: widget.isLateral == true? 5: isTablet(context) ? 5 : 3,
+                  flex: widget.isLateral == true
+                      ? 5
+                      : isTablet(context)
+                          ? 5
+                          : 3,
                   child: CarouselSlider(
                       items: [
                         SingleChildScrollView(
@@ -272,7 +275,7 @@ class _HidricosState extends State<Hidricos> {
                                   iconed: Icons.copy_rounded,
                                   onChangeValue: () => Datos.portapapeles(
                                       context: context,
-                                      text: Hidrometrias.hidricos),
+                                      text: Hidrometrias.hidricosGeneral),
                                 ),
                               ],
                             ),
@@ -314,10 +317,10 @@ class _HidricosState extends State<Hidricos> {
                                               sodioInfundidoTextController,
                                           keyBoardType: TextInputType.number,
                                           inputFormat: MaskTextInputFormatter(
-                                            // mask: '####',
-                                            // filter: {"#": RegExp(r'[0-9]')},
-                                            // type: MaskAutoCompletionType.lazy,
-                                          ),
+                                              // mask: '####',
+                                              // filter: {"#": RegExp(r'[0-9]')},
+                                              // type: MaskAutoCompletionType.lazy,
+                                              ),
                                           onChange: (String value) {
                                             setState(() {
                                               Hidrometrias.sodioInfundido =
@@ -336,7 +339,8 @@ class _HidricosState extends State<Hidricos> {
                                         ),
                                         ValuePanel(
                                           firstText: 'Sodio Resultante',
-                                          secondText: (Valores.sodio! + Hidrometrias.deltaSodio)
+                                          secondText: (Valores.sodio! +
+                                                  Hidrometrias.deltaSodio)
                                               .toStringAsFixed(2),
                                           thirdText: 'mmol/L',
                                         ),
@@ -353,10 +357,10 @@ class _HidricosState extends State<Hidricos> {
                                                 sodioInfundidoTextController,
                                             keyBoardType: TextInputType.number,
                                             inputFormat: MaskTextInputFormatter(
-                                              // mask: '####',
-                                              // filter: {"#": RegExp(r'[0-9]')},
-                                              // type: MaskAutoCompletionType.lazy,
-                                            ),
+                                                // mask: '####',
+                                                // filter: {"#": RegExp(r'[0-9]')},
+                                                // type: MaskAutoCompletionType.lazy,
+                                                ),
                                             onChange: (String value) {
                                               setState(() {
                                                 Hidrometrias.sodioInfundido =
@@ -373,13 +377,15 @@ class _HidricosState extends State<Hidricos> {
                                             children: [
                                               ValuePanel(
                                                 firstText: 'Delta Sodio',
-                                                secondText: Hidrometrias.deltaSodio
+                                                secondText: Hidrometrias
+                                                    .deltaSodio
                                                     .toStringAsFixed(2),
                                                 thirdText: 'mEq/L INF',
                                               ),
                                               ValuePanel(
                                                 firstText: 'Sodio Resultante',
-                                                secondText: (Valores.sodio! + Hidrometrias.deltaSodio)
+                                                secondText: (Valores.sodio! +
+                                                        Hidrometrias.deltaSodio)
                                                     .toStringAsFixed(2),
                                                 thirdText: 'mmol/L',
                                               ),
@@ -396,7 +402,7 @@ class _HidricosState extends State<Hidricos> {
                                 iconed: Icons.copy_rounded,
                                 onChangeValue: () => Datos.portapapeles(
                                     context: context,
-                                    text: Hidrometrias.sodios),
+                                    text: Hidrometrias.hidricos),
                               ),
                             ]),
                           ),
@@ -566,31 +572,29 @@ class _HidricosState extends State<Hidricos> {
                                   Expanded(
                                     child: ValuePanel(
                                       firstText: 'Alb-',
-                                      secondText: Valores.albuminaSerica
-                                          .toString(),
+                                      secondText:
+                                          Valores.albuminaSerica.toString(),
                                       thirdText: 'g/dL',
                                     ),
-
                                   ),
                                   Expanded(
                                     child: ValuePanel(
                                       firstText: 'Mg-',
-                                      secondText: Valores.magnesio
-                                          .toString(),
+                                      secondText: Valores.magnesio.toString(),
                                       thirdText: 'mg/dL',
-                                    ),),
+                                    ),
+                                  ),
                                   Expanded(
                                     child: ValuePanel(
                                       firstText: 'PO3-',
-                                      secondText: Valores.fosforo
-                                          .toString(),
+                                      secondText: Valores.fosforo.toString(),
                                       thirdText: 'mg/dL',
-                                    ),),
+                                    ),
+                                  ),
                                   Expanded(
                                     child: ValuePanel(
                                       firstText: 'Cr-',
-                                      secondText: Valores.creatinina
-                                          .toString(),
+                                      secondText: Valores.creatinina.toString(),
                                       thirdText: 'mg/dL',
                                     ),
                                   ),
@@ -598,28 +602,24 @@ class _HidricosState extends State<Hidricos> {
                               ),
                               Row(
                                 children: [
-
                                   Expanded(
                                     child: ValuePanel(
                                       firstText: 'PTH',
-                                      secondText: "0"
-                                          .toString(),
+                                      secondText: "0".toString(),
                                       thirdText: 'mg/dL',
                                     ),
                                   ),
                                   Expanded(
                                     child: ValuePanel(
                                       firstText: '25(OH)D',
-                                      secondText: "0"
-                                          .toString(),
+                                      secondText: "0".toString(),
                                       thirdText: 'mg/dL',
                                     ),
                                   ),
                                   Expanded(
                                     child: ValuePanel(
                                       firstText: '1,25(OH)2D',
-                                      secondText: "0"
-                                          .toString(),
+                                      secondText: "0".toString(),
                                       thirdText: 'mg/dL',
                                     ),
                                   ),

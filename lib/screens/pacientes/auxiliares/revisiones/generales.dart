@@ -42,17 +42,78 @@ class _GeneralesState extends State<Generales> {
 
   @override
   void initState() {
+    Archivos.readJsonToMap(filePath: Vitales.fileAssocieted)
+        .then((onValue) => Vitales.fromJson(onValue!.last))
+        .whenComplete(() => setState(() => {}));
+    // Repositorio de Balances *****************************
+    // Archivos.readJsonToMap(
+    //         filePath: "${Pacientes.localRepositoryPath}/balances.json")
+    //     .then((value) => setState(() => Pacientes.Balances = value
+    //         // Balances.fromJson(value[value.lenght-1]);
+    //         ))
+    //     .onError((onError, stackTrace) => Operadores.alertActivity(
+    //           context: context,
+    //           tittle: "Error al abrir repositorio local . . . ",
+    //           message: "$onError : : $stackTrace",
+    //           onAcept: () => Navigator.of(context).pop(),
+    //         ));
+    // Repositorio de Pendientes ****************************
+    Archivos.readJsonToMap(
+            filePath: "${Pacientes.localRepositoryPath}pendientes.json")
+        .then((value) {
+      setState(() {
+        Pacientes.Pendiente!.clear();
+        // ***************************
+        for (var map in value) {
+          if (map?.containsKey("Pace_PEN_realized") ?? false) {
+            if (map!["Pace_PEN_realized"] == 0) {
+              // your list of map contains key "id" which has value 3
+              Pacientes.Pendiente!.add(map);
+            }
+          }
+        }
+        // Pacientes.Pendiente = value; Terminal.printExpected(message: '${Pacientes.Pendiente!}');
+      });
+    }).onError((onError, stackTrace) {
+      Actividades.consultarAllById(
+              Databases.siteground_database_reghosp,
+              Pendientes.pendientes['consultIdQuery'],
+              Pacientes.ID_Hospitalizacion)
+          .then((value) {
+        setState(() {
+          // foundedItems = _previos = value;
+          Archivos.createJsonFromMap(value!,
+              filePath: Pendientes.fileAssocieted);
+        });
+      });
+      // Operadores.alertActivity(
+      //   context: context,
+      //   tittle: "Error al abrir repositorio local . . . ",
+      //   message: "$onError : : $stackTrace",
+      //   onAcept: () => Navigator.of(context).pop(),
+      // );
+    });
+    // Repositorio de Paraclínicos *****************************
+    Archivos.readJsonToMap(
+            filePath: "${Pacientes.localRepositoryPath}/paraclinicos.json")
+        .then((value) => setState(() => Pacientes.Paraclinicos = value))
+        .onError((onError, stackTrace) => Operadores.alertActivity(
+              context: context,
+              tittle: "Error al abrir repositorio local . . . ",
+              message: "$onError : : $stackTrace",
+              onAcept: () => Navigator.of(context).pop(),
+            ));
+//
     textDateEstudyController.text =
         Calendarios.today(format: 'yyyy-MM-dd HH:mm:ss');
-    //
 
+    //
     if (Valores.alturaPaciente != null) {
       estTextController.text = Valores.alturaPaciente!.toString();
     } else {
       Valores.alturaPaciente = 0;
       estTextController.text = '0';
     }
-    //
     if (Valores.pesoCorporalTotal != null) {
       pctTextController.text = Valores.pesoCorporalTotal!.toString();
     } else {
@@ -69,54 +130,24 @@ class _GeneralesState extends State<Generales> {
     viaPerdidaTextController.text =
         Valores.perdidasInsensibles.toStringAsFixed(2);
 
-    // Repositorio de Balances *****************************
-    Archivos.readJsonToMap(
-            filePath: "${Pacientes.localRepositoryPath}/balances.json")
-        .then((value) => setState(() => Pacientes.Balances = value
-            // Balances.fromJson(value[value.lenght-1]);
-            ))
-        .onError((onError, stackTrace) => Operadores.alertActivity(
-              context: context,
-              tittle: "Error al abrir repositorio local . . . ",
-              message: "$onError : : $stackTrace",
-              onAcept: () => Navigator.of(context).pop(),
-            ));
-    // Repositorio de Pendientes ****************************
-    Archivos.readJsonToMap(
-            filePath: "${Pacientes.localRepositoryPath}/pendientes.json")
-        .then((value) {
-      setState(() {
-        Pacientes.Pendiente!.clear();
-        // ***************************
-        for (var map in value) {
-          if (map?.containsKey("Pace_PEN_realized") ?? false) {
-            if (map!["Pace_PEN_realized"] == 0) {
-              // your list of map contains key "id" which has value 3
-              Pacientes.Pendiente!.add(map);
-            }
-          }
-        }
-        // Pacientes.Pendiente = value; Terminal.printExpected(message: '${Pacientes.Pendiente!}');
-      });
-    }).onError((onError, stackTrace) {
-      Operadores.alertActivity(
-        context: context,
-        tittle: "Error al abrir repositorio local . . . ",
-        message: "$onError : : $stackTrace",
-        onAcept: () => Navigator.of(context).pop(),
-      );
-    });
-    // Repositorio de Paraclínicos *****************************
-    Archivos.readJsonToMap(
-            filePath: "${Pacientes.localRepositoryPath}/paraclinicos.json")
-        .then((value) => setState(() => Pacientes.Paraclinicos = value))
-        .onError((onError, stackTrace) => Operadores.alertActivity(
-              context: context,
-              tittle: "Error al abrir repositorio local . . . ",
-              message: "$onError : : $stackTrace",
-              onAcept: () => Navigator.of(context).pop(),
-            ));
+    // Reiniciar valores de Balances
+    Valores.viaOralBalances = 0;
+    Valores.sondaOrogastricaBalances = 0;
+    Valores.hemoderivadosBalances = 0;
+    Valores.nutricionParenteralBalances = 0;
+    Valores.parenteralesBalances = 0;
+    Valores.dilucionesBalances = 0;
+    Valores.otrosIngresosBalances!;
 
+    Valores.uresisBalances = 0;
+    Valores.evacuacionesBalances = 0;
+    Valores.sangradosBalances = 0;
+    Valores.succcionBalances = 0;
+    Valores.drenesBalances = 0;
+    Valores.otrosEgresosBalances = 0;
+
+    Balances.getBalance();
+    //
     setState(() {});
     super.initState();
   }
@@ -511,8 +542,7 @@ class _GeneralesState extends State<Generales> {
                         textController: tasTextController,
                         onChange: (value) {
                           setState(() {
-                            Valores.tensionArterialSystolica =
-                                int.parse(value);
+                            Valores.tensionArterialSystolica = int.parse(value);
                           });
                         },
                       ),
@@ -544,7 +574,7 @@ class _GeneralesState extends State<Generales> {
                         labelEditText: 'Frecuencia cardiaca',
                         textController: fcTextController,
                         onChange: (value) => setState(() =>
-                        Valores.frecuenciaCardiaca = int.parse(value)),
+                            Valores.frecuenciaCardiaca = int.parse(value)),
                       ),
                     ),
                     Expanded(
@@ -554,9 +584,9 @@ class _GeneralesState extends State<Generales> {
                         numOfLines: 1,
                         labelEditText: 'Frecuencia respiratoria',
                         textController: frTextController,
-                        onChange: (value) => setState(() =>
-                        Valores.frecuenciaRespiratoria = Valores
-                            .frecuenciaVentilatoria = int.parse(value)),
+                        onChange: (value) => setState(() => Valores
+                                .frecuenciaRespiratoria =
+                            Valores.frecuenciaVentilatoria = int.parse(value)),
                       ),
                     ),
                   ],
@@ -578,7 +608,7 @@ class _GeneralesState extends State<Generales> {
                   labelEditText: 'Saturación periférica de oxígeno',
                   textController: spoTextController,
                   onChange: (value) => setState(() =>
-                  Valores.saturacionPerifericaOxigeno = int.parse(value)),
+                      Valores.saturacionPerifericaOxigeno = int.parse(value)),
                 ),
                 Row(
                   children: [
@@ -595,9 +625,8 @@ class _GeneralesState extends State<Generales> {
                           onChange: (String value) {
                             Valores.pesoCorporalTotal =
                                 double.parse(pctTextController.text);
-                            viaPerdidaTextController.text = Valores
-                                .perdidasInsensibles
-                                .toStringAsFixed(0);
+                            viaPerdidaTextController.text =
+                                Valores.perdidasInsensibles.toStringAsFixed(0);
                           }),
                     ),
                     Expanded(
@@ -650,11 +679,11 @@ class _GeneralesState extends State<Generales> {
                       mask: '##',
                       filter: {"#": RegExp(r'[0-9]')},
                       type: MaskAutoCompletionType.lazy),
-                  labelEditText:
-                  'Insulina Gastada (UI/Día)',
+                  labelEditText: 'Insulina Gastada (UI/Día)',
                   numOfLines: 1,
                   textController: insulinaTextController,
-                  onChange: (value) => Valores.insulinaGastada = int.parse(value),
+                  onChange: (value) =>
+                      Valores.insulinaGastada = int.parse(value),
                 ),
                 CrossLine(thickness: 6, height: 15),
                 Row(
@@ -666,12 +695,12 @@ class _GeneralesState extends State<Generales> {
                         numOfLines: 1,
                         labelEditText: 'FiO2',
                         textController:
-                        fraccionInspiratoriaOxigenoTextController,
+                            fraccionInspiratoriaOxigenoTextController,
                         onChange: (value) {
                           setState(() {
                             Valores.fraccionInspiratoriaOxigeno =
                                 Valores.fraccionInspiratoriaVentilatoria =
-                                int.parse(value);
+                                    int.parse(value);
                             Valores.fioArteriales = double.parse(value);
                           });
                         },
@@ -1439,11 +1468,11 @@ class _GeneralesState extends State<Generales> {
                         mask: '##',
                         filter: {"#": RegExp(r'[0-9]')},
                         type: MaskAutoCompletionType.lazy),
-                    labelEditText:
-                    'Insulina Gastada (UI/Día)',
+                    labelEditText: 'Insulina Gastada (UI/Día)',
                     numOfLines: 1,
                     textController: insulinaTextController,
-                    onChange: (value) => Valores.insulinaGastada = int.parse(value),
+                    onChange: (value) =>
+                        Valores.insulinaGastada = int.parse(value),
                   ),
                   CrossLine(thickness: 6, height: 15),
                   Row(
@@ -2220,9 +2249,15 @@ class _GeneralesState extends State<Generales> {
   _endDrawer(BuildContext context) {
     return Drawer(
         backgroundColor: Theming.cuaternaryColor,
-        child: widget.analysis == true //isLargeDesktop(context)
-            ? AnalisisLaterales()
-            : _optionRevisiones(context));
+        child: Align(
+          alignment: Alignment.center,
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.93,
+            child: widget.analysis == true //isLargeDesktop(context)
+                ? AnalisisLaterales()
+                : _optionRevisiones(context),
+          ),
+        ));
   }
 
   _bottomNavigationBar(BuildContext context) => BottomAppBar(

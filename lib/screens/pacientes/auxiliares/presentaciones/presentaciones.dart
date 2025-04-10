@@ -140,7 +140,8 @@ class _PresentacionPacientesState extends State<PresentacionPacientes> {
             children: <Widget>[
               Text(
                 "${Pacientes.Paciente['Pace_Ape_Pat']} ${Pacientes.Paciente['Pace_Ape_Mat']} \n"
-                "${Pacientes.Paciente['Pace_Nome_PI']} ${Pacientes.Paciente['Pace_Nome_SE']}",
+                "${Pacientes.Paciente['Pace_Nome_PI']} \n${Pacientes.Paciente['Pace_Nome_SE']}",
+                maxLines: 3,
                 style: const TextStyle(
                   fontSize: 14,
                   color: Colors.white,

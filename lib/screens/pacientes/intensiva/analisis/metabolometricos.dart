@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/metabolometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
@@ -23,6 +24,13 @@ class Metabolicos extends StatefulWidget {
 
 class _MetabolicosState extends State<Metabolicos> {
   var carouselController = CarouselSliderController();
+
+  @override
+  void initState() {
+    Archivos.readJsonToMap(filePath: Vitales.fileAssocieted)
+        .then((onValue) => Vitales.fromJson(onValue!.last)).whenComplete(() => setState(() => {}));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

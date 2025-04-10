@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
@@ -23,9 +24,14 @@ class _InsulinasState extends State<Insulinas> {
 
   @override
   void initState() {
+    Archivos.readJsonToMap(filePath: Vitales.fileAssocieted)
+        .then((onValue) => Vitales.fromJson(onValue!.last))
+        .whenComplete(() => setState(() => {}));
+
     setState(() {
       if (Valores.pesoCorporalTotal != null) {
         pesoCorporalTotal = Valores.pesoCorporalTotal;
+        pesoCorporalTotalTextController.text = pesoCorporalTotal!.toStringAsFixed(2);
       } else {
         pesoCorporalTotal = 70;
       }

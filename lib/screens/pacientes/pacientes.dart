@@ -806,7 +806,7 @@ class _GestionPacientesState extends State<GestionPacientes> {
       Terminal.printAlert(
           message: 'Archivo ${Pacientes.localPath} No Encontrado');
       Terminal.printWarning(message: 'Iniciando búsqueda en Valores . . . ');
-      var response = await Valores().load().onError((error, stackTrace) {
+      var response = await Valores().load(context).onError((error, stackTrace) {
         Operadores.alertActivity(
             context: context,
             tittle: "Error al Cargar Valores . . . ",

@@ -79,6 +79,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               filePath: "${Pacientes.localRepositoryPath}vitales.json")
           .then((value) {
         Pacientes.Vitales = value;
+        Vitales.fromJson(value.last);
       });
       // Diagnósticos del Paciente ****************************************
       Archivos.readJsonToMap(
@@ -93,11 +94,11 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         Pacientes.Ventilaciones = value;
       });
       // Alérgias del Paciente ****************************************
-      Archivos.readJsonToMap(
-              filePath: "${Pacientes.localRepositoryPath}alergicos.json")
-          .then((value) {
-        Pacientes.Alergicos = value;
-      });
+      // Archivos.readJsonToMap(
+      //         filePath: "${Pacientes.localRepositoryPath}alergicos.json")
+      //     .then((value) {
+      //   Pacientes.Alergicos = value;
+      // });
 
 // *********************************************
       if (Pacientes.ID_Hospitalizacion != 0) {

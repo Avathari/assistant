@@ -20,6 +20,7 @@ import 'package:assistant/screens/pacientes/epidemiologicos/licencias.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizado.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/hematinicos.dart';
+import 'package:assistant/screens/pacientes/intensiva/contenidos/insulinas.dart';
 import 'package:assistant/screens/pacientes/intensiva/herramientas.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/paraclinicos.dart';
@@ -69,10 +70,23 @@ class _VisualPacientesState extends State<VisualPacientes> {
   @override
   void initState() {
     //
-    Pacientes.getValores(reload: true);
-    Pacientes.getParaclinicosHistorial(reload: true);
-    Expedientes.ultimoRegistro();
-    //
+    Future.microtask(() async {
+      await Pacientes.getValores(context, reload: true); // si la necesitas
+      await Pacientes.getParaclinicosHistorial();
+      Expedientes.ultimoRegistro();
+      //
+      Archivos.readJsonToMap(filePath: Vitales.fileAssocieted).then((onValue) {
+        Vitales.fromJson(onValue!.last);
+      }).whenComplete(() {
+        setState(() {});
+      }).onError((onError, tackTrace) {
+
+      });
+      setState(() {}); // si necesitas refrescar UI
+    });
+
+    // Future.microtask(() => Pacientes.getValores(context,  reload: true)); // Pacientes.getValores(context, reload: true);
+    // Pacientes.getParaclinicosHistorial(reload: true);
     super.initState();
   }
 
@@ -95,10 +109,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
           foregroundColor: Colors.white,
           leading: isDesktop(context) || isLargeDesktop(context)
               ? IconButton(
-                  icon: const Icon(
-                    color: Colors.white,
-                    Icons.arrow_back
-                  ),
+                  icon: const Icon(color: Colors.white, Icons.arrow_back),
                   tooltip: 'Regresar',
                   onPressed: () => cerrarCasoPaciente())
               : null,
@@ -652,6 +663,14 @@ class _VisualPacientesState extends State<VisualPacientes> {
                                 chyld: const Concentraciones());
                           },
                         ),
+                        GrandIcon(
+                          labelButton: "Insulinoterapia",
+                          iconData: Icons.nat,
+                          onPress: () {
+                            Cambios.toNextActivity(context,
+                                chyld: const Insulinas());
+                          },
+                        ),
                       ],
                     ),
                     CrossLine(height: 10),
@@ -711,14 +730,13 @@ class _VisualPacientesState extends State<VisualPacientes> {
                         GrandIcon(
                             iconData: Icons.water_drop,
                             labelButton: 'Análisis Hidrico',
-                            onPress: () =>
-                                Cambios.toNextActivity(context, chyld: Hidricos())),
+                            onPress: () => Cambios.toNextActivity(context,
+                                chyld: Hidricos())),
                         GrandIcon(
-                          iconData: Icons.bubble_chart,
-                          labelButton: 'Análisis Metabólico',
-                          onPress: () =>
-                      Cambios.toNextActivity(context, chyld: const Metabolicos())
-                        ),
+                            iconData: Icons.bubble_chart,
+                            labelButton: 'Análisis Metabólico',
+                            onPress: () => Cambios.toNextActivity(context,
+                                chyld: const Metabolicos())),
                         GrandIcon(
                           iconData: Icons.horizontal_rule_sharp,
                           labelButton: 'Análisis Antropométrico',
@@ -740,7 +758,8 @@ class _VisualPacientesState extends State<VisualPacientes> {
                           iconData: Icons.g_mobiledata,
                           labelButton: 'Análisis Gasométrico',
                           onPress: () {
-                            Cambios.toNextActivity(context, chyld: const Gasometricos());
+                            Cambios.toNextActivity(context,
+                                chyld: const Gasometricos());
                           },
                         ),
                       ],
@@ -753,7 +772,8 @@ class _VisualPacientesState extends State<VisualPacientes> {
                           iconData: Icons.accessibility,
                           labelButton: 'Análisis de Hemáticos',
                           onPress: () {
-                            Cambios.toNextActivity(context, chyld: const Hematinicos());
+                            Cambios.toNextActivity(context,
+                                chyld: const Hematinicos());
                           },
                         ),
                         GrandIcon(
@@ -819,8 +839,8 @@ class _VisualPacientesState extends State<VisualPacientes> {
                   difRadios: 7,
                   tittle: 'Dispositivos . . . ',
                   iconed: Icons.device_hub,
-                  onChangeValue: ()  =>
-                    Cambios.toNextActivity(context, chyld: const AuxiliaresDispositivos()),
+                  onChangeValue: () => Cambios.toNextActivity(context,
+                      chyld: const AuxiliaresDispositivos()),
                 ),
               ),
               const SizedBox(width: 10),
@@ -834,14 +854,14 @@ class _VisualPacientesState extends State<VisualPacientes> {
               Menus.popUpLaboratoriosAuxiliar(context),
               Menus.popUpLaboratoriosEspeciales(context),
               CircleIcon(
-                radios: 35,
-                difRadios: 7,
-                tittle: 'Análisis de Terapia . . . ',
-                iconed: Icons.analytics_outlined,
-                onChangeValue: ()  =>
-                    Operadores.openDialog(context: context, chyldrim: TerapiasItems())
-                    // Cambios.toNextActivity(context, chyld: TerapiasItems()),
-              ),
+                  radios: 35,
+                  difRadios: 7,
+                  tittle: 'Análisis de Terapia . . . ',
+                  iconed: Icons.analytics_outlined,
+                  onChangeValue: () => Operadores.openDialog(
+                      context: context, chyldrim: TerapiasItems())
+                  // Cambios.toNextActivity(context, chyld: TerapiasItems()),
+                  ),
             ],
           ),
           // Row(
@@ -1173,22 +1193,22 @@ class _VisualPacientesState extends State<VisualPacientes> {
                 ),
               ),
               CrossLine(thickness: 3, height: 20, color: Colors.grey),
-          Expanded(
-            flex: 2,
-            child: CircleIcon(
-              iconed: Icons.thermostat,
-              radios: 35,
-              difRadios: 5,
-              tittle: "Dispositivos Empleados. . . ",
-              onChangeValue: () {
-                _key.currentState!.closeEndDrawer();
-                Cambios.toNextActivity(context,
-                    backgroundColor: Theming.cuaternaryColor,
-                    chyld:  const AuxiliaresDispositivos()); // AuxiliarVitales()
-              },
-            ),
-          ),
-
+              Expanded(
+                flex: 2,
+                child: CircleIcon(
+                  iconed: Icons.thermostat,
+                  radios: 35,
+                  difRadios: 5,
+                  tittle: "Dispositivos Empleados. . . ",
+                  onChangeValue: () {
+                    _key.currentState!.closeEndDrawer();
+                    Cambios.toNextActivity(context,
+                        backgroundColor: Theming.cuaternaryColor,
+                        chyld:
+                            const AuxiliaresDispositivos()); // AuxiliarVitales()
+                  },
+                ),
+              ),
               Expanded(
                 flex: 2,
                 child: CircleIcon(
@@ -1285,7 +1305,9 @@ class _VisualPacientesState extends State<VisualPacientes> {
   }
 
   MaterialBanner _presentacionPaciente(BuildContext context) => MaterialBanner(
-        padding: isDesktop(context) ? const EdgeInsets.all(2.0):const EdgeInsets.all(5.0),
+        padding: isDesktop(context)
+            ? const EdgeInsets.all(2.0)
+            : const EdgeInsets.all(5.0),
         content: Detalles(withImage: isMobile(context) ? false : true),
         backgroundColor: Colors.black,
         forceActionsBelow: true,
@@ -1315,7 +1337,6 @@ class _VisualPacientesState extends State<VisualPacientes> {
           ),
         ],
       );
-
 
 // onChangeValue: () => showModalBottomSheet(
 //     context: context,

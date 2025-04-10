@@ -1,4 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'package:intl/intl.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/actividades/pdfGenerete/pdfGenereteFormats/formatosReportes.dart';
@@ -1486,11 +1491,13 @@ class Pacientes {
   static getImage() async {
     await Actividades.consultarId(Databases.siteground_database_regpace,
             pacientes['consultImage'], Pacientes.ID_Paciente)
-        .then((value) {
-      print("consultImage $value");
+        .then((value) async {
+      // print("consultImage $value");
+      final img = base64.encode((await rootBundle.load('assets/images/person.png')).buffer.asUint8List());
+
       if (value != null) {
-        Pacientes.imagenPaciente = value['Pace_FIAT'];
-        Valores.imagenUsuario = value['Pace_FIAT'];
+        Pacientes.imagenPaciente = value['Pace_FIAT'] ?? img;
+        Valores.imagenUsuario = value['Pace_FIAT'] ?? img;
       }
     });
   }
@@ -1569,7 +1576,7 @@ class Pacientes {
     //
     Terminal.printWarning(message: 'Iniciando búsqueda en Valores . . . ');
     try {
-      var response = await Valores().load().onError((error, stackTrace) {
+      var response = await Valores().load(context).onError((error, stackTrace) {
         Operadores.alertActivity(
             message: "ERROR - Valores : : $error : $stackTrace . ",
             context: context,
@@ -1588,15 +1595,15 @@ class Pacientes {
   }
 
   //
-  static Future<void> getValores({bool reload = false}) async {
+  static Future<void> getValores(BuildContext context, {bool reload = false}) async {
     // Terminal.printNotice(
     //     message: " : : INICIANDO ACTIVIDAD . . . "
     //         "GET VALORES : ${Pacientes.ID_Paciente}");
     //
     if (reload) {
-      Terminal.printAlert(message: " : : Consultando Valores.getValores() . . : : ");
+      Terminal.printAlert(message: " : : Consultando Pacientes.getValores() . . : : ");
       Valores vala = Valores();
-      vala.load();
+      vala.load(context);
     } else {
       await Archivos.readJsonToMap(filePath: Pacientes.localPath).then((value) {
         // Terminal.printNotice(
@@ -1606,7 +1613,7 @@ class Pacientes {
       }).onError((error, stackTrace) async {
         Terminal.printAlert(message: " ERROR $error: : $stackTrace");
         Valores vala = Valores();
-        vala.load();
+        vala.load(context);
       });
     }
   }
@@ -5578,34 +5585,43 @@ class Vitales {
     });
   }
 
-  static void registros() {
-    List result = [];
+  static void registros(BuildContext context) async {
     //
-    Actividades.consultarAllById(Databases.siteground_database_regpace,
-            vitales['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
-        .then((value) {
-      result.addAll(value);
-      Actividades.consultarAllById(Databases.siteground_database_regpace,
-              antropo['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
-          .then((value) {
-        int index = 0;
-        for (var item in result) {
-          if (index <= result.length) {
-            var thirdMap = {};
-            // print("${value.length} ${result.length}");
-            // print("${value[index]['ID_Pace_SV']} ${item['ID_Pace_SV']}");
-            thirdMap.addAll(item);
-            thirdMap.addAll(value[index]);
-            // Adición a Vitales ********** ************ ************** ********
-            Pacientes.Vitales!.add(thirdMap);
-            index++;
-          }
-        }
-        // Terminal.printExpected(message: "${Pacientes.Vitales!}");
-        Archivos.createJsonFromMap(Pacientes.Vitales!,
-            filePath: fileAssocieted);
-      });
-    });
+    try {
+      final vitalesData = await Actividades.consultarAllById(
+        Databases.siteground_database_regpace,
+        Vitales.vitales['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente,
+      );
+      if (vitalesData[0]['Error'] == "No se encontraron datos") return;
+
+      final antropoData = await Actividades.consultarAllById(
+        Databases.siteground_database_regpace,
+        Vitales.antropo['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente,
+      );
+
+      final List<Map<String, dynamic>> combinados = [];
+      for (int i = 0; i < vitalesData.length; i++) {
+        final item = {...vitalesData[i], ...antropoData[i]};
+        combinados.add(item);
+      }
+        Pacientes.Vitales = combinados;
+
+
+      await Archivos.createJsonFromMap(combinados, filePath: fileAssocieted);
+
+      Terminal.printSuccess(
+          message:
+          "Actualizando Repositorio de Signos Vitales del Paciente...");
+    } catch (e, stack) {
+      Operadores.alertActivity(
+        context: context,
+        tittle: "$e",
+        message: "$stack",
+        onAcept: () => Navigator.of(context).pop(),
+      );
+    }
   }
 
   static final Map<String, dynamic> vitales = {
@@ -5878,8 +5894,8 @@ class Vitales {
   ];
 
   static Future<void> fromJson(Map<dynamic, dynamic> json) async {
-    Terminal.printExpected(
-        message: "Vitales. . . fromJson : . $json . : ${json.runtimeType}");
+    // Terminal.printExpected(
+        // message: "Vitales. . . fromJson : . $json . : ${json.runtimeType}");
     // Pacientes.Vital = json;
 
     if (json['Error'] == "No se encontraron datos") {
@@ -5913,6 +5929,8 @@ class Vitales {
       //
       Valores.insulinaGastada = int.parse(json['Pace_SV_insulina'].toString());
       //
+      Valores.factorActividad = double.parse(json['Pace_SV_fa'].toString());
+      Valores.factorEstres = double.parse(json['Pace_SV_fe'].toString());
       // Variables Antropométricas ********* *************** **********
       Valores.circunferenciaCuello = int.parse(json['Pace_SV_cue'].toString());
       //
@@ -5922,11 +5940,6 @@ class Vitales {
       //
       Valores.circunferenciaMesobraquial =
           int.parse(json['Pace_SV_cmb'].toString());
-      //
-
-      Valores.factorActividad = double.parse(json['Pace_SV_fa'].toString());
-      //
-      Valores.factorEstres = double.parse(json['Pace_SV_fe'].toString());
       //
 
       // Circunferencias y Pliegues ************ ****************** *************
@@ -6511,7 +6524,10 @@ class Auxiliares {
             Electrocardiogramas.electrocardiogramas['consultLastQuery'],
             Pacientes.ID_Paciente)
         .then((value) {
-      Pacientes.Electrocardiogramas = value;
+          Terminal.printExpected(message: value.toString());
+      if (value != null) {
+        Pacientes.Electrocardiogramas = value;
+      }
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR - $error : : $stackTrace");
     });
@@ -10380,7 +10396,31 @@ class Balances {
     // Valores.balanceTotal = Valores.ingresos - Valores.egresos;
     // Valores.diuresis = (Valores.uresis / Valores.pesoCorporalTotal!) / Valores.horario;
   }
-}
+
+  static void getBalance() {
+    double ingresos, egresos, total, diuresis;
+
+    // Valores.ingresosBalances = ingresos = Valores.viaOralBalances! +
+    // Valores.sondaOrogastricaBalances! +
+    // Valores.hemoderivadosBalances! +
+    // Valores.nutricionParenteralBalances! +
+    // Valores.parenteralesBalances! +
+    // Valores.dilucionesBalances! +
+    // Valores.otrosIngresosBalances!;
+    //
+    // Valores.egresosBalances = egresos = Valores.uresisBalances! +
+    // Valores.evacuacionesBalances! +
+    // Valores.sangradosBalances! +
+    // Valores.succcionBalances! +
+    // Valores.drenesBalances! +
+    // Valores.otrosEgresosBalances!;
+
+    total = Valores.ingresosBalances + (Valores.egresosBalances + Valores.perdidasInsensibles! + Valores.uresis!);
+    Valores.uresis = (Valores.uresisBalances! / Valores.pesoCorporalTotal!) / Valores.horario!;
+
+    // return double.nan;
+  }
+  }
 
 class Ventilaciones {
   static int ID_Ventilaciones = 0;
@@ -10904,8 +10944,8 @@ class Repositorios {
         .then((value) {
       Pacientes.Notas =
           value; // Se Asigna a la Estructura Pacientes.Notas ***************************
-      Terminal.printExpected(
-          message: "VALUE - Consultar Repositorio : ${value.last} : : ");
+      // Terminal.printExpected(
+      //     message: "VALUE - Consultar Repositorio : ${value.last} : : ");
       //
       Reportes.reportes = value.last;
       // Del Padecimiento **************************************************

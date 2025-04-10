@@ -279,7 +279,7 @@ class Archivos {
   }
 
   static createJsonFromMap(List<dynamic> map, {String filePath = ''}) async {
-    // Terminal.printWarning(message: 'Creando archivo JSON en $filePath');
+    Terminal.printWarning(message: 'Creando archivo JSON en $filePath');
     if (Platform.isAndroid) {
       final directory = await getTemporaryDirectory();
       final File file = File("${directory.path}/$filePath");
@@ -1467,6 +1467,16 @@ class Dialogos {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             // if (optionB != null) SizedBox(width: 0) else SizedBox(width: 30),
+            if (optionB != null)
+              Expanded(
+                  child: CircleIcon(
+                      radios: 30,
+                      difRadios: 5,
+                      iconed: Icons.camera,
+                      tittle: textOptionB!,
+                      onChangeValue: () {
+                        optionB!();
+                      })),
             Expanded(
               child: OutlinedButton(
                   onPressed: () {
@@ -1475,18 +1485,19 @@ class Dialogos {
                   child: const Text("Cancelar",
                       style: TextStyle(color: Colors.white, fontSize: 8))),
             ),
-            if (optionB != null)
-              Expanded(
-                child: ElevatedButton(
-                    onPressed: () {
-                      optionB();
-                    },
-                    child: Text(textOptionB!,
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 8))),
-              ),
+
+            // Expanded(
+            //   child: ElevatedButton(
+            //       onPressed: () {
+            //         optionB();
+            //       },
+            //       child: Text(textOptionB!,
+            //           style:
+            //               const TextStyle(color: Colors.black, fontSize: 8))),
+            // ),
             Expanded(
                 child: CircleIcon(
+                    radios: 35,
                     iconed: Icons.confirmation_num,
                     tittle: textOptionA!,
                     onChangeValue: () {

@@ -47,10 +47,10 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
   Map<String, dynamic>? elementSelected;
 
   bool operationActivity = true; // Si true entonces REGISTER.register.
-  String tittle = "Registro de imagenológicos del paciente";
+  String tittle = "Imagenológicos";
   String idWidget = 'ID_Pace_GAB_RA';
   // TextController for search.
-  var textDateController = TextEditingController();
+  var searchTextController = TextEditingController();
   // ############################ ####### ####### #############################
   // Variables de Valores de Interés
   // ############################ ####### ####### #############################
@@ -83,9 +83,8 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
             message: 'Repositorio Paraclinicos del Pacientes Obtenido');
       });
     }).onError((error, stackTrace) {
-      textDateEstudyController.text =
-          Calendarios.today(format: 'yyyy/MM/dd');
-      reiniciar();
+      textDateEstudyController.text = Calendarios.today(format: 'yyyy/MM/dd');
+      _reiniciar();
     });
     Terminal.printOther(message: " . . . Actividad Iniciada");
 
@@ -99,300 +98,352 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
     var progress;
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.grey),
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: ((context) => VisualPacientes(actualPage: 5))));
-          },
-        ),
-        backgroundColor: Theming.primaryColor,
-        title: AppBarText(
-          tittle
-        ),
-        actions: [
-                  GrandIcon(
-                    iconData: Icons.photo_camera_back_outlined,
-                    labelButton: 'Imagen del Electrocardiograma',
-                    onPress: () {
-                      Operadores.optionsActivity(
-                        context: context,
-                        tittle: 'Cargar imagen del Electrocardiograma',
-                        onClose: () {
-                          Navigator.of(context).pop();
-                        },
-                        textOptionA: 'Cargar desde Dispositivo',
-                        optionA: () async {
-                          var bytes = await Directorios.choiseFromDirectory();
-                          setState(() {
-                            stringImage = base64Encode(bytes);
-                            Navigator.of(context).pop();
-                          });
-                        },
-                        textOptionB: 'Cargar desde Cámara',
-                        optionB: () async {
-                          var bytes = await Directorios.choiseFromCamara();
-                          setState(() {
-                            stringImage = base64Encode(bytes);
-                            Navigator.of(context).pop();
-                          });
-                        },
-                      );
-                    },
-                  ),
-          const SizedBox(width: 25),
-        GrandIcon(
-            iconData: Icons.photo_camera_back_outlined,
-            labelButton: 'Imagen del Electrocardiograma',
-            onPress: () {
-              Directorios.choiseFromClipboard(context, "text");
-            }),
-        if (!isMobile(context))GrandIcon(
-            iconData: Icons.update,
-            labelButton: 'Reiniciar . . . ',
-            onPress: () {
-              reiniciar();
-            }),
-        ],
-        // actions: isMobile(context) || isTablet(context)
-        //     ? <Widget>[
-        //         GrandIcon(
-        //           iconData: Icons.replay_outlined,
-        //           labelButton: Sentences.reload,
-        //           onPress: () {
-        //             reiniciar();
-        //           },
-        //         ),
-        //         const SizedBox(width: 15),
-        //         GrandIcon(
-        //           iconData: Icons.dataset_linked_outlined,
-        //           labelButton: "Registro de imagenológicos",
-        //           onPress: () {
-        //             carouselController.jumpToPage(0);
-        //           },
-        //         ),
-        //         GrandIcon(
-        //           iconData: Icons.browser_updated,
-        //           labelButton: "Gestion del Registro",
-        //           onPress: () {
-        //             carouselController.jumpToPage(1);
-        //           },
-        //         ),
-        //         GrandIcon(
-        //           iconData: Icons.photo_camera_back_outlined,
-        //           labelButton: 'Imagen del Electrocardiograma',
-        //           onPress: () {
-        //             Operadores.optionsActivity(
-        //               context: context,
-        //               tittle: 'Cargar imagen del Electrocardiograma',
-        //               onClose: () {
-        //                 Navigator.of(context).pop();
-        //               },
-        //               textOptionA: 'Cargar desde Dispositivo',
-        //               optionA: () async {
-        //                 var bytes = await Directorios.choiseFromDirectory();
-        //                 setState(() {
-        //                   stringImage = base64Encode(bytes);
-        //                   Navigator.of(context).pop();
-        //                 });
-        //               },
-        //               textOptionB: 'Cargar desde Cámara',
-        //               optionB: () async {
-        //                 var bytes = await Directorios.choiseFromCamara();
-        //                 setState(() {
-        //                   stringImage = base64Encode(bytes);
-        //                   Navigator.of(context).pop();
-        //                 });
-        //               },
-        //             );
-        //           },
-        //         ),
-        //       ]
-        //     : <Widget>[
-        //         GrandIcon(
-        //           iconData: Icons.replay_outlined,
-        //           labelButton: Sentences.reload,
-        //           onPress: () {
-        //             reiniciar();
-        //           },
-        //         ),
-        //         GrandIcon(
-        //           iconData: Icons.photo_camera_back_outlined,
-        //           labelButton: 'Imagen del Electrocardiograma',
-        //           onPress: () {
-        //             Operadores.optionsActivity(
-        //               context: context,
-        //               tittle: 'Cargar imagen del Electrocardiograma',
-        //               onClose: () {
-        //                 Navigator.of(context).pop();
-        //               },
-        //               textOptionA: 'Cargar desde Dispositivo',
-        //               optionA: () async {
-        //                 var bytes = await Directorios.choiseFromDirectory();
-        //                 setState(() {
-        //                   stringImage = base64Encode(bytes);
-        //                   Navigator.of(context).pop();
-        //                 });
-        //               },
-        //               textOptionB: 'Cargar desde Cámara',
-        //               optionB: () async {
-        //                 var bytes = await Directorios.choiseFromCamara();
-        //                 setState(() {
-        //                   stringImage = base64Encode(bytes);
-        //                   Navigator.of(context).pop();
-        //                 });
-        //               },
-        //             );
-        //           },
-        //         ),
-        //       ],
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(5),
-        margin: const EdgeInsets.all(5),
-        decoration: ContainerDecoration.roundedDecoration(),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(5),
-              margin: const EdgeInsets.all(5),
-              decoration: ContainerDecoration.roundedDecoration(),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: GrandButton(
-                        weigth: 100,
-                        labelButton: "Registro de imagenológicos",
-                        onPress: () {
-                          carouselController.jumpToPage(0);
-                        }),
-                  ),
-                  Expanded(
-                    child: GrandButton(
-                        weigth: 100,
-                        labelButton: "Gestion del Registro",
-                        onPress: () {
-                          carouselController.jumpToPage(1);
-                        }),
-                  ),
-                  Expanded(
-                    child: GrandButton(
-                        weigth: 100,
-                        labelButton: "Imagen del Registro",
-                        onPress: () {
-                          carouselController.jumpToPage(2);
-                        }),
-                  ),
-                ],
-              ),
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.grey),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: ((context) => VisualPacientes(actualPage: 5))));
+            },
+          ),
+          backgroundColor: Theming.primaryColor,
+          title: AppBarText(tittle),
+          actions: [
+            GrandIcon(
+              iconData: Icons.photo_camera_back_outlined,
+              labelButton: 'Imagen del Electrocardiograma',
+              onPress: () {
+                Operadores.optionsActivity(
+                  context: context,
+                  tittle: 'Cargar imagen del Electrocardiograma',
+                  onClose: () {
+                    Navigator.of(context).pop();
+                  },
+                  textOptionA: 'Cargar desde Dispositivo',
+                  optionA: () async {
+                    var bytes = await Directorios.choiseFromDirectory();
+                    setState(() {
+                      stringImage = base64Encode(bytes);
+                      Navigator.of(context).pop();
+                    });
+                  },
+                  textOptionB: 'Cargar desde Cámara',
+                  optionB: () async {
+                    var bytes = await Directorios.choiseFromCamara();
+                    setState(() {
+                      stringImage = base64Encode(bytes);
+                      Navigator.of(context).pop();
+                    });
+                  },
+                );
+              },
             ),
-            Expanded(
-              flex: 8,
-              child: Container(
-                padding: const EdgeInsets.all(8.0),
-                decoration: ContainerDecoration.roundedDecoration(),
-                child: CarouselSlider(
-                  carouselController: carouselController,
-                  options: Carousel.carouselOptions(context: context),
-                  items: [
-                    Column(
-                      children: [
-                        Expanded(
-                          child: EditTextArea(
-                            keyBoardType: TextInputType.number,
-                            inputFormat: MaskTextInputFormatter(
-                                mask: '####/##/##',
-                                filter: {"#": RegExp(r'[0-9]')},
-                                type: MaskAutoCompletionType.lazy),
-                            labelEditText: "Fecha de realización",
-                            textController: textDateController,
-                            numOfLines: 1,
-                            onChange: (value) {
-                              setState(
-                                () {
-                                  Valores.fechaElectrocardiograma = value;
-                                },
-                              );
-                            },
+            const SizedBox(width: 25),
+            // GrandIcon(
+            //     iconData: Icons.photo_camera_back_outlined,
+            //     labelButton: 'Imagen del Electrocardiograma',
+            //     onPress: () {
+            //       Directorios.choiseFromClipboard(context, "text");
+            //     }),
+            // if (!isMobile(context))GrandIcon(
+            //     iconData: Icons.update,
+            //     labelButton: 'Reiniciar . . . ',
+            //     onPress: () {
+            //       _reiniciar();
+            //     }),
+          ],
+          // actions: isMobile(context) || isTablet(context)
+          //     ? <Widget>[
+          //         GrandIcon(
+          //           iconData: Icons.replay_outlined,
+          //           labelButton: Sentences.reload,
+          //           onPress: () {
+          //             reiniciar();
+          //           },
+          //         ),
+          //         const SizedBox(width: 15),
+          //         GrandIcon(
+          //           iconData: Icons.dataset_linked_outlined,
+          //           labelButton: "Registro de imagenológicos",
+          //           onPress: () {
+          //             carouselController.jumpToPage(0);
+          //           },
+          //         ),
+          //         GrandIcon(
+          //           iconData: Icons.browser_updated,
+          //           labelButton: "Gestion del Registro",
+          //           onPress: () {
+          //             carouselController.jumpToPage(1);
+          //           },
+          //         ),
+          //         GrandIcon(
+          //           iconData: Icons.photo_camera_back_outlined,
+          //           labelButton: 'Imagen del Electrocardiograma',
+          //           onPress: () {
+          //             Operadores.optionsActivity(
+          //               context: context,
+          //               tittle: 'Cargar imagen del Electrocardiograma',
+          //               onClose: () {
+          //                 Navigator.of(context).pop();
+          //               },
+          //               textOptionA: 'Cargar desde Dispositivo',
+          //               optionA: () async {
+          //                 var bytes = await Directorios.choiseFromDirectory();
+          //                 setState(() {
+          //                   stringImage = base64Encode(bytes);
+          //                   Navigator.of(context).pop();
+          //                 });
+          //               },
+          //               textOptionB: 'Cargar desde Cámara',
+          //               optionB: () async {
+          //                 var bytes = await Directorios.choiseFromCamara();
+          //                 setState(() {
+          //                   stringImage = base64Encode(bytes);
+          //                   Navigator.of(context).pop();
+          //                 });
+          //               },
+          //             );
+          //           },
+          //         ),
+          //       ]
+          //     : <Widget>[
+          //         GrandIcon(
+          //           iconData: Icons.replay_outlined,
+          //           labelButton: Sentences.reload,
+          //           onPress: () {
+          //             reiniciar();
+          //           },
+          //         ),
+          //         GrandIcon(
+          //           iconData: Icons.photo_camera_back_outlined,
+          //           labelButton: 'Imagen del Electrocardiograma',
+          //           onPress: () {
+          //             Operadores.optionsActivity(
+          //               context: context,
+          //               tittle: 'Cargar imagen del Electrocardiograma',
+          //               onClose: () {
+          //                 Navigator.of(context).pop();
+          //               },
+          //               textOptionA: 'Cargar desde Dispositivo',
+          //               optionA: () async {
+          //                 var bytes = await Directorios.choiseFromDirectory();
+          //                 setState(() {
+          //                   stringImage = base64Encode(bytes);
+          //                   Navigator.of(context).pop();
+          //                 });
+          //               },
+          //               textOptionB: 'Cargar desde Cámara',
+          //               optionB: () async {
+          //                 var bytes = await Directorios.choiseFromCamara();
+          //                 setState(() {
+          //                   stringImage = base64Encode(bytes);
+          //                   Navigator.of(context).pop();
+          //                 });
+          //               },
+          //             );
+          //           },
+          //         ),
+          //       ],
+        ),
+        body: Container(
+          padding: const EdgeInsets.all(5),
+          margin: const EdgeInsets.all(5),
+          decoration: ContainerDecoration.roundedDecoration(),
+          child: Column(
+            children: [
+              // Container(
+              //   padding: const EdgeInsets.all(5),
+              //   margin: const EdgeInsets.all(5),
+              //   decoration: ContainerDecoration.roundedDecoration(),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: [
+              //       Expanded(
+              //         child: GrandButton(
+              //             weigth: 100,
+              //             labelButton: "Registro de imagenológicos",
+              //             onPress: () {
+              //               carouselController.jumpToPage(0);
+              //             }),
+              //       ),
+              //       Expanded(
+              //         child: GrandButton(
+              //             weigth: 100,
+              //             labelButton: "Gestion del Registro",
+              //             onPress: () {
+              //               carouselController.jumpToPage(1);
+              //             }),
+              //       ),
+              //       Expanded(
+              //         child: GrandButton(
+              //             weigth: 100,
+              //             labelButton: "Imagen del Registro",
+              //             onPress: () {
+              //               carouselController.jumpToPage(2);
+              //             }),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              Expanded(
+                flex: 8,
+                child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: ContainerDecoration.roundedDecoration(),
+                  child: CarouselSlider(
+                    carouselController: carouselController,
+                    options: Carousel.carouselOptions(context: context),
+                    items: [
+                      Column(
+                        children: [
+                          Expanded(
+                            child: EditTextArea(
+                              keyBoardType: TextInputType.number,
+                              inputFormat: MaskTextInputFormatter(
+                                  mask: '####/##/##',
+                                  filter: {"#": RegExp(r'[0-9]')},
+                                  type: MaskAutoCompletionType.lazy),
+                              labelEditText: "Fecha de realización",
+                              textController: searchTextController,
+                              numOfLines: 1,
+                              selection: true,
+                              withShowOption: true,
+                              onSelected: () {
+                                Operadores.selectOptionsActivity(
+                                    context: context,
+                                    options: Listas.listWithoutRepitedValues(
+                                      Listas.listFromMapWithOneKey(
+                                        values!,
+                                        keySearched: 'Pace_GAB_RA_Feca',
+                                      ),
+                                    ),
+                                    onClose: (value) {
+                                      setState(() {
+                                        searchTextController.text = Valores.fechaElectrocardiograma = value;
+                                        _runFilterSearch(value);
+                                        Navigator.of(context).pop();
+                                      });
+                                    });
+                              },
+                              onChange: (value) {
+                                setState(
+                                      () {
+                                    _runFilterSearch(value);
+                                  },
+                                );
+                              },
+
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 10,
-                          child: FutureBuilder<List>(
-                              initialData: values!,
-                              future: Future.value(values!),
-                              builder: (context, AsyncSnapshot snapshot) {
-                                if (snapshot.hasError) print(snapshot.error);
-                                return snapshot.hasData
-                                    ? GridView.builder(
-                                        padding: const EdgeInsets.all(8.0),
-                                        gridDelegate:
-                                            GridViewTools.gridDelegate(
-                                          crossAxisCount:
-                                              isMobile(context) ? 1 : 3,
-                                          mainAxisExtent:
-                                              isMobile(context) ? 150 : 170,
-                                        ),
-                                        shrinkWrap: true,
-                                        itemCount: snapshot.data == null
-                                            ? 0
-                                            : snapshot.data.length,
-                                        itemBuilder: (context, posicion) {
-                                          return itemSelected(
-                                              context: context,
-                                              data: snapshot.data,
-                                              index: posicion);
-                                        })
-                                    : Container();
-                              }),
-                        ),
-                      ],
-                    ),
-                    operationScreen(),
-                    PhotoView(
-                      imageProvider: MemoryImage(base64Decode(stringImage!)),
-                      loadingBuilder: (context, progress) => Center(
-                        child: SizedBox(
-                          width: 20.0,
-                          height: 20.0,
-                          child: CircularProgressIndicator(
-                            value: progress == null
-                                ? null
-                                : progress.cumulativeBytesLoaded /
-                                    progress.expectedTotalBytes!,
+                          Expanded(
+                            flex: 10,
+                            child: RefreshIndicator(
+                              color: Colors.white,
+                              backgroundColor: Colors.black,
+                              onRefresh: _reiniciar,
+                              child: FutureBuilder<List>(
+                                  initialData: values!,
+                                  future: Future.value(values!),
+                                  builder: (context, AsyncSnapshot snapshot) {
+                                    if (snapshot.hasError)
+                                      print(snapshot.error);
+                                    return snapshot.hasData
+                                        ? GridView.builder(
+                                            padding: const EdgeInsets.all(8.0),
+                                            gridDelegate:
+                                                GridViewTools.gridDelegate(
+                                              crossAxisCount:
+                                                  isMobile(context) ? 1 : 3,
+                                              mainAxisExtent:
+                                                  isMobile(context) ? 150 : 170,
+                                            ),
+                                            shrinkWrap: true,
+                                            itemCount: snapshot.data == null
+                                                ? 0
+                                                : snapshot.data.length,
+                                            itemBuilder: (context, posicion) {
+                                              return itemSelected(
+                                                  context: context,
+                                                  data: snapshot.data,
+                                                  index: posicion);
+                                            })
+                                        : Container();
+                                  }),
+                            ),
+                          ),
+                        ],
+                      ),
+                      PhotoView(
+                        imageProvider: MemoryImage(base64Decode(stringImage!)),
+                        loadingBuilder: (context, progress) => Center(
+                          child: SizedBox(
+                            width: 20.0,
+                            height: 20.0,
+                            child: CircularProgressIndicator(
+                              value: progress == null
+                                  ? null
+                                  : progress.cumulativeBytesLoaded /
+                                  progress.expectedTotalBytes!,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                      operationScreen(),
+
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: isMobile(context) || isTablet(context) ? CircleIcon(
-        iconed: Icons.update,
-        onChangeValue: () => reiniciar(),
-      ) :  null
-    );
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.black,
+          height: 50,
+          shape: CircularNotchedRectangle(), // notch redondeado
+          notchMargin: 6.0, // margen entre el botón y el BottomAppBar
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              IconButton(icon: Icon(Icons.domain), onPressed: () {carouselController.jumpToPage(0);}),
+              IconButton(icon: Icon(Icons.app_registration), onPressed: () {carouselController.jumpToPage(2);}),
+              SizedBox(width: 55), // espacio para el botón flotante
+              IconButton(icon: Icon(Icons.image_aspect_ratio), onPressed: () {carouselController.jumpToPage(1);}),
+              IconButton(icon: Icon(Icons.photo_camera_back_outlined), onPressed: () {Operadores.optionsActivity(
+                context: context,
+                tittle: 'Cargar imagen del Electrocardiograma',
+                onClose: () {
+                  Navigator.of(context).pop();
+                },
+                textOptionA: 'Cargar desde Dispositivo',
+                optionA: () async {
+                  var bytes = await Directorios.choiseFromDirectory();
+                  setState(() {
+                    stringImage = base64Encode(bytes);
+                    Navigator.of(context).pop();
+                  });
+                },
+                textOptionB: 'Cargar desde Cámara',
+                optionB: () async {
+                  var bytes = await Directorios.choiseFromCamara();
+                  setState(() {
+                    stringImage = base64Encode(bytes);
+                    Navigator.of(context).pop();
+                  });
+                },
+              );}),
+            ],
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: isMobile(context) || isTablet(context)
+            ? CircleIcon(
+                iconed: Icons.update,
+                onChangeValue: () => _reiniciar(),
+              )
+            : null);
   }
 
-  Future<void> reiniciar() async {
-    Terminal.printExpected(message: "Reinicio de los valores . . .");
-    Actividades.consultarAllById(
-            Databases.siteground_database_reggabo,
-            Imagenologias.imagenologias['consultByIdPrimaryQuery'],
-            Pacientes.ID_Paciente)
-        .then((value) {
-      setState(() {
-        Archivos.createJsonFromMap(value, filePath: fileAssocieted);
-        values = value;
-      });
-    });
-  }
 
   void deleteDialog(Map<String, dynamic> element) {
     Operadores.alertActivity(
@@ -527,8 +578,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(width:
-                      isMobile(context) ? 12 : 35),
+                      SizedBox(width: isMobile(context) ? 12 : 35),
                       GrandIcon(
                           iconData: Icons.update,
                           labelButton: 'Actualizar',
@@ -546,8 +596,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                           onPress: () {
                             deleteDialog(data[index]);
                           }),
-                      const SizedBox(width:
-                      5),
+                      const SizedBox(width: 5),
                     ],
                   )
                 ],
@@ -575,18 +624,17 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
               EditTextArea(
                 keyBoardType: TextInputType.datetime,
                 inputFormat: MaskTextInputFormatter(
-                    mask: '####/##/##',
+                    mask: '####/##/## ##:##:##', // 'yyyy-MM-dd HH:mm:ss'
                     filter: {"#": RegExp(r'[0-9]')},
                     type: MaskAutoCompletionType.lazy),
                 numOfLines: 1,
                 labelEditText: "Fecha de realización",
                 withShowOption: true,
                 selection: true,
-                textController: textDateEstudyController,
                 onSelected: () {
                   textDateEstudyController.text =
-                      Calendarios.today(format: 'yyyy/MM/dd');
-                },
+                      Calendarios.today(format: "yyyy/MM/dd HH:mm:ss");
+                }, textController: textDateEstudyController,
               ),
               Spinner(
                   width: isDesktop(context)
@@ -640,22 +688,22 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                           Operadores.editActivity(
                               context: context,
                               tittle: "Medición de PIC por DVNO",
-                              message: "Medición de PIC por DVNO . . . Ingrese DVNO en mm",
+                              message:
+                                  "Medición de PIC por DVNO . . . Ingrese DVNO en mm",
                               onAcept: (value) {
                                 setState(() {
-                                  hallazgosEstudioTextController.text = "Se realiza ultrasonido ocular, "
+                                  hallazgosEstudioTextController.text =
+                                      "Se realiza ultrasonido ocular, "
                                       "con transductor lineal 3-15 mHz, obteniendo DVNO $value mm, "
                                       "concordante con PIC ~${Cerebrovasculares.picDVNO(double.parse(value)).toStringAsFixed(2)} mmHg. "
                                       "${Cardiometrias.presionArterialMedia != 0.0 ? "TAM ${Cardiometrias.presionArterialMedia} mmhG actual : " : ""}"
                                       "${Cardiometrias.presionArterialMedia != 0.0 ? "PPC inferida ${Cerebrovasculares.presionPrefusionCerebral(double.parse(value)).toStringAsFixed(2)} mmHg. " : ""}"
-                                      "${Cardiometrias.presionArterialMedia != 0.0 ? "FSC aproximado ${Cerebrovasculares.flujoSanguineoCerebral(double.parse(value)).toStringAsFixed(2)} mL/100g/m2" : ""}"                                      ;
+                                      "${Cardiometrias.presionArterialMedia != 0.0 ? "FSC aproximado ${Cerebrovasculares.flujoSanguineoCerebral(double.parse(value)).toStringAsFixed(2)} mL/100g/m2" : ""}";
                                   Navigator.of(context).pop();
                                 });
                               });
                         }
-                      }
-                      ,
-
+                      },
                     ),
                   )
                 ],
@@ -734,8 +782,10 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                         ),
                   Expanded(
                     child: GrandButton(
-                        weigth: isMobile(context) || isTablet(context) ? 30 : 100,
-                        labelButton: operationActivity ? "Agregar" : "Actualizar",
+                        weigth:
+                            isMobile(context) || isTablet(context) ? 30 : 100,
+                        labelButton:
+                            operationActivity ? "Agregar" : "Actualizar",
                         onPress: () {
                           operationMethod(
                               context: context,
@@ -823,25 +873,25 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                       labelButton: "PIC/DVNO",
                       iconData: Icons.remove_red_eye_outlined,
                       onPress: () {
-                      if (tipoEstudioValue == "Ultrasonidos") {
-                        Operadores.editActivity(
-                            context: context,
-                            tittle: "Medición de PIC por DVNO",
-                            message: "Medición de PIC por DVNO . . . Ingrese DVNO en mm",
-                            onAcept: (value) {
-                              setState(() {
-                                hallazgosEstudioTextController.text = "Se realiza ultrasonido ocular, "
-                                    "con transductor lineal 3-15 mHz, obteniendo DVNO $value mm, "
-                                    "concordante con PIC ~${Cerebrovasculares.picDVNO(double.parse(value)).toStringAsFixed(2)} mmHg. "
-                                    "PPC inferida ${Cerebrovasculares.presionPrefusionCerebral(double.parse(value)).toStringAsFixed(2)} mmHg. "
-                                    "FSC aproximado ${Cerebrovasculares.flujoSanguineoCerebral(double.parse(value)).toStringAsFixed(2)} mL/100g/m2";
-                                Navigator.of(context).pop();
+                        if (tipoEstudioValue == "Ultrasonidos") {
+                          Operadores.editActivity(
+                              context: context,
+                              tittle: "Medición de PIC por DVNO",
+                              message:
+                                  "Medición de PIC por DVNO . . . Ingrese DVNO en mm",
+                              onAcept: (value) {
+                                setState(() {
+                                  hallazgosEstudioTextController.text =
+                                      "Se realiza ultrasonido ocular, "
+                                      "con transductor lineal 3-15 mHz, obteniendo DVNO $value mm, "
+                                      "concordante con PIC ~${Cerebrovasculares.picDVNO(double.parse(value)).toStringAsFixed(2)} mmHg. "
+                                      "PPC inferida ${Cerebrovasculares.presionPrefusionCerebral(double.parse(value)).toStringAsFixed(2)} mmHg. "
+                                      "FSC aproximado ${Cerebrovasculares.flujoSanguineoCerebral(double.parse(value)).toStringAsFixed(2)} mL/100g/m2";
+                                  Navigator.of(context).pop();
+                                });
                               });
-                            });
-                      }
-                    }
-                      ,
-
+                        }
+                      },
                     ),
                   )
                 ],
@@ -926,12 +976,13 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
 
   void operationMethod(
       {required BuildContext context, required bool operationActivity}) {
-
     if (operationActivity) {
       var aux = listOfValues();
       aux.removeAt(0);
       aux.removeLast();
-      Terminal.printExpected(message: "operationActivity : :  $operationActivity : : method ${Imagenologias.imagenologias['registerQuery']}");
+      Terminal.printExpected(
+          message:
+              "operationActivity : :  $operationActivity : : method ${Imagenologias.imagenologias['registerQuery']}");
       Actividades.registrar(
         Databases.siteground_database_reggabo,
         Imagenologias.imagenologias['registerQuery'],
@@ -941,26 +992,25 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
             context: context,
             tittle: "Registro de los Valores",
             message: 'Los registros fueron agregados',
-        onClose: () {
+            onClose: () {
               Navigator.pop(context);
-          reiniciar().then((value) {
-            setState(() {
-              carouselController.jumpToPage(0);
+              _reiniciar().then((value) {
+                setState(() {
+                  carouselController.jumpToPage(0);
+                });
+              });
+            },
+            onAcept: () {
+              Navigator.pop(context);
+              _reiniciar().then((value) {
+                setState(() {
+                  carouselController.jumpToPage(0);
+                });
+              });
             });
-          });
-        },
-        onAcept: () {
-          Navigator.pop(context);
-          reiniciar().then((value) {
-            setState(() {
-              carouselController.jumpToPage(0);
-            });
-          });
-        });
-      })
-    .onError((error, stackTrace) {
-    Terminal.printWarning(message: "ERROR - $error");
-    });
+      }).onError((error, stackTrace) {
+        Terminal.printWarning(message: "ERROR - $error");
+      });
     } else {
       Actividades.actualizar(
               Databases.siteground_database_reggabo,
@@ -973,22 +1023,22 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
             tittle: "Actualizacion de los Valores",
             message: 'Los registros fueron Actualizados',
             onClose: () {
-          Navigator.pop(context);
-          reiniciar().then((value) {
-            setState(() {
-              carouselController.jumpToPage(0);
+              Navigator.pop(context);
+              _reiniciar().then((value) {
+                setState(() {
+                  carouselController.jumpToPage(0);
+                });
+              });
+            },
+            onAcept: () {
+              Navigator.pop(context);
+              _reiniciar().then((value) {
+                setState(() {
+                  carouselController.jumpToPage(0);
+                });
+              });
             });
-          });
-        },
-        onAcept: () {
-        Navigator.pop(context);
-        reiniciar().then((value) {
-        setState(() {
-        carouselController.jumpToPage(0);
-        });
-        });
-        });
-        reiniciar().then((value) {
+        _reiniciar().then((value) {
           setState(() {
             carouselController.jumpToPage(0);
           });
@@ -998,4 +1048,37 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
       });
     }
   }
+
+  //
+  Future<void> _reiniciar() async {
+    Terminal.printExpected(message: "Reinicio de los valores . . .");
+    Actividades.consultarAllById(
+        Databases.siteground_database_reggabo,
+        Imagenologias.imagenologias['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente)
+        .then((value) {
+      setState(() {
+        Archivos.createJsonFromMap(value, filePath: fileAssocieted);
+        values = value;
+      });
+    });
+  }
+
+  void _runFilterSearch(String enteredKeyword) {
+    List? results = [];
+
+    if (enteredKeyword.isEmpty) {
+     _reiniciar();
+    } else {
+      results = Listas.listFromMap(
+          lista: values!,
+          keySearched: 'Pace_GAB_RA_Feca',
+          elementSearched: enteredKeyword);
+
+      setState(() {
+        values = results;
+      });
+    }
+  }
+
 }

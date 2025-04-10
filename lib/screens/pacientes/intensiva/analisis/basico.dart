@@ -1,3 +1,5 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/cardiometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/renometrias.dart';
@@ -15,6 +17,14 @@ class Basico extends StatefulWidget {
 }
 
 class _BasicoState extends State<Basico> {
+
+  @override
+  void initState() {
+    Archivos.readJsonToMap(filePath: Vitales.fileAssocieted)
+        .then((onValue) => Vitales.fromJson(onValue!.last));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

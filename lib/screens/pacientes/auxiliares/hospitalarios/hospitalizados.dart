@@ -441,7 +441,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
       Terminal.printAlert(
           message: 'Archivo ${Pacientes.localPath} No Encontrado');
       Terminal.printWarning(message: 'Iniciando busqueda en Valores . . . ');
-      var response = await Valores().load(); // print("response $response");
+      var response = await Valores().load(context); // print("response $response");
 
       // ignore: use_build_context_synchronously
       if (response == true) {

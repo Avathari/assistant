@@ -46,6 +46,10 @@ class OperacionesBalances extends StatefulWidget {
 class _OperacionesBalancesState extends State<OperacionesBalances> {
   @override
   void initState() {
+    Archivos.readJsonToMap(filePath: Vitales.fileAssocieted)
+        .then((onValue) => Vitales.fromJson(onValue!.last))
+        .whenComplete(() => setState(() => {}));
+
     //
     switch (widget.operationActivity) {
       case Constantes.Nulo:

@@ -24,10 +24,15 @@ class _GasometricosState extends State<Gasometricos> {
 
   @override
   void initState() {
-    // TODO: implement initState
+      Archivos.readJsonToMap(filePath: Vitales.fileAssocieted)
+          .then((onValue) => Vitales.fromJson(onValue!.last)).whenComplete(() => setState(() => {}));
+      super.initState();
+
+    //
     Auxiliares.registros();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return TittleContainer(

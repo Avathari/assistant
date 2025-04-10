@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/cardiometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart';
@@ -24,6 +25,13 @@ class Cardiovasculares extends StatefulWidget {
 
 class _CardiovascularesState extends State<Cardiovasculares> {
   var carouselController = CarouselSliderController();
+
+  @override
+  void initState() {
+    Archivos.readJsonToMap(filePath: Vitales.fileAssocieted)
+        .then((onValue) => Vitales.fromJson(onValue!.last));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

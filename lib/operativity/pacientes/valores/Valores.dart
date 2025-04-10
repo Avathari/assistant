@@ -12,6 +12,7 @@ import 'package:assistant/operativity/pacientes/valores/Valorados/ventometr%C3%A
 import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
 
 import 'package:assistant/conexiones/conexiones.dart';
+import 'package:flutter/material.dart';
 
 class Valores {
   bool loading = false;
@@ -19,7 +20,7 @@ class Valores {
   static double? prueba;
 
 // ******* **** ****** ** * * * * * ** ***** **** *
-  Future<bool> load() async {
+  Future<bool> load(BuildContext context) async {
     // Otras configuraciones
     Escalas.serviciosHospitalarios = await Archivos.listFromText(
         path: 'assets/diccionarios/Servicios.txt', splitChar: ',');
@@ -45,8 +46,6 @@ class Valores {
     // Transfusionales.registros();     // Transfusionales.consultarRegistro();
     // Traumatologicos.registros();     // Traumatologicos.consultarRegistro();
     // Vacunales.registros();     // Vacunales.consultarRegistro();
-
-
 
 // ********* *********** ********** ******
 //     Electrocardiogramas.ultimoRegistro();
@@ -84,8 +83,8 @@ class Valores {
     // ********* *********** ********** ******
     // Patologicos.registros();     // Patologicos.consultarRegistro();
     // Diagnosticos.registros();     // Diagnosticos.consultarRegistro();
-    Vitales.registros();     // Vitales.ultimoRegistro();
-    Quirurgicos.registros();     // Quirurgicos.consultarRegistro();
+    Vitales.registros(context); // Vitales.ultimoRegistro();
+    Quirurgicos.registros(); // Quirurgicos.consultarRegistro();
     Balances.consultarRegistro();
     Auxiliares.registros();
     //
@@ -519,7 +518,8 @@ class Valores {
     // Datos generales de la última Hospitalización. **** ** *********** ****** * *** *
     if (Pacientes.ID_Hospitalizacion == 0) {
       Pacientes.ID_Hospitalizacion = json['ID_Hosp'] ?? 0;
-      Hospitalizaciones.Hospitalizacion['ID_Hosp'] = Pacientes.ID_Hospitalizacion;
+      Hospitalizaciones.Hospitalizacion['ID_Hosp'] =
+          Pacientes.ID_Hospitalizacion;
       // ******************************************** *** *
       Valores.fechaIngresoHospitalario = json['Feca_INI_Hosp'] ?? '';
       Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'] =
@@ -529,7 +529,8 @@ class Valores {
       Valores.medicoTratante = json['Medi_Trat'] ?? '';
       Hospitalizaciones.Hospitalizacion['Medi_Trat'] = Valores.medicoTratante;
       Valores.servicioTratante = json['Serve_Trat'] ?? '';
-      Hospitalizaciones.Hospitalizacion['Serve_Trat'] = Valores.servicioTratante;
+      Hospitalizaciones.Hospitalizacion['Serve_Trat'] =
+          Valores.servicioTratante;
       Valores.servicioTratanteInicial = json['Serve_Trat_INI'] ?? '';
       Hospitalizaciones.Hospitalizacion['Serve_Trat_INI'] =
           Valores.servicioTratanteInicial;
@@ -930,9 +931,15 @@ class Valores {
   ///
   /// * * Al pareccer la fórmula completa es AM= PCT(Kg) * 0.5 * #Horas - 300
   ///       Aprox. 540 mL/#Horas para PCT 70 kG
+  /// ** Otra formula encontrada es AM = PCT (Kg) * 0.5 * 3;
   ///
   static double get aguaMetabolica {
     return (Valores.pesoCorporalTotal! * 0.5 * horario!.toDouble()) - 300;
+    if (Valores.sexo == "Masculino") {
+      return (Valores.pesoCorporalTotal! * 0.6) * 3;
+    } else {
+      return (Valores.pesoCorporalTotal! * 0.5) * 3;
+    }
   }
 
   static double? uresis = 0;
@@ -1264,8 +1271,9 @@ class Valores {
   static double get indiceOxigenacion {
     if (Valores.poArteriales! != 0 && Ventometrias.presionMediaViaAerea != 0) {
       return ((Ventometrias.presionMediaViaAerea *
-          (Valores.fraccionInspiratoriaOxigeno!/100)) /
-          Valores.poArteriales!) * 100;
+                  (Valores.fraccionInspiratoriaOxigeno! / 100)) /
+              Valores.poArteriales!) *
+          100;
     } else {
       return double.nan;
     }

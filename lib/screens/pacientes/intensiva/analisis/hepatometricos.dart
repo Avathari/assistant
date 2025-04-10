@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/hepatometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/values/SizingInfo.dart';
@@ -16,6 +17,14 @@ class Hepatometricos extends StatefulWidget {
 }
 
 class _HepatometriasState extends State<Hepatometricos> {
+
+  @override
+  void initState() {
+    Archivos.readJsonToMap(filePath: Vitales.fileAssocieted)
+        .then((onValue) => Vitales.fromJson(onValue!.last)).whenComplete(() => setState(() => {}));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(

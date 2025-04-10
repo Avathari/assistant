@@ -2,7 +2,8 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 
 class Hidrometrias {
   static double get deltaSodio =>
-      (sodioInfundido! - Valores.sodio!) / (aguaCorporalTotal + 1); // Adrogue-Madias
+      (sodioInfundido! - Valores.sodio!) /
+      (aguaCorporalTotal + 1); // Adrogue-Madias
 
   // CALCULOS HIDRICOS ****************************************
   static double get requerimientoHidrico {
@@ -77,6 +78,14 @@ class Hidrometrias {
       }
     } else {
       return 0.0;
+    }
+  }
+
+  static double get sodioEsperado {
+    if (Valores.sodio != 0 && Valores.sodio != null) {
+      return Valores.sodio! + deficitSodio!;
+    } else {
+      return double.nan;
     }
   }
 
@@ -234,10 +243,13 @@ class Hidrometrias {
       "delta de sodio ${deficitSodio.toStringAsFixed(1)} mEq/L. ";
 
   static String get hidricos =>
-      "Requerimiento hídrico diario: ${requerimientoHidrico.toStringAsFixed(0)} mL/dia (${constanteRequerimientos.toStringAsFixed(0)} mL/Kg/dia), "
-      "agua corporal total ${aguaCorporalTotal.toStringAsFixed(1)} mL, "
-      "delta H2O ${excesoAguaLibre.toStringAsFixed(1)} L, "
-      "osmolaridad sérica ${osmolaridadSerica.toStringAsFixed(0)} mOsm/L, "
+      "RHD ${requerimientoHidrico.toStringAsFixed(0)} mL/dia (${constanteRequerimientos.toStringAsFixed(0)} mL/Kg/dia), "
+      "ACT ${aguaCorporalTotal.toStringAsFixed(1)} mL, "
+      "ΔH2O ${deficitAguaCorporal.toStringAsFixed(1)} L, "
+      "OsmE ${osmolaridadSerica.toStringAsFixed(0)} mOsm/L, "
+      "ΔNa2+ ${deficitSodio.toStringAsFixed(1)} mEq/L. "
+      "Na2 Actual  ${Valores.sodio!} mEq/L. "
+      "Na2E ${sodioEsperado.toStringAsFixed(1)} mEq/L. "
       "";
 
   static String get sodios => "$sodioCorregido"

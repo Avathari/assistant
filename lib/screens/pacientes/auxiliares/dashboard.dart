@@ -55,6 +55,7 @@ class _DashboardState extends State<Dashboard> {
     Archivos.readJsonToMap(filePath: Vitales.fileAssocieted).then((value) {
       setState(() {
         Pacientes.Vitales = value;
+        // widget.dymValues = value;
         Vitales.fromJson(value.last);
       });
     }).onError((error, stackTrace) {
