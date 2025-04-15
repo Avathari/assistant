@@ -29,64 +29,38 @@ class Valores {
     //
     valores.addAll(Pacientes.Paciente);
     // ********* *********** ********** ******
-    Pacientes.getImage();
-    // ********* *********** ********** ******
+    Future.microtask(() async {
+      Pacientes.getImage();
+      // ********* *********** ********** ******
+      Vitales.registros(context); // Vitales.ultimoRegistro();
+      Quirurgicos.registros(); // Quirurgicos.consultarRegistro();
+      Balances.consultarRegistro();
+      Auxiliares.registros();
+      // ********* *********** ********** ******
+      // //
+      // Toxicomanias.consultarRegistro();
+      // Alergicos.registros();     // Alergicos.consultarRegistro();
+      // Transfusionales.registros();     // Transfusionales.consultarRegistro();
+      // Traumatologicos.registros();     // Traumatologicos.consultarRegistro();
+      // Vacunales.registros();     // Vacunales.consultarRegistro();
+      // Electrocardiogramas.ultimoRegistro();
+      // Llamado a las distintas clases de valores.
+      // final patol = await Actividades.consultarId(
+      //     Databases.siteground_database_regpace,
+      //     Patologicos.patologicos['consultLastQuery'],
+      //     Pacientes.ID_Paciente);
+      // valores.addAll(patol); // Enfermedades de base del paciente, asi como las Hospitalarias.
 
-    // ********* *********** ********** ******
-    // Eticos.consultarRegistro();
-    // Viviendas.consultarRegistro();
-    // Higienes.consultarRegistro();
-    // Diarios.consultarRegistro();
-    // Alimenticios.consultarRegistro();
-    // Limitaciones.consultarRegistro();
-    // Sustancias.consultarRegistro();
-    // //
-    // Toxicomanias.consultarRegistro();
-    // Alergicos.registros();     // Alergicos.consultarRegistro();
-    // Transfusionales.registros();     // Transfusionales.consultarRegistro();
-    // Traumatologicos.registros();     // Traumatologicos.consultarRegistro();
-    // Vacunales.registros();     // Vacunales.consultarRegistro();
+      // final elect = await Actividades.consultarId(
+      //     Databases.siteground_database_reggabo,
+      //     Electrocardiogramas.electrocardiogramas['consultLastQuery'],
+      //     Pacientes.ID_Paciente,
+      //     emulated: true);
+      // Pacientes.Electrocardiogramas = elect;
+      // valores.addAll(elect);
 
-// ********* *********** ********** ******
-//     Electrocardiogramas.ultimoRegistro();
-    // Pacientes.diagnosticos();
-    // Ventilaciones.ultimoRegistro();
-// ********* *********** ********** ******
-    // Llamado a las distintas clases de valores.
-    // final patol = await Actividades.consultarId(
-    //     Databases.siteground_database_regpace,
-    //     Patologicos.patologicos['consultLastQuery'],
-    //     Pacientes.ID_Paciente);
-    // valores.addAll(patol); // Enfermedades de base del paciente, asi como las Hospitalarias.
-    // final vital = await Actividades.consultarId(
-    //     Databases.siteground_database_regpace,
-    //     Vitales.vitales['consultLastQuery'],
-    //     Pacientes.ID_Paciente);
-    // // Pacientes.Vital = vital;
-    // valores.addAll(vital);
-    //
-    // final antro = await Actividades.consultarId(
-    //     Databases.siteground_database_regpace,
-    //     Vitales.antropo['consultLastQuery'],
-    //     Pacientes.ID_Paciente);
-    // valores.addAll(antro);
-    // Pacientes.Vital.addAll(antro);
-
-    // final elect = await Actividades.consultarId(
-    //     Databases.siteground_database_reggabo,
-    //     Electrocardiogramas.electrocardiogramas['consultLastQuery'],
-    //     Pacientes.ID_Paciente,
-    //     emulated: true);
-    // Pacientes.Electrocardiogramas = elect;
-    // valores.addAll(elect);
-
-    // ********* *********** ********** ******
-    // Patologicos.registros();     // Patologicos.consultarRegistro();
-    // Diagnosticos.registros();     // Diagnosticos.consultarRegistro();
-    Vitales.registros(context); // Vitales.ultimoRegistro();
-    Quirurgicos.registros(); // Quirurgicos.consultarRegistro();
-    Balances.consultarRegistro();
-    Auxiliares.registros();
+      // ********* *********** ********** ******
+    });
     //
     final vento = await Actividades.consultarId(
         Databases.siteground_database_reghosp,
@@ -113,12 +87,12 @@ class Valores {
     //     emulated: true);
     // valores.addAll(vitales);
 
-    // final hosp = await Actividades.consultarId(
-    //     Databases.siteground_database_reghosp,
-    //     Hospitalizaciones.hospitalizacion['consultLastQuery'],
-    //     Pacientes.ID_Paciente,
-    //     emulated: true);
-    // valores.addAll(hosp);
+    final hosp = await Actividades.consultarId(
+        Databases.siteground_database_reghosp,
+        Hospitalizaciones.hospitalizacion['consultLastQuery'],
+        Pacientes.ID_Paciente,
+        emulated: true);
+    valores.addAll(hosp);
 
     Valores.fromJson(valores);
     return true;
@@ -242,11 +216,13 @@ class Valores {
         "${Pacientes.localRepositoryPath}toxicomanias.json";
     Quirurgicos.fileAssocieted =
         '${Pacientes.localRepositoryPath}quirurgicos.json';
-    Alergicos.fileAssocieted = '${Pacientes.localRepositoryPath}alergicos.json';
-    Transfusionales.fileAssocieted =
-        '${Pacientes.localRepositoryPath}transfusionales.json';
-    Vacunales.fileAssocieted = '${Pacientes.localRepositoryPath}vacunales.json';
+    // Alergicos.fileAssocieted = '${Pacientes.localRepositoryPath}alergicos.json';
+    // Transfusionales.fileAssocieted =
+    //     '${Pacientes.localRepositoryPath}transfusionales.json';
+    // Vacunales.fileAssocieted = '${Pacientes.localRepositoryPath}vacunales.json';
 
+    Hospitalizaciones.fileAssocieted =
+        '${Pacientes.localRepositoryPath}hospitalizaciones.json';
     Diagnosticos.fileAssocieted =
         '${Pacientes.localRepositoryPath}diagnosticos.json';
     Pendientes.fileAssocieted =
@@ -2260,6 +2236,141 @@ class Valorados {
             "$comob . $dias "
             " : ($aux)");
     return resultado;
+  }
+
+  /// Indice ROX
+  /// Formula = [SpO2 / FiO2] / RR
+  ///  * * *  Valores menor de 3 a los 60 min de inicio de HNFC(OAF),
+  ///            Valores menor de 3.5 a las 6 horas
+  ///            Valores menor de 4 a las 12 horas
+  /// * * * En pacientes con SDRA se recomienda evaluar a los 60 min
+  /// * * * Cuando se mide a los 12 horas después del inicio de HNFC, un indice mayor 4.88 es determinante de éxito.
+  /// REFERENCIA: https://www.ncbi.nlm.nih.gov/pubmed/27481760?dopt=Abstract
+  static String get indiceROX {
+    double indiceRox = 0;
+    //
+    if (Valores.saturacionPerifericaOxigeno! != null &&
+        Valores.fraccionInspiratoriaOxigeno! != null) {
+      indiceRox = (Valores.saturacionPerifericaOxigeno! /
+              Valores.fraccionInspiratoriaOxigeno!) /
+          Valores.frecuenciaRespiratoria!;
+      if (indiceRox >= 4.88) {
+        return "Indice ROX ${indiceRox.toStringAsFixed(2)}; posible HFNC exitoso a las 12 Horas";
+      } else {
+        return "Indice ROX ${indiceRox.toStringAsFixed(2)}; posible HFNC infructuoso, posibilidad de intubación";
+      }
+    } else {
+      return "Indice ROX no medible";
+    }
+  }
+
+  static int getFraminghamScore({
+    required bool tratamientoHipertension,
+    required bool fumador,
+  }) {
+    int score = 0;
+
+    // Edad (Hombres)
+    if (Valores.edad! >= 20 && Valores.edad! <= 34)
+      score += -9;
+    else if (Valores.edad! <= 39)
+      score += -4;
+    else if (Valores.edad! <= 44)
+      score += 0;
+    else if (Valores.edad! <= 49)
+      score += 3;
+    else if (Valores.edad! <= 54)
+      score += 6;
+    else if (Valores.edad! <= 59)
+      score += 8;
+    else if (Valores.edad! <= 64)
+      score += 10;
+    else if (Valores.edad! <= 69)
+      score += 11;
+    else if (Valores.edad! <= 74)
+      score += 12;
+    else
+      score += 13;
+
+    // Colesterol total (Hombres 40–49 años como ejemplo)
+    if (Valores.edad! >= 40 && Valores.edad! <= 49) {
+      if (Valores.colesterolTotal! < 160)
+        score += 0;
+      else if (Valores.colesterolTotal! <= 199)
+        score += 1;
+      else if (Valores.colesterolTotal! <= 239)
+        score += 2;
+      else if (Valores.colesterolTotal! <= 279)
+        score += 3;
+      else
+        score += 4;
+    }
+
+    // HDL
+    if (Valores.cHDL! >= 60)
+      score -= 1;
+    else if (Valores.cHDL! >= 50)
+      score += 0;
+    else if (Valores.cHDL! >= 40)
+      score += 1;
+    else
+      score += 2;
+
+    // Presión sistólica
+    if (tratamientoHipertension) {
+      if (Valores.tensionArterialSystolica! < 120)
+        score += 0;
+      else if (Valores.tensionArterialSystolica! <= 129)
+        score += 1;
+      else if (Valores.tensionArterialSystolica! <= 139)
+        score += 2;
+      else if (Valores.tensionArterialSystolica! <= 159)
+        score += 2;
+      else
+        score += 3;
+    } else {
+      if (Valores.tensionArterialSystolica! < 120)
+        score += 0;
+      else if (Valores.tensionArterialSystolica! <= 129)
+        score += 0;
+      else if (Valores.tensionArterialSystolica! <= 139)
+        score += 1;
+      else if (Valores.tensionArterialSystolica! <= 159)
+        score += 1;
+      else
+        score += 2;
+    }
+
+    // Tabaquismo (Hombres 40–49 como ejemplo)
+    if (Valores.edad! >= 40 && Valores.edad! <= 49 && fumador) score += 3;
+
+    return score;
+  }
+
+  static double calcularASCVD({
+    required bool tratamientoHTA,
+    required bool fumador,
+    required bool diabetico,
+  }) {
+    // Constantes simplificadas para hombre blanco
+    double lnEdad = math.log(Valores.edad!);
+    double lnColTotal = math.log(Valores.colesterolTotal!);
+    double lnHDL = math.log(Valores.cHDL!);
+    double lnSBP = math.log(Valores.tensionArterialSystolica!);
+
+    // Coeficientes estimados (ejemplo, no exactos)
+    double suma = 12.344 * lnEdad +
+        11.853 * lnColTotal -
+        7.990 * lnHDL +
+        (tratamientoHTA ? 1.797 : 1.764) * lnSBP +
+        (fumador ? 7.837 : 0) +
+        (diabetico ? 0.658 : 0);
+
+    double base =
+        0.9144; // Valor de baseline survival para hombres blancos a 10 años
+    num riesgo = 1 - math.pow(base, math.exp(suma - 61.18));
+
+    return riesgo * 100; // Devuelve en porcentaje
   }
 
   // **********************************************************************

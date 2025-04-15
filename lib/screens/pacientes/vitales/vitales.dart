@@ -33,6 +33,7 @@ class OperacionesVitales extends StatefulWidget {
 }
 
 class _OperacionesVitalesState extends State<OperacionesVitales> {
+
   @override
   void initState() {
     Actividades.consultarId(Databases.siteground_database_regpace,
@@ -343,39 +344,53 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
 
   Future<void> reiniciar() async {
     Terminal.printExpected(message: "Reinicio de los valores . . .");
-    List result = [];
-    Pacientes.Vitales!.clear();
-    Actividades.consultarAllById(Databases.siteground_database_regpace,
-            Vitales.vitales['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
-        .then((value) {
-      result.addAll(value);
-      Actividades.consultarAllById(Databases.siteground_database_regpace,
-              Vitales.antropo['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
-          .then((value) {
-        int index = 0;
-        for (var item in result) {
-          if (index <= result.length) {
-            var thirdMap = {};
-            // print("${value.length} ${result.length}");
-            // print("${value[index]['ID_Pace_SV']} ${item['ID_Pace_SV']}");
-            thirdMap.addAll(item);
-            thirdMap.addAll(value[index]);
-            // Adición a Vitales ********** ************ ************** ********
-            Pacientes.Vitales!.add(thirdMap);
-            index++;
-          }
-        }
-        setState(() {
-          Terminal.printSuccess(
-              message:
-                  "Actualizando Repositorio de Signos Vitales del Paciente . . . ${Pacientes.Vitales}");
-          // Pacientes.Vitales!;
-          Archivos.createJsonFromMap(Pacientes.Vitales!,
-              filePath: Vitales
-                  .fileAssocieted); // Creacion de Vitales.json **********************
-        });
+    try {
+      final vitalesData = await Actividades.consultarAllById(
+        Databases.siteground_database_regpace,
+        Vitales.vitales['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente,
+      );
+
+      if (vitalesData.isEmpty || vitalesData[0]['Error'] == "No se encontraron datos") return;
+
+      final antropoData = await Actividades.consultarAllById(
+        Databases.siteground_database_regpace,
+        Vitales.antropo['consultByIdPrimaryQuery'],
+        Pacientes.ID_Paciente,
+      );
+
+      // Crear un Map usando una combinación de claves únicas
+      final Map<String, Map<String, dynamic>> vitalesMap = {
+        for (var v in vitalesData)
+          "${v['ID_Pace']}_${v['Pace_SV_Feca']}" : v
+      };
+
+      final List<Map<String, dynamic>> combinados = [];
+
+      for (var antropo in antropoData) {
+        final key = "${antropo['ID_Pace']}_${antropo['Pace_SV_Feca']}";
+        final vital = vitalesMap[key] ?? {};
+        final combinado = {...vital, ...antropo};
+        combinados.add(combinado);
+      }
+
+      setState(() {
+        Pacientes.Vitales = combinados;
+        listOfFirstValues = combinados;
       });
-    });
+
+      await Archivos.createJsonFromMap(combinados, filePath: Vitales.fileAssocieted);
+
+      Terminal.printSuccess(
+          message: "Actualizando Repositorio de Signos Vitales del Paciente...");
+    } catch (e, stack) {
+      Operadores.alertActivity(
+        context: context,
+        tittle: "$e",
+        message: "$stack",
+        onAcept: () => Navigator.of(context).pop(),
+      );
+    }
   }
 
 /*
@@ -776,7 +791,7 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
 
   var carouselController = CarouselSliderController();
 
-  void operationMethod(BuildContext context) {
+  Future<void> operationMethod(BuildContext context) async {
     try {
       listOfFirstValues = [
         idOperation,
@@ -824,42 +839,9 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
         idOperation
       ];
       //
-      // //
-      // Vitales.fromJson({
-      //   "ID_Pace_SV": idOperation,
-      //   "Pace_Feca_SV": fechaRealizacionTextController.text,
-      //   "Pace_SV_tas": tasTextController.text,
-      //   "Pace_SV_tad": tadTextController.text,
-      //   "Pace_SV_fc": fcTextController.text,
-      //   "Pace_SV_fr": frTextController.text,
-      //   "Pace_SV_tc": tcTextController.text,
-      //   "Pace_SV_spo": spoTextController.text,
-      //   "Pace_SV_est": estTextController.text,
-      //   "Pace_SV_pct": pctTextController.text,
-      //   "Pace_SV_glu": gluTextController.text,
-      //   "Pace_SV_glu_ayu": gluAyuTextController.text,
-      //   "Pace_SV_cue": cueTextController.text,
-      //   "Pace_SV_cin": cinTextController.text,
-      //   "Pace_SV_cad": cadTextController.text,
-      //   "Pace_SV_cmb": cmbTextController.text,
-      //   //
-      //   "Pace_SV_fa": factorActividadValue,
-      //   "Pace_SV_fe": factorEstresValue,
-      //   "Pace_SV_c_pect": pectTextController.text,
-      //   "Pace_SV_pcb": 0, // pcbTextController.text,
-      //   "Pace_SV_pse": pseTextController.text,
-      //   "Pace_SV_psi": psiTextController.text,
-      //   "Pace_SV_pst": pstTextController.text,
-      //   "Pace_SV_c_fem_izq": femIzqTextController.text,
-      //   "Pace_SV_c_fem_der": femDerTextController.text,
-      //   "Pace_SV_c_suro_izq": suroIzqTextController.text,
-      //   "Pace_SV_c_suro_der": suroDerTextController.text,
-      // });
-      // //
-      // Terminal.printExpected(
-      //     message:
-      //         "${widget.operationActivity} listOfValues $listOfFirstValues ${listOfFirstValues!.length}");
 
+      Terminal.printExpected(message: listOfFirstValues.toString());
+      //
       switch (widget.operationActivity) {
         case Constantes.Nulo:
           break;
@@ -890,39 +872,74 @@ class _OperacionesVitalesState extends State<OperacionesVitales> {
           });
           break;
         case Constantes.Update:
-          Actividades.actualizar(Databases.siteground_database_regpace,
-                  updateQueryvitales!, listOfFirstValues!, idOperation)
-              .then((value) {
-            Actividades.actualizar(Databases.siteground_database_regpace,
-                    updateQueryantropo!, listOfSecondValues!, idOperation)
-                // .then((value) => Actividades.consultarId(
-                //         Databases.siteground_database_regpace,
-                //         consultIdQueryvitales!,
-                //         idOperation)
-                //     .then((value) {
-                //       Pacientes.Vital = value;
-                //     })
-                //     .then((value) => Actividades.consultarId(
-                //                 Databases.siteground_database_regpace,
-                //                 consultIdQueryantropo!,
-                //                 idOperation)
-                //             .then((value) {
-                //           Pacientes.Vital.addAll(value);
-                //           print("Pacientes.Vital ${Pacientes.Vital}");
-                //         }))
-                .then((value) {
+            try {
+              // Actualizar signos vitales
+              await Actividades.actualizar(
+                Databases.siteground_database_regpace,
+                updateQueryvitales!,
+                listOfFirstValues!,
+                idOperation,
+              );
+
+              // Actualizar datos antropométricos
+              await Actividades.actualizar(
+                Databases.siteground_database_regpace,
+                updateQueryantropo!,
+                listOfSecondValues!,
+                idOperation,
+              );
+
+              // Borrar archivo local
               Archivos.deleteFile(filePath: Vitales.fileAssocieted);
-              reiniciar()
-                  .then((value) => Operadores.alertActivity(
-                      context: context,
-                      tittle: "Actualización de registros",
-                      message: "Registros Actualizados",
-                      onAcept: () {
-                        returnGestion(context);
-                      }))
-                  .onError((error, stackTrace) => null);
-            }); // );
-          });
+
+              // Reiniciar app o estado
+              await reiniciar();
+
+              // Mostrar alerta de éxito
+              Operadores.alertActivity(
+                context: context,
+                tittle: "Actualización de registros",
+                message: "Registros Actualizados",
+                onAcept: () => returnGestion(context),
+              );
+            } catch (e, stack) {
+              print("❌ Error al actualizar: $e\n$stack");
+              // Aquí puedes agregar un alertActivity si quieres manejar errores
+            }
+
+          // Actividades.actualizar(Databases.siteground_database_regpace,
+          //         updateQueryvitales!, listOfFirstValues!, idOperation)
+          //     .then((value) {
+          //   Actividades.actualizar(Databases.siteground_database_regpace,
+          //           updateQueryantropo!, listOfSecondValues!, idOperation)
+          //       // .then((value) => Actividades.consultarId(
+          //       //         Databases.siteground_database_regpace,
+          //       //         consultIdQueryvitales!,
+          //       //         idOperation)
+          //       //     .then((value) {
+          //       //       Pacientes.Vital = value;
+          //       //     })
+          //       //     .then((value) => Actividades.consultarId(
+          //       //                 Databases.siteground_database_regpace,
+          //       //                 consultIdQueryantropo!,
+          //       //                 idOperation)
+          //       //             .then((value) {
+          //       //           Pacientes.Vital.addAll(value);
+          //       //           print("Pacientes.Vital ${Pacientes.Vital}");
+          //       //         }))
+          //       .then((value) {
+          //     Archivos.deleteFile(filePath: Vitales.fileAssocieted);
+          //     reiniciar()
+          //         .then((value) => Operadores.alertActivity(
+          //             context: context,
+          //             tittle: "Actualización de registros",
+          //             message: "Registros Actualizados",
+          //             onAcept: () {
+          //               returnGestion(context);
+          //             }))
+          //         .onError((error, stackTrace) => null);
+          //   }); // );
+          // });
           break;
         default:
       }
@@ -1121,8 +1138,8 @@ class _GestionVitalesState extends State<GestionVitales> {
         message: " . . . Iniciando Actividad - Repositorio de Pacientes");
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
-        // Terminal.printWarning(
-        //     message: " . . . ${value}");
+        // Terminal.printWarning(message: " . . . ${value}");
+
         if (value.isNotEmpty && value != []) {
           if (value[0]['Error'] != "No se encontraron datos") {
             foundedItems = value;
@@ -1142,115 +1159,130 @@ class _GestionVitalesState extends State<GestionVitales> {
     Terminal.printWarning(message: " . . . Actividad Iniciada");
   }
 
-  Future<void> reiniciar() async {
-    Terminal.printAlert(
-        message: "Re-iniciando actividad : : \n "
-            "Repositorio de Signos Vitales del Paciente . . .");
-    List result = [];
-    //
-    Pacientes.Vitales!.clear();
-    // Actividades.consultarAllById(Databases.siteground_database_regpace,
-    //         Vitales.vitales['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
-    //     .then((value) {
-    //   // print(value.length);
-    //   if (value[0]['Error'] != "No se encontraron datos") {
-    //     result.addAll(value);
-    //   }
-    //   // Terminal.printExpected(
-    //   //     message: value!.toString());
-    //   Actividades.consultarAllById(Databases.siteground_database_regpace,
-    //           Vitales.antropo['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
-    //       .then((value) {
-    //     // Terminal.printData(
-    //     //     message: value!.toString());
-    //     int index = 0;
-    //     //
-    //     try {
-    //       for (var item in result) {
-    //         if (index <= result.length) {
-    //           //
-    //           var thirdMap = {};
-    //           //
-    //           thirdMap.addAll(item);
-    //           thirdMap.addAll(value[index]);
-    //           Pacientes.Vitales!.add(
-    //               thirdMap); // Adición a Vitales ********** ************ ************** ********
-    //           //
-    //           index++;
-    //         }
-    //       }
-    //       setState(() {
-    //         foundedItems = Pacientes.Vitales!;
-    //       });
-    //     } catch (error, stackTrace) {
-    //       Operadores.alertActivity(
-    //           context: context,
-    //           tittle: "$error",
-    //           message: "$stackTrace",
-    //           onAcept: () => Navigator.of(context).pop());
-    //     }
-    //
-    //     Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
-    //     //
-    //     Terminal.printSuccess(
-    //         message:
-    //             "Actualizando Repositorio de Signos Vitales del Paciente . . . ");
-    //   }).catchError((error, stackTrace) {
-    //     Operadores.alertActivity(
-    //         context: context,
-    //         tittle: "$error",
-    //         message: "$stackTrace",
-    //         onAcept: () => Navigator.of(context).pop());
-    //   });
-    // }).catchError((error, stackTrace) {
-    //   Operadores.alertActivity(
-    //       context: context,
-    //       tittle: "$error",
-    //       message: "$stackTrace",
-    //       onAcept: () => Navigator.of(context).pop());
-    // });
+    Future<void> reiniciar() async {
+           try {
+        final vitalesData = await Actividades.consultarAllById(
+          Databases.siteground_database_regpace,
+          Vitales.vitales['consultByIdPrimaryQuery'],
+          Pacientes.ID_Paciente,
+        );
 
-    try {
-      final vitalesData = await Actividades.consultarAllById(
-        Databases.siteground_database_regpace,
-        Vitales.vitales['consultByIdPrimaryQuery'],
-        Pacientes.ID_Paciente,
-      );
+        if (vitalesData.isEmpty || vitalesData[0]['Error'] == "No se encontraron datos") return;
 
-      if (vitalesData[0]['Error'] == "No se encontraron datos") return;
+        final antropoData = await Actividades.consultarAllById(
+          Databases.siteground_database_regpace,
+          Vitales.antropo['consultByIdPrimaryQuery'],
+          Pacientes.ID_Paciente,
+        );
 
-      final antropoData = await Actividades.consultarAllById(
-        Databases.siteground_database_regpace,
-        Vitales.antropo['consultByIdPrimaryQuery'],
-        Pacientes.ID_Paciente,
-      );
+        // Crear un Map usando una combinación de claves únicas
+        final Map<String, Map<String, dynamic>> vitalesMap = {
+          for (var v in vitalesData)
+            "${v['ID_Pace']}_${v['Pace_Feca_SV']}" : v
+        };
 
-      final List<Map<String, dynamic>> combinados = [];
+        final List<Map<String, dynamic>> combinados = [];
 
-      for (int i = 0; i < vitalesData.length; i++) {
-        final item = {...vitalesData[i], ...antropoData[i]};
-        combinados.add(item);
+        for (var antropo in antropoData) {
+          final key = "${antropo['ID_Pace']}_${antropo['Pace_Feca_SV']}";
+          final vital = vitalesMap[key] ?? {};
+          final combinado = {...vital, ...antropo};
+          combinados.add(combinado);
+        }
+
+        combinados.sort((a, b) {
+          final fechaA = DateTime.parse((a['Pace_Feca_SV']));
+          final fechaB = DateTime.parse((b['Pace_Feca_SV']));
+          return fechaB.compareTo(fechaA);
+        });
+
+        setState(() {
+          Pacientes.Vitales = combinados;
+          foundedItems = combinados;
+
+          Terminal.printSuccess(
+              message: "Repositorio de Signos Vitales del Paciente . . . ");
+        });
+
+        await Archivos.createJsonFromMap(combinados, filePath: fileAssocieted);
+
+        Terminal.printSuccess(
+            message: "Actualizando Repositorio de Signos Vitales del Paciente...");
+      } catch (e, stack) {
+        Operadores.alertActivity(
+          context: context,
+          tittle: "$e",
+          message: "$stack",
+          onAcept: () => Navigator.of(context).pop(),
+        );
       }
-
-      setState(() {
-        Pacientes.Vitales = combinados;
-        foundedItems = combinados;
-      });
-
-      await Archivos.createJsonFromMap(combinados, filePath: fileAssocieted);
-
-      Terminal.printSuccess(
-          message:
-              "Actualizando Repositorio de Signos Vitales del Paciente...");
-    } catch (e, stack) {
-      Operadores.alertActivity(
-        context: context,
-        tittle: "$e",
-        message: "$stack",
-        onAcept: () => Navigator.of(context).pop(),
-      );
+      // Terminal.printAlert(
+      //     message: "Re-iniciando actividad : : \n "
+      //         "Repositorio de Signos Vitales del Paciente . . .");
+      // List result = [];
+      // //
+      // Pacientes.Vitales!.clear();
+      // Actividades.consultarAllById(Databases.siteground_database_regpace,
+      //         Vitales.vitales['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
+      //     .then((value) {
+      //   // print(value.length);
+      //   if (value[0]['Error'] != "No se encontraron datos") {
+      //     result.addAll(value);
+      //   }
+      //   // Terminal.printExpected(
+      //   //     message: value!.toString());
+      //   Actividades.consultarAllById(Databases.siteground_database_regpace,
+      //           Vitales.antropo['consultByIdPrimaryQuery'], Pacientes.ID_Paciente)
+      //       .then((value) {
+      //     // Terminal.printData(
+      //     //     message: value!.toString());
+      //     int index = 0;
+      //     //
+      //     try {
+      //       for (var item in result) {
+      //         if (index <= result.length) {
+      //           //
+      //           var thirdMap = {};
+      //           //
+      //           thirdMap.addAll(item);
+      //           thirdMap.addAll(value[index]);
+      //           Pacientes.Vitales!.add(
+      //               thirdMap); // Adición a Vitales ********** ************ ************** ********
+      //           //
+      //           index++;
+      //         }
+      //       }
+      //       setState(() {
+      //         foundedItems = Pacientes.Vitales!;
+      //       });
+      //     } catch (error, stackTrace) {
+      //       Operadores.alertActivity(
+      //           context: context,
+      //           tittle: "$error",
+      //           message: "$stackTrace",
+      //           onAcept: () => Navigator.of(context).pop());
+      //     }
+      //
+      //     Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
+      //     //
+      //     Terminal.printSuccess(
+      //         message:
+      //             "Actualizando Repositorio de Signos Vitales del Paciente . . . ");
+      //   }).catchError((error, stackTrace) {
+      //     Operadores.alertActivity(
+      //         context: context,
+      //         tittle: "$error",
+      //         message: "$stackTrace",
+      //         onAcept: () => Navigator.of(context).pop());
+      //   });
+      // }).catchError((error, stackTrace) {
+      //   Operadores.alertActivity(
+      //       context: context,
+      //       tittle: "$error",
+      //       message: "$stackTrace",
+      //       onAcept: () => Navigator.of(context).pop());
+      // });
     }
-  }
 
   Container itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {

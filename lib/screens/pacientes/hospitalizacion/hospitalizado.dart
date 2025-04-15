@@ -34,9 +34,9 @@ class Hospitalizado extends StatefulWidget {
 class _HospitalizadoState extends State<Hospitalizado> {
   @override
   void initState() {
-    // setState(() {
-    //   Valores.diasEstancia;
-    // });
+    setState(() {
+      Valores.diasEstancia;
+    });
     super.initState();
   }
 

@@ -2,7 +2,6 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/citometrias.dart';
-import 'package:assistant/operativity/pacientes/valores/Valorados/hepatometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/detalles.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/globulares.dart';
@@ -52,8 +51,12 @@ class _RevisionesState extends State<Revisiones> {
         .then((onValue) => Vitales.fromJson(onValue!.last))
         .whenComplete(() => setState(() => {}));
     //
+    Archivos.readJsonToMap(filePath: Hospitalizaciones.fileAssocieted)
+        .then((onValue) => Hospitalizaciones.fromJson(onValue!.first))
+        .whenComplete(() => setState(() => {}));
+    //
     setState(() {
-      Terminal.printNotice(message: "${Valores.fechaVitales!}");
+      // Terminal.printNotice(message: "${Valores.fechaVitales!}");
     });
     //
     super.initState();
@@ -96,7 +99,10 @@ class _RevisionesState extends State<Revisiones> {
                       children: [
                         // ValuePanel(
                         //   firstText: Valores.fechaVitales!.split(" ")[0],
-                        //   secondText: Valores.fechaVitales!.split(" ")[1],
+                        //   secondText:
+                        //       Valores.fechaVitales!.split(" ").isNotEmpty
+                        //           ? Valores.fechaVitales!.split(" ")[1]
+                        //           : "",
                         //   thirdText: '',
                         // ),
                         ValuePanel(

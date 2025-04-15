@@ -180,6 +180,21 @@ class AuxiliarExtractor {
         optionA: () {
           //
           if (registroPrevio != "NO ENCONTRADO") {
+            // Operadores.notifyActivity(
+            //     context: context,
+            //     tittle: "Respuesta de Consulta a Base de Datos . . . ",
+            //     message: "Prueba de eliminación . . . ",
+            //     onAcept: () {
+            //       Listas.listWithoutRepitedValues(
+            //           listaArchivosSeleccionados)
+            //           .forEach((filePath) =>
+            //           Archivos.deleteFile(filePath: filePath)
+            //       );
+            //       //
+            //       Navigator.of(context).pop();
+            //       Navigator.of(context).pop();
+            //       //
+            //     });
             Actividades.registrarAnidados(
               Databases.siteground_database_reggabo,
               Auxiliares.auxiliares['registerQuery'],
@@ -190,12 +205,6 @@ class AuxiliarExtractor {
                     tittle: "Respuesta de Consulta a Base de Datos . . . ",
                     message: onValue.toString(),
                     onAcept: () {
-                      // var listado = Listas.listWithoutRepitedValues(
-                      //     listaArchivosSeleccionados);
-                      // Terminal.printNotice(
-                      //     message:
-                      //         "LISTA DE ARCHIVOS SELECCIONADOS : : $listado");
-                      //
                       Listas.listWithoutRepitedValues(
                               listaArchivosSeleccionados)
                           .forEach((filePath) =>

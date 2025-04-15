@@ -73,6 +73,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
     Future.microtask(() async {
       await Pacientes.getValores(context, reload: true); // si la necesitas
       await Pacientes.getParaclinicosHistorial();
+      Hospitalizaciones.consultarRegistro();
       Expedientes.ultimoRegistro();
       //
       Archivos.readJsonToMap(filePath: Vitales.fileAssocieted).then((onValue) {
@@ -605,7 +606,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
     ];
   }
 
-  // Variables
+  // VARIABLES * * * * * ***************************************** * * *  *
   var scrollController = ScrollController();
   var scrollListController = ScrollController();
 
@@ -1043,6 +1044,14 @@ class _VisualPacientesState extends State<VisualPacientes> {
                       Terminal.printAlert(
                           message:
                               'Archivo ${Pacientes.localPath} Re-Creado $value');
+                      Archivos.readJsonToMap(filePath: Vitales.fileAssocieted)
+                          .then((onValue) => Vitales.fromJson(onValue!.last))
+                          .whenComplete(() => setState(() => {}));
+                      //
+                      Archivos.readJsonToMap(filePath: Hospitalizaciones.fileAssocieted)
+                          .then((onValue) => Hospitalizaciones.fromJson(onValue!.first))
+                          .whenComplete(() => setState(() => {}));
+                      //
                       Navigator.of(context).pop();
                     }
                   }).onError((error, stackTrace) {
@@ -1321,6 +1330,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
         ],
       );
 
+  //
   MaterialBanner _hospitalizacion(BuildContext context) => MaterialBanner(
         padding: const EdgeInsets.all(5.0),
         content: Pacientes.esHospitalizado == true

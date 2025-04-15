@@ -74,7 +74,7 @@ class _VentilatoriosState extends State<Ventilatorios> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          ValuePanel(
+                          if (Valores.fechaVentilaciones != "") ValuePanel(
                             firstText: Valores.fechaVentilaciones!.split(" ")[0],
                             secondText: Valores.fechaVentilaciones!.split(" ")[1],
                             thirdText: '',

@@ -107,6 +107,22 @@ class Calendarios {
     // print(fechaDateTime);  // Output: 2022-10-12 07:52:11.000
     return fechaDateTime;
   }
+
+  static String normalizarFecha(dynamic fecha) {
+    if (fecha == null) return '';
+
+    // Si viene como String tipo '2025-04-11 09:30:00'
+    if (fecha is String) {
+      return fecha.split(' ').first;
+    }
+
+    // Si ya viene como DateTime
+    if (fecha is DateTime) {
+      return "${fecha.year.toString().padLeft(4, '0')}-${fecha.month.toString().padLeft(2, '0')}-${fecha.day.toString().padLeft(2, '0')}";
+    }
+
+    return fecha.toString(); // fallback
+  }
 }
 
 class Dicotomicos {
@@ -340,25 +356,23 @@ class Archivos {
   static Future deleteFile({required filePath}) async {
     if (Platform.isAndroid) {
       Terminal.printWarning(message: "File to Delete $filePath");
-      // final directory = await getTemporaryDirectory();
-      // final File file = File("${directory.path}/$filePath");
       final File file = File(filePath);
       if (await file.exists()) {
         try {
-          await file
-              .openRead()
-              .drain(); // Asegura que cualquier lectura se complete
-          file.deleteSync();
-          print('Archivo eliminado exitosamente');
-        } catch (e) {
-          print('Error al eliminar el archivo: $e');
-        } finally {
-          // Verifica si el archivo todavía existe
+          // Esperamos a que se libere cualquier acceso pendiente (si fuera necesario)
+          await file.openRead().drain();
+          await file.delete(); // ✅ delete asincrónico
+
           if (await file.exists()) {
-            print('El archivo todavía existe después de intentar eliminarlo.');
+            Terminal.printWarning(
+                message:
+                    '⚠️ El archivo todavía existe después del intento de eliminación.');
           } else {
-            print('El archivo ha sido eliminado correctamente.');
+            Terminal.printSuccess(
+                message: '✅ $filePath : Archivo eliminado correctamente.');
           }
+        } catch (e) {
+          Terminal.printAlert(message: '❌ Error al eliminar el archivo: $e');
         }
       } else {
         final Directory appDir = await getApplicationDocumentsDirectory();
@@ -888,10 +902,12 @@ class Directorios {
   static Future<List<PlatformFile>?> choiseSeveralFromInternalDocuments(
       BuildContext context) async {
     // Utilizar FilePicker para seleccionar archivos
+    // await FilePicker.platform.clearTemporaryFiles();
     FilePickerResult? filePickerResult = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'], // Solo archivos PDF
       allowMultiple: true, // Permitir selección de múltiples archivos
+      // withData: true,
     );
 
     if (filePickerResult != null) {

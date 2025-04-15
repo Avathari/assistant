@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
@@ -46,7 +47,7 @@ class _AntropometricosState extends State<Antropometricos> {
                 Expanded(
                   flex: 2,
                   child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
+                    scrollDirection: isDesktop(context) ? Axis.vertical: Axis.horizontal,
                     controller: ScrollController(),
                     child: Column(
                       children: [

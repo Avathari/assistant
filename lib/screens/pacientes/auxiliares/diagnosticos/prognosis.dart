@@ -197,6 +197,147 @@ class _PrognosisState extends State<Prognosis> {
               ),
             ),
           ),
+          ListTile(
+            // onTap: () {
+            //   Operadores.openWindow(
+            //       context: context,
+            //       chyldrim: Container(
+            //         padding: const EdgeInsets.all(8.0),
+            //         margin: const EdgeInsets.all(8.0),
+            //         decoration: ContainerDecoration.roundedDecoration(),
+            //         child: Column(
+            //           children: [
+            //             TittlePanel(
+            //                 textPanel:
+            //                 "${Pacientes.Patologicos![index]['Pace_APP_DEG']}"),
+            //             const SizedBox(height: 20,),
+            //             Text(
+            //               Pacientes.Patologicos![index]
+            //               ['Pace_APP_DEG_com'],
+            //               style: Styles.textSyleGrowth(fontSize: 14),
+            //             ),
+            //             Text(
+            //               "Diagnósticado hace ${Pacientes.Patologicos![index]['Pace_APP_DEG_dia']} años",
+            //               style: Styles.textSyleGrowth(fontSize: 12),
+            //             ),
+            //             CrossLine(height: 20,),
+            //             const SizedBox(height: 20,),
+            //             Text(
+            //               Pacientes.Patologicos![index]
+            //               ['Pace_APP_DEG_tra'],
+            //               maxLines: 10,
+            //               style: Styles.textSyleGrowth(),
+            //             ),
+            //             Text(
+            //               Pacientes.Patologicos![index]
+            //               ['Pace_APP_DEG_sus'],
+            //               maxLines: 10,
+            //               style: Styles.textSyleGrowth(),
+            //             ),
+            //           ],
+            //         ),
+            //       ));
+            // },
+            isThreeLine: false,
+            title: Text(
+              "Indice ROX",
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: isDesktop(context) || isMobile(context) ? 10 : 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: Text(
+              Valorados.indiceROX,
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: isDesktop(context) || isMobile(context) ? 8 : 12,
+              ),
+            ),
+          ),
+          ListTile(
+            isThreeLine: false,
+            title: Text(
+              "Framingham Score",
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: isDesktop(context) || isMobile(context) ? 10 : 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: Text(
+              "${Valorados.getFraminghamScore(tratamientoHipertension: true, fumador: true).toString()} puntos",
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: isDesktop(context) || isMobile(context) ? 8 : 12,
+              ),
+            ),
+          ),
+          ListTile(
+            isThreeLine: false,
+            title: Text(
+              "ASCVD Score",
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: isDesktop(context) || isMobile(context) ? 10 : 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: Text(
+              "${Valorados.calcularASCVD(tratamientoHTA: true, fumador: true, diabetico: true).toString()} puntos",
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: isDesktop(context) || isMobile(context) ? 8 : 12,
+              ),
+            ),
+          ),
+//
+          ListTile(
+            isThreeLine: false,
+            title: Text(
+              "Indice de Choque",
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: isDesktop(context) || isMobile(context) ? 10 : 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: Text(
+              Valorados.indiceChoque.toStringAsFixed(2),
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: isDesktop(context) || isMobile(context) ? 8 : 12,
+              ),
+            ),
+          ),
+          ListTile(
+            isThreeLine: false,
+            title: Text(
+              "Indice de Choque Modificado",
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: isDesktop(context) || isMobile(context) ? 10 : 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: Text(
+              Valorados.indiceChoqueModificado.toStringAsFixed(2),
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: isDesktop(context) || isMobile(context) ? 8 : 12,
+              ),
+            ),
+          ),
         ],
       ),
     );

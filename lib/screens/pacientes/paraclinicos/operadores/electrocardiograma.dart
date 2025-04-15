@@ -179,7 +179,7 @@ class _ElectrocardiogramasGestionState
                             weigth: 100,
                             labelButton: "Gestion del Registro",
                             onPress: () {
-                              carouselController.jumpToPage(1);
+                              carouselController.jumpToPage(2);
                             }),
                       ),
                       Expanded(
@@ -187,7 +187,7 @@ class _ElectrocardiogramasGestionState
                             weigth: 100,
                             labelButton: "Imagen del Registro",
                             onPress: () {
-                              carouselController.jumpToPage(2);
+                              carouselController.jumpToPage(1);
                             }),
                       ),
                     ],

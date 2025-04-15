@@ -1493,7 +1493,10 @@ class Pacientes {
             pacientes['consultImage'], Pacientes.ID_Paciente)
         .then((value) async {
       // print("consultImage $value");
-      final img = base64.encode((await rootBundle.load('assets/images/person.png')).buffer.asUint8List());
+      final img = base64.encode(
+          (await rootBundle.load('assets/images/person.png'))
+              .buffer
+              .asUint8List());
 
       if (value != null) {
         Pacientes.imagenPaciente = value['Pace_FIAT'] ?? img;
@@ -1595,13 +1598,15 @@ class Pacientes {
   }
 
   //
-  static Future<void> getValores(BuildContext context, {bool reload = false}) async {
+  static Future<void> getValores(BuildContext context,
+      {bool reload = false}) async {
     // Terminal.printNotice(
     //     message: " : : INICIANDO ACTIVIDAD . . . "
     //         "GET VALORES : ${Pacientes.ID_Paciente}");
     //
     if (reload) {
-      Terminal.printAlert(message: " : : Consultando Pacientes.getValores() . . : : ");
+      Terminal.printAlert(
+          message: " : : Consultando Pacientes.getValores() . . : : ");
       Valores vala = Valores();
       vala.load(context);
     } else {
@@ -5593,7 +5598,9 @@ class Vitales {
         Vitales.vitales['consultByIdPrimaryQuery'],
         Pacientes.ID_Paciente,
       );
-      if (vitalesData[0]['Error'] == "No se encontraron datos") return;
+
+      if (vitalesData.isEmpty ||
+          vitalesData[0]['Error'] == "No se encontraron datos") return;
 
       final antropoData = await Actividades.consultarAllById(
         Databases.siteground_database_regpace,
@@ -5601,19 +5608,27 @@ class Vitales {
         Pacientes.ID_Paciente,
       );
 
-      final List<Map<String, dynamic>> combinados = [];
-      for (int i = 0; i < vitalesData.length; i++) {
-        final item = {...vitalesData[i], ...antropoData[i]};
-        combinados.add(item);
-      }
-        Pacientes.Vitales = combinados;
+      // Crear un Map usando una combinación de claves únicas
+      final Map<String, Map<String, dynamic>> vitalesMap = {
+        for (var v in vitalesData) "${v['ID_Pace']}_${v['Pace_Feca_SV']}": v
+      };
 
+      final List<Map<String, dynamic>> combinados = [];
+
+      for (var antropo in antropoData) {
+        final key = "${antropo['ID_Pace']}_${antropo['Pace_Feca_SV']}";
+        final vital = vitalesMap[key] ?? {};
+        final combinado = {...vital, ...antropo};
+        combinados.add(combinado);
+      }
+
+      Pacientes.Vitales = combinados;
 
       await Archivos.createJsonFromMap(combinados, filePath: fileAssocieted);
 
       Terminal.printSuccess(
           message:
-          "Actualizando Repositorio de Signos Vitales del Paciente...");
+              "Actualizando Repositorio de Signos Vitales del Paciente...");
     } catch (e, stack) {
       Operadores.alertActivity(
         context: context,
@@ -5895,7 +5910,7 @@ class Vitales {
 
   static Future<void> fromJson(Map<dynamic, dynamic> json) async {
     // Terminal.printExpected(
-        // message: "Vitales. . . fromJson : . $json . : ${json.runtimeType}");
+    // message: "Vitales. . . fromJson : . $json . : ${json.runtimeType}");
     // Pacientes.Vital = json;
 
     if (json['Error'] == "No se encontraron datos") {
@@ -5905,7 +5920,8 @@ class Vitales {
       Valores.fechaVitales = json['Pace_Feca_SV'].toString();
       // Variables Vitales ********* *************** **********
       Valores.tensionArterialSystolica =
-          int.parse(json['Pace_SV_tas'].toString());
+          json['Pace_SV_tas']?? int.parse(json['Pace_SV_tas'].toString());
+
       //
       Valores.tensionArterialDyastolica =
           int.parse(json['Pace_SV_tad'].toString());
@@ -5920,23 +5936,20 @@ class Vitales {
           int.parse(json['Pace_SV_spo'].toString());
       //
       Valores.alturaPaciente = double.parse(json['Pace_SV_est'].toString());
-      //
       Valores.pesoCorporalTotal = double.parse(json['Pace_SV_pct'].toString());
       //
       Valores.glucemiaCapilar = int.parse(json['Pace_SV_glu'].toString());
-      //
       Valores.horasAyuno = int.parse(json['Pace_SV_glu_ayu'].toString());
       //
-      Valores.insulinaGastada = int.parse(json['Pace_SV_insulina'].toString());
+      Valores.insulinaGastada = json['Pace_SV_insulina']?? int.parse(json['Pace_SV_insulina'].toString());
       //
-      Valores.factorActividad = double.parse(json['Pace_SV_fa'].toString());
-      Valores.factorEstres = double.parse(json['Pace_SV_fe'].toString());
+      Valores.factorActividad = json['Pace_SV_fa']?? int.parse(json['Pace_SV_fa'].toString());
+      Valores.factorEstres = json['Pace_SV_fe']?? int.parse(json['Pace_SV_fe'].toString());
+
       // Variables Antropométricas ********* *************** **********
-      Valores.circunferenciaCuello = int.parse(json['Pace_SV_cue'].toString());
-      //
-      Valores.circunferenciaCintura = int.parse(json['Pace_SV_cin'].toString());
-      //
-      Valores.circunferenciaCadera = int.parse(json['Pace_SV_cad'].toString());
+      Valores.circunferenciaCuello = json['Pace_SV_cue']?? int.parse(json['Pace_SV_cue'].toString());
+      Valores.circunferenciaCintura = json['Pace_SV_cin']?? int.parse(json['Pace_SV_cin'].toString());
+      Valores.circunferenciaCadera = json['Pace_SV_cad']?? int.parse(json['Pace_SV_cad'].toString());
       //
       Valores.circunferenciaMesobraquial =
           int.parse(json['Pace_SV_cmb'].toString());
@@ -6524,7 +6537,7 @@ class Auxiliares {
             Electrocardiogramas.electrocardiogramas['consultLastQuery'],
             Pacientes.ID_Paciente)
         .then((value) {
-          Terminal.printExpected(message: value.toString());
+      Terminal.printExpected(message: value.toString());
       if (value != null) {
         Pacientes.Electrocardiogramas = value;
       }
@@ -10415,12 +10428,16 @@ class Balances {
     // Valores.drenesBalances! +
     // Valores.otrosEgresosBalances!;
 
-    total = Valores.ingresosBalances + (Valores.egresosBalances + Valores.perdidasInsensibles! + Valores.uresis!);
-    Valores.uresis = (Valores.uresisBalances! / Valores.pesoCorporalTotal!) / Valores.horario!;
+    total = Valores.ingresosBalances +
+        (Valores.egresosBalances +
+            Valores.perdidasInsensibles! +
+            Valores.uresis!);
+    Valores.uresis = (Valores.uresisBalances! / Valores.pesoCorporalTotal!) /
+        Valores.horario!;
 
     // return double.nan;
   }
-  }
+}
 
 class Ventilaciones {
   static int ID_Ventilaciones = 0;
@@ -10590,7 +10607,7 @@ class Ventilaciones {
     if (json.isNotEmpty) {
       Valores.fechaVentilaciones = json['Feca_VEN'] ?? '';
       Valores.modalidadVentilatoria = json['VM_Mod'] ?? '';
-      Valores.volumenTidal = double.parse(json['Pace_Vt'].toString()) ?? 0;
+      Valores.volumenTidal = json['Pace_Vt'] ?? double.parse(json['Pace_Vt'].toString());
       Valores.frecuenciaVentilatoria =
           Valores.frecuenciaRespiratoria = json['Pace_Fr'] ?? 0;
       Valores.fraccionInspiratoriaVentilatoria = json['Pace_Fio'] ?? 0;
@@ -10617,6 +10634,9 @@ class Ventilaciones {
 }
 
 class Hospitalizaciones {
+  static var fileAssocieted =
+      '${Pacientes.localRepositoryPath}hospitalizaciones.json';
+
   static Map<String, dynamic> Hospitalizacion = {};
 
   static List<String> actualDiagno = Opciones.horarios();
@@ -10645,9 +10665,11 @@ class Hospitalizaciones {
   }
 
   static void ultimoRegistro() {
-    Actividades.consultarId(Databases.siteground_database_reghosp,
-            hospitalizacion['consultLastQuery'], Pacientes.ID_Paciente)
-        .then((value) {
+    Actividades.consultarId(
+      Databases.siteground_database_reghosp,
+      hospitalizacion['consultLastQuery'],
+      Pacientes.ID_Paciente,
+    ).then((value) {
 // Enfermedades de base del paciente, asi como las Hospitalarias.
       Hospitalizacion = value;
       fromJson(value);
@@ -10661,7 +10683,7 @@ class Hospitalizaciones {
       // Enfermedades de base del paciente, asi como las Hospitalarias.
       Pacientes.Hospitalizaciones = value;
       // Crear Json del Registro ******************************
-      // Archivos.createJsonFromMap(value, filePath: "");
+      Archivos.createJsonFromMap(value, filePath: fileAssocieted);
     });
   }
 
@@ -10699,7 +10721,7 @@ class Hospitalizaciones {
     "consultByIdPrimaryQuery": "SELECT * FROM pace_hosp WHERE ID_Hosp = ?",
     "consultAllIdsQuery": "SELECT ID_Pace FROM pace_hosp",
     "consultLastQuery":
-        "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY ID_Hosp DESC",
+        "SELECT * FROM pace_hosp WHERE ID_Pace = ? ORDER BY Feca_INI_Hosp DESC",
     "consultByName": "SELECT * FROM pace_hosp WHERE Pace_APP_DEG LIKE '%",
     "registerQuery": "INSERT INTO pace_hosp (ID_Pace, "
         "Feca_INI_Hosp, Id_Cama, Dia_Estan, Medi_Trat, Serve_Trat, Serve_Trat_INI, "

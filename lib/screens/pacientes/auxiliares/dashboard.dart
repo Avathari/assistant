@@ -58,6 +58,10 @@ class _DashboardState extends State<Dashboard> {
         // widget.dymValues = value;
         Vitales.fromJson(value.last);
       });
+    }).whenComplete(() {
+      setState(() {
+
+      });
     }).onError((error, stackTrace) {
       // Vitales.ultimoRegistro()
       //     .then((value) => Auxiliares.fromJson(value))
@@ -112,9 +116,7 @@ class _DashboardState extends State<Dashboard> {
       });
     }
 
-    setState(() {
 
-    });
     super.initState();
   }
 
