@@ -385,8 +385,17 @@ class _VentilatoriosState extends State<Ventilatorios> {
                                                   thirdText: "",
                                                 ),
                                               ),
+
                                             ],
-                                          )
+                                          ),
+                                          ValuePanel(
+                                            firstText: "EET",
+                                            secondText: "${Ventometrias
+                                                .distanciaArcadaIdeal
+                                                .toStringAsFixed(0)} cm",
+                                            thirdText: "",
+                                          ),
+
                                         ]),
                                       ),
                                     ),

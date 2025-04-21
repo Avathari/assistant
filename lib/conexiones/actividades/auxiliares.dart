@@ -1237,7 +1237,7 @@ class Operadores {
     showDialog(
         context: context,
         builder: (context) {
-          return Dialogos.editDialog(keyBoardType, tittle, message, () {
+          return Dialogos.editDialog(context, keyBoardType, tittle, message, () {
             Navigator.of(context).pop();
           }, onAcept, numOfLines: numOfLines);
         });
@@ -1336,7 +1336,7 @@ class Dialogos {
     );
   }
 
-  static AlertDialog editDialog(TextInputType keyBoardType, String? tittle,
+  static AlertDialog editDialog(BuildContext context, TextInputType keyBoardType, String? tittle,
       String? msg, onCloss, ValueChanged<String>? onAcept,
       {int numOfLines = 1}) {
     var textEditController = TextEditingController();
@@ -1344,26 +1344,26 @@ class Dialogos {
     return AlertDialog(
       backgroundColor: Theming.secondaryColor,
       title: Text(
-        tittle!,
+          tittle ?? '',
         style: const TextStyle(color: Colors.grey),
       ),
-      content: SizedBox(
-        height: 150,
+      content: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(vertical: 8),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              msg!,
-              style: const TextStyle(color: Colors.grey),
-            ),
-            CrossLine(),
-            Expanded(
-              child: EditTextArea(
-                labelEditText: msg,
-                numOfLines: numOfLines,
-                keyBoardType: keyBoardType, // TextInputType.text,
-                inputFormat: MaskTextInputFormatter(),
-                textController: textEditController,
+            if (msg != null)
+              Text(
+                msg,
+                style: const TextStyle(color: Colors.grey),
               ),
+            CrossLine(thickness: 3,height: 16),
+            EditTextArea(
+              labelEditText: msg ?? '',
+              numOfLines: numOfLines,
+              keyBoardType: keyBoardType,
+              inputFormat: MaskTextInputFormatter(),
+              textController: textEditController,
             ),
           ],
         ),

@@ -102,7 +102,7 @@ class Gasometricos {
         "Temp ${Valores.temperaturCorporal}°C, "
         "FiO2 ${Valores.fioArteriales}%, "
         "A-aO2 ${Gasometricos.GAA.toStringAsFixed(1)} mmHg, "
-        "PaO2/FiO2 ${Gasometricos.PAFI_FIO.toStringAsFixed(0)}mmHg/%";
+        "PaO2/FiO2 ${Gasometricos.PAFI_FIO.toStringAsFixed(0)}mmHg/% . . ${analisisHipoxemia()}";
   }
 
   static String get gasometricosNombrado {
@@ -181,7 +181,7 @@ class Gasometricos {
         "HCO3- 3ra Regla ${Gasometricos.HCOR_c.toStringAsFixed(2)} mmol/L, "
         "Rep. HCO3- ${Gasometricos.HCOAM.toStringAsFixed(2)}, "
         "en total ${Gasometricos.NOAMP.toStringAsFixed(0)} ámpulas de bicarbonato al 7.5%"
-        ".";
+        " . . ${analisisHipoxemia()}";
   }
 
   static String get gasometricosBicarbonato {
@@ -249,7 +249,9 @@ class Gasometricos {
         " . : : . "
         // "EBe ${Valores.pHArteriales} mmol/L, "
         "iCL/NA ${Gasometricos.indiceCloroSodiio.toStringAsFixed(1)}, "
-        "difNa/Cl ${Gasometricos.diferenciaSodioCloro.toStringAsFixed(1)} . . "
+        "difNa/Cl ${Gasometricos.diferenciaSodioCloro.toStringAsFixed(1)}"
+        " . . ${analisisAcidoBase()}"
+        " . . ${analisisHipoxemia()}"
         "";
   }
 
@@ -672,6 +674,8 @@ class Gasometricos {
 // static double get GAA => ((Valores.presionBarometrica - Valores.presionVaporAgua) * (Valores.fioArteriales! / 100) -
   //     (Valores.pcoArteriales! / 0.8) -
   //     Valores.poArteriales!); //  # Gradiente Alveolo Arterial
+
+  static double get gradienteNormal => 2 + (0.3 * Valores.edad!);
 
   /// Delta CO2
   ///
@@ -1116,5 +1120,74 @@ class Gasometricos {
     } else {
       return double.nan;
     }
+  }
+
+  static String analisisAcidoBase() {
+    // Interpretación de Anión Gap
+    String interpretacionAG = Gasometricos.aGapAlbArterial > 15
+        ? "Acidosis metabólica con anión gap elevado (MUDPILES u otras causas)"
+        : "Acidosis metabólica con anión gap normal (pérdidas gastrointestinales o renales)";
+
+    // Interpretación de Delta Gap
+    String interpretacionDG = (Gasometricos.d_GAP < 18)
+        ? "Delta Gap < 18 → Acidosis metabólica adicional sin anión gap"
+        : (Gasometricos.d_GAP > 30)
+            ? "Delta Gap > 30 → Alcalosis metabólica adicional"
+            : "Delta Gap entre 18–30 → No hay otro desorden metabólico adicional";
+
+    // Interpretación del Delta Ratio
+    String interpretacionDR;
+    if (Gasometricos.D_d_ratio < 0.4) {
+      interpretacionDR =
+          "Delta Ratio < 0.4 → Hipercloremia con AG elevado (mixto)";
+    } else if (Gasometricos.D_d_ratio < 1.0) {
+      interpretacionDR =
+          "Delta Ratio 0.5–1.0 → Acidosis metabólica mixta (AG normal + AG elevado)";
+    } else if (Gasometricos.D_d_ratio <= 1.6) {
+      interpretacionDR =
+          "Delta Ratio 1.1–1.6 → Acidosis metabólica con AG elevado puro";
+    } else {
+      interpretacionDR =
+          "Delta Ratio > 1.6 → Acidosis metabólica con AG elevado + Alcalosis metabólica o acidosis respiratoria compensada";
+    }
+
+    // Interpretación del Delta Delta
+    String interpretacionDD = (Gasometricos.D_d_GAP < 1)
+        ? "Delta Delta < 1 → Acidosis metabólica mixta (AG normal y AG elevado)"
+        : (Gasometricos.D_d_GAP > 2)
+            ? "Delta Delta > 2 → Acidosis metabólica con AG elevado + Alcalosis metabólica"
+            : "Delta Delta entre 1–2 → Acidosis metabólica con AG elevado sin trastorno adicional";
+
+    return "ANÁLISIS ÁCIDO-BASE: "
+        // "🧪 Anión Gap: ${Gasometricos.aGapAlbArterial.toStringAsFixed(2)} $interpretacionAG "
+        // "🔺 Delta Gap: ${Gasometricos.d_GAP.toStringAsFixed(2)} $interpretacionDG "
+        "📉 Delta Ratio: ${Gasometricos.D_d_ratio.toStringAsFixed(2)} $interpretacionDR ";
+        // "🔄 Delta Delta: ${Gasometricos.D_d_GAP.toStringAsFixed(2)} $interpretacionDD ";
+  }
+
+  static String analisisHipoxemia() {
+    if (Valores.poArteriales! >= 80) {
+      return "✅ No hay hipoxemia";
+    }
+
+    if (Gasometricos.GAA <= gradienteNormal) {
+      if (Valores.pcoArteriales! > 45) {
+        return "🫁 Hipoxemia por hipoventilación alveolar (PaCO₂ ↑, GAA normal)";
+      } else {
+        return "🌄 Hipoxemia por altitud elevada o error de medición (GAA normal)";
+      }
+    }
+
+    // Gradiente A–a elevado
+    if (Valores.fraccionInspiratoriaOxigeno! == 100) {
+      if (Valores.poArteriales! > 200) {
+        return "🔄 Hipoxemia por V/Q bajo o difusión (PaO₂ responde a O₂ al 100%)";
+      } else {
+        return "🚨 Hipoxemia por shunt (PaO₂ NO responde a O₂ al 100%)";
+      }
+    }
+
+    return "🧪 Hipoxemia con GAA elevado. Sugiere V/Q bajo o shunt. "
+        "Se recomienda gasometría con FiO₂ al 100% para diferenciar.";
   }
 }

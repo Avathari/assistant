@@ -49,10 +49,12 @@ class _RevisionesState extends State<Revisiones> {
     //
     Archivos.readJsonToMap(filePath: Vitales.fileAssocieted)
         .then((onValue) => Vitales.fromJson(onValue!.last))
+        .onError((onError, stackTrace) => {})
         .whenComplete(() => setState(() => {}));
     //
     Archivos.readJsonToMap(filePath: Hospitalizaciones.fileAssocieted)
         .then((onValue) => Hospitalizaciones.fromJson(onValue!.first))
+        .onError((onError, stackTrace) => {})
         .whenComplete(() => setState(() => {}));
     //
     setState(() {

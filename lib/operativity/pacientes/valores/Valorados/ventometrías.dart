@@ -2,8 +2,52 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
 
 class Ventometrias {
+  static String get pruebaVentilacionEspontanea =>
+      "PRUEBA DE VENTILACIÓN ESPONTÁNEA. "
+      "Ante parámetros encontrados el día de hoy, presenta criterios para inicio de prueba de ventilación espontánea "
+      "(Favorables: Estado neurológico adecuado, cooperador, Hb >10, Sin falla renal, "
+      "sin alteraciones hidroelectrolíticas, afebril, ventilación espontánea, "
+      "con parámetros ventilatorios FiO2 <40%, Fr <20 Resp/min, , PEEP <5, sin trastorno ácido base). "
+      "Se mantiene por un periodo de 2.5 Horas ventilación con "
+      "${Ventometrias.modoVentilatorio} con PEEP ${Valores.presionFinalEsiracion!.toStringAsFixed(0)} cmH2O, "
+      "FiO2 ${Valores.fraccionInspiratoriaOxigeno!.toStringAsFixed(0)}%, Psopp ${Valores.presionSoporte!.toStringAsFixed(0)}, "
+      "manteniendo RASS ${Exploracion.rass}, Vti ${Valores.volumenTidal!.toStringAsFixed(0)} mL, "
+      "RSBI ${Valores.indiceTobinYang!.toStringAsFixed(2)} Resp/L/min, "
+      "FC ${Valores.frecuenciaCardiaca!.toStringAsFixed(0)} Lat/min, SPO2 ${Valores.saturacionPerifericaOxigeno!.toStringAsFixed(0)}%, "
+      "con FR ${Valores.frecuenciaRespiratoria!.toStringAsFixed(0)} Resp/min, "
+      "y TA ${Valores.tensionArterialSystolica!.toStringAsFixed(0)}/${Valores.tensionArterialDyastolica!.toStringAsFixed(0)} mmHG. \n"
+      "Se da por concluida prueba de ventilación espontánea fallida por taquicardia, taquipnea más RSBI >105, PAS >140 MMhg. "
+      "Gasometria posterior a prueba "
+      "##";
+
+  static String get decanulacionOrofaringea => ""
+      "Ante parámetros encontrados el día de hoy, con prueba de ventilación espontánea previamente realizadas y exitosas. "
+      "Se prospecta realización de extubación a las 13’00 horas ante los siguientes factores favorables: "
+      "Estado neurológico no mejorable con persistencia de delirium, manejado con haloperidol, "
+      "patrón ventilatorio adecuado, sin hipoxemia, y parámetros ventilatorios bajos tras 36 horas en BiLevel con parámetros mínimos. "
+      "Se inicia destete de la ventilación, cumpliendo los siguientes rubros: Manteniéndose afebril, sin respuesta inflamatoria sistémica, "
+      "frecuencia cardiaca (<140 lpm, >60 Lat/min), presión sistólica ${Valores.tensionArterialSystolica!.toStringAsFixed(2)} mmHg (90-160 mmHg) "
+      "sin necesidad de vasopresor, sin alteraciones hidroelectrolíticas ni descompensación glicemia, saturación 96% (>90%), "
+      "FiO2 ${Valores.fraccionInspiratoriaOxigeno!}% (<40%), Volumen minuto de ${Ventometrias.volumenMinuto!.toStringAsFixed(2)} L/min (10-15 L/min), "
+      "con prueba de fuga >30%. \n"
+      "   .    ESTATUS CLÍNICO PREVIO A PROCEDIMIENTO. Neurológico RASS -1/+1, con automatismo ventilatorio, "
+      "BiLevel con FiO2 40%, Phigh 5, Plow 5, Psopp 5, Fr 10, Trig 2.5 . . . "
+      "VTesp ${Valores.volumenTidal!.toStringAsFixed(0)} mL, RSBI ${Valores.indiceTobinYang!.toStringAsFixed(2)}, Test de fuga 95%. "
+      "Eupneico. Murmullo vesicular, estertores finos diseminados, sin sibilancias; "
+      "prueba de fuga laríngea 95%, con P0.1 1, NIF >25, Ti/To >30%. \n"
+      "Se administra dosis de esteroide como coadyuvante de broncoespasmo, Hidrocortisona 100 mg/dosis. "
+      "Se coloca en posición fowler, se mantiene monitorizacion cardiaca y oximetria de pulso continua. "
+      "Finalmente, se decanula ${Exploracion.tuboEndotraqueal}, en posición Fowler, "
+      "con signos vitales inmediatos TA ${Valores.tensionArterialSystolica!.toStringAsFixed(0)}/${Valores.tensionArterialDyastolica!.toStringAsFixed(0)} mmHg, "
+      "FC ${Valores.frecuenciaCardiaca!.toStringAsFixed(0)} L/min, FR ${Valores.frecuenciaRespiratoria!.toStringAsFixed(0)} L/min, "
+      "SpO2 ${Valores.saturacionPerifericaOxigeno!.toStringAsFixed(0)}%. "
+      "Se inicia fisioterapia pulmonar,  aspiración de cavidad oral Nivel I, sin secreciones importantes. "
+      "Se ausculta área pulmonar y precordio sin alteraciones. "
+      "Para terminar, se mantiene en las siguientes condiciones:";
+
   // ANALISIS
 
   // CONCLUSIONES: VENTILATORIOS ************* ********** ************** ***
@@ -100,7 +144,7 @@ class Ventometrias {
           "F. Resp. ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "PEEP ${Valores.presionFinalEsiracion} mmHg, "
-          "Vt ${Valores.volumenTidal} mmHg. "
+          "Vt ${Valores.volumenTidal!.toStringAsFixed(0)} mmHg. "
           "$ventilatorios";
     } else if (modoVentilatorio == 'AC-VCP') {
       return "VMI $modoVentilatorio con "
@@ -114,7 +158,7 @@ class Ventometrias {
           "F. Resp ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "PEEP ${Valores.presionFinalEsiracion} mmHg, "
-          "Vt ${Valores.volumenTidal} mmHg. "
+          "Vt ${Valores.volumenTidal!.toStringAsFixed(0)} mmHg. "
           "$ventilatorios";
     } else if (modoVentilatorio == 'SIMV/VCP') {
       return "VMI $modoVentilatorio con "
@@ -201,6 +245,10 @@ class Ventometrias {
   static double get volumentTidal7 => (Antropometrias.pesoCorporalPredicho * 7);
 
   static double get volumentTidal8 => (Antropometrias.pesoCorporalPredicho * 8);
+
+  //
+  static double get distanciaArcadaIdeal =>
+      (0.1 * (Valores.alturaPaciente! * 100)) + 4;
 
   // # ######################################################
   static double get volumenTidalIdeal {

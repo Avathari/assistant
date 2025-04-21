@@ -760,6 +760,7 @@ class Valores {
       motivoEgreso,
       fechaPadecimientoActual,
       padecimientoActual;
+  static int? ID_Compendio = 0;
 
   //
   static String motivoCirugia = "",
@@ -3112,15 +3113,15 @@ class Formatos {
   static String get exploracionTerapiaCortaSimplificada => ""
       "${Antropometrias.vitalesTerapiaAbreviado}\n"
       "Durante la Exploración Física, siendo evaluado por Aparatos y Sistemas, es encontrado: \n"
-      // Parametros ideals
-      "     "
-      "Glucometría ${Valores.glucemiaCapilar} mg/dL, "
-      //  "pCO2_e ${Gasometricos.PCO2esperado.toStringAsFixed(0)} mmHg. "
-      "pO2_e ${Gasometricos.PaO2_estimado.toStringAsFixed(0)} mmHg, "
-      "FiO2_i ${Ventometrias.fiO2deal.toStringAsFixed(0)} %, "
-      "VT_i ${Ventometrias.volumenTidalIdeal.toStringAsFixed(0)} mL. "
-      "RSBI ${Ventometrias.indiceTobinYang.toStringAsFixed(0)} Resp/L.min. "
-      "\n"
+      // Parametros Ideales
+      // "     "
+      // "Glucometría ${Valores.glucemiaCapilar} mg/dL, "
+      // //  "pCO2_e ${Gasometricos.PCO2esperado.toStringAsFixed(0)} mmHg. "
+      // "pO2_e ${Gasometricos.PaO2_estimado.toStringAsFixed(0)} mmHg, "
+      // "FiO2_i ${Ventometrias.fiO2deal.toStringAsFixed(0)} %, "
+      // "VT_i ${Ventometrias.volumenTidalIdeal.toStringAsFixed(0)} mL. "
+      // "RSBI ${Ventometrias.indiceTobinYang.toStringAsFixed(0)} Resp/L.min. "
+      // "\n"
       "     .     "
       "R.A.S.S. ${Exploracion.rass}, "
       "En sedoanalgesia con ${Exploracion.sedoanalgesia}, "
@@ -3128,7 +3129,8 @@ class Formatos {
       "${Exploracion.tipoSondaAlimentacion}; ${Exploracion.alimentacion!.toLowerCase()}. "
       // "          "
       "Apoyo ventilatorio "
-      "mediante ${Exploracion.tuboEndotraqueal} ${Exploracion.haciaArcadaDentaria!.toLowerCase()}. "
+      "mediante ${Exploracion.tuboEndotraqueal} ${Exploracion.haciaArcadaDentaria!.toLowerCase()} "
+      "(EET ${Ventometrias.distanciaArcadaIdeal.toStringAsFixed(0)} cm). "
       "${Ventometrias.ventiladorCorto}. "
       "Murmullo vesicular audible, sin estertores ni sibilancias. "
       //
@@ -3204,10 +3206,10 @@ class Formatos {
       "          "
       "Genitourinario ${Exploracion.tipoSondaVesical!.toLowerCase()}; "
       "balance hídrico: "
-      "ingresos ${Valores.ingresosBalances} mL, "
-      "egresos ${Valores.egresosBalances} mL "
-      "(${Valores.balanceTotal} mL/${Valores.horario} Horas), "
-      "P.I. ${Valores.perdidasInsensibles} mL, "
+      "ingresos ${Valores.ingresosBalances!.toStringAsFixed(0)} mL, "
+      "egresos ${Valores.egresosBalances!.toStringAsFixed(0)} mL "
+      "(${Valores.balanceTotal!.toStringAsFixed(2)} mL/${Valores.horario} Horas), "
+      "P.I. ${Valores.perdidasInsensibles!.toStringAsFixed(0)} mL, "
       "uresis ${Valores.uresis!.toStringAsFixed(0)} mL "
       "(${Valores.diuresis.toStringAsFixed(2)} mL/${Valores.horario} Horas). \n"
       "${Auxiliares.getUltimo(esAbreviado: true)}";
@@ -4173,6 +4175,17 @@ class Items {
       "Comentario":
           "SE SOLICITA SESIÓN DE HEMODIALISIS, Se decide paso a hemodialisis urgente,  programar sin panel viral, primer sesion, tiempo 2 hrs, qs 200 qd 500, uf 2000cc, sin heparina. na 136, k 2.0, de no haber eventualidad en primer sesion reingresa a urgencias. A su llegada solicitar urgente biometria hematica, elisa para vih, rx tele de torax, panendoscopia, vdrl, cinetica de hieero completa con ferritina, muestra para cultivo de lesion en lengua y tincion pas, usg renal. ",
     },
+    // PRUEBAS DE VENTILACIÓN ESPONTANEA
+    {
+      "Diagnostico": "Inicio de Prueba de Ventilación Espontánea",
+      "Comentario": Ventometrias.pruebaVentilacionEspontanea,
+    },
+    {
+      "Diagnostico": "Decanulación Orofaríngea",
+      "Comentario": Ventometrias.decanulacionOrofaringea,
+    },
+
+    //
   ];
   static List<Map<String, String>> bibliografiasContempladas = [
     {

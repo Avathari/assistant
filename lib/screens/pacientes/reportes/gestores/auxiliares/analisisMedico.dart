@@ -96,6 +96,12 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
 
   @override
   Widget build(BuildContext context) {
+    if (isMobile(context)) {
+      widget.fontSize = 12.0;
+    } else {
+      widget.fontSize = 8.0;
+    }
+    //
     return Column(
       children: [
         widget.isPrequirurgica == true
@@ -171,7 +177,7 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                                 : isTablet(context)
                                     ? 32
                                     : isMobile(context)
-                                        ? 15
+                                        ? 25
                                         : 22,
                             onChange: ((value) {
                               setState(() {
@@ -217,11 +223,13 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                     ),
                   ),
                   Expanded(
-                      flex: 2,
-                      child: Wrap(
+                      flex: isMobile(context)? 4: 2,
+                      child: Wrap(alignment: WrapAlignment.center,
+                        runAlignment: WrapAlignment.spaceBetween,runSpacing: 5,
                         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           CircleIcon(
+                              radios: 30,
                               iconed: Icons.roller_shades_closed_outlined,
                               onChangeValue: () async {
                                 analisisTextController.text = Reportes
@@ -234,7 +242,8 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                                                         widget.actualPage!)));
                               }),
                           CircleIcon(
-                              iconed: Icons.add,
+                            radios: 40,
+                              iconed: Icons.library_books_outlined,
                               tittle: "Bibliográfico . . . ",
                               onChangeValue: () {
                                 Operadores.openDialog(
@@ -247,21 +256,22 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                                       });
                                     });
                               }),
-                          GrandIcon(
-                              labelButton: "Bibliográfico . . . ",
-                              onPress: () {
-                                Operadores.openDialog(
-                                    context: context,
-                                    chyldrim: const Bibliografico(),
-                                    onAction: () {
-                                      setState(() {
-                                        analisisTextController.text =
-                                            Reportes.analisisMedico;
-                                      });
-                                    });
-                              }),
+                          // GrandIcon(
+                          //     labelButton: "Bibliográfico . . . ",
+                          //     onPress: () {
+                          //       Operadores.openDialog(
+                          //           context: context,
+                          //           chyldrim: const Bibliografico(),
+                          //           onAction: () {
+                          //             setState(() {
+                          //               analisisTextController.text =
+                          //                   Reportes.analisisMedico;
+                          //             });
+                          //           });
+                          //     }),
                           CircleIcon(
-                              iconed: Icons.add,
+                              radios: 50,
+                              iconed: Icons.comment_bank_outlined,
                               tittle: "Comentarios Previos . . . ",
                               onChangeValue: () {
                                 Operadores.selectOptionsActivity(

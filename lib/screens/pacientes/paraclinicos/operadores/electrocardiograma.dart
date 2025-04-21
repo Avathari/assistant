@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
@@ -42,10 +43,10 @@ class _ElectrocardiogramasGestionState
 
   @override
   void initState() {
-    Future.microtask(() async{
+    Future.microtask(() async {
       Terminal.printWarning(
           message:
-          " . . . Iniciando Actividad - Repositorio Electrocardiogramas del Pacientes");
+              " . . . Iniciando Actividad - Repositorio Electrocardiogramas del Pacientes");
       Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
         setState(() {
           Pacientes.Electros = value;
@@ -53,7 +54,8 @@ class _ElectrocardiogramasGestionState
           values = value;
           // Terminal.printData(message: values.toString());
           Terminal.printSuccess(
-              message: 'Repositorio Electrocardiogramas del Pacientes Obtenido');
+              message:
+                  'Repositorio Electrocardiogramas del Pacientes Obtenido');
         });
       }).onError((error, stackTrace) {
         textDateEstudyController.text =
@@ -261,23 +263,81 @@ class _ElectrocardiogramasGestionState
                         ),
                       ],
                     ),
-                    PhotoView(
-                      imageProvider: MemoryImage(base64Decode(stringImage!)),
-                      loadingBuilder: (context, progress) => Center(
-                        child: SizedBox(
-                          width: 20.0,
-                          height: 20.0,
-                          child: CircularProgressIndicator(
-                            value: progress == null
-                                ? null
-                                : progress.cumulativeBytesLoaded /
-                                progress.expectedTotalBytes!,
+                    Column(
+                      children: [
+                        Expanded(
+                          flex: 10,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: PhotoView(
+                              imageProvider:
+                                  MemoryImage(base64Decode(stringImage!)),
+                              loadingBuilder: (context, progress) => Center(
+                                child: SizedBox(
+                                  width: 20.0,
+                                  height: 20.0,
+                                  child: CircularProgressIndicator(
+                                    value: progress == null
+                                        ? null
+                                        : progress.cumulativeBytesLoaded /
+                                            progress.expectedTotalBytes!,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        Expanded(
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: GrandIcon(
+                                  labelButton: "Foto desde Cámara . . . ",
+                                  iconData: Icons.camera,
+                                  onPress: () async {
+                                    final x = await ImagePicker()
+                                        .pickImage(source: ImageSource.camera);
+
+                                    stringImage = x != null
+                                        ? base64Encode(await x
+                                            .readAsBytes()
+                                            .whenComplete(() {
+                                            setState(() {});
+                                          }))
+                                        : base64Encode((await rootBundle.load(
+                                                'assets/images/person.png'))
+                                            .buffer
+                                            .asUint8List());
+                                  },
+                                ),
+                              ),
+                              Expanded(
+                                  flex: 3,
+                                  child: GrandButton(
+                                    labelButton: "Foto desde Directorio . . . ",
+                                    weigth: 2000,
+                                    onPress: () async {
+                                      final x = await ImagePicker().pickImage(
+                                          source: ImageSource.gallery);
+
+                                      stringImage = x != null
+                                          ? base64Encode(await x
+                                              .readAsBytes()
+                                              .whenComplete(() {
+                                              setState(() {});
+                                            }))
+                                          : base64Encode((await rootBundle.load(
+                                                  'assets/images/person.png'))
+                                              .buffer
+                                              .asUint8List());
+                                    },
+                                  )),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                     operationScreen(),
-
                   ],
                 ),
               ),
@@ -302,7 +362,7 @@ class _ElectrocardiogramasGestionState
                       onPress: () {
                         if (operationActivity) {
                           initAllElement();
-                          carouselController.jumpToPage(1);
+                          carouselController.jumpToPage(2);
                         } else {
                           try {
                             deleteDialog(elementSelected!);
@@ -326,6 +386,7 @@ class _ElectrocardiogramasGestionState
                           labelButton: "Nuevo",
                           onPress: () {
                             initAllElement();
+                            carouselController.jumpToPage(2);
                           }),
                   GrandIcon(
                       labelButton: operationActivity ? "Agregar" : "Actualizar",
@@ -516,6 +577,7 @@ class _ElectrocardiogramasGestionState
         Datos.portapapeles(
             context: context, text: Auxiliares.electrocardiogramaAbreviado());
       },
+      onLongPress: () {},
       child: Container(
         decoration: ContainerDecoration.roundedDecoration(),
         child: Row(
@@ -2015,12 +2077,10 @@ class _ElectrocardiogramasGestionState
   }
 
   Future<void> toBaseImage() async {
-    ByteData bytes = await rootBundle.load('assets/images/person.png');
-    var buffer = bytes.buffer;
-
-    setState(() {
-      stringImage = base64.encode(Uint8List.view(buffer));
-    });
+    setState(() async => stringImage = base64Encode(
+        (await rootBundle.load('assets/images/person.png'))
+            .buffer
+            .asUint8List()));
   }
 
   void operationMethod(
@@ -2040,7 +2100,8 @@ class _ElectrocardiogramasGestionState
         Operadores.alertActivity(
             context: context,
             tittle: "Registro de los Valores",
-            message: 'Los registros fueron agregados');
+            message: 'Los registros fueron agregados',
+            onAcept: () => Navigator.of(context).pop());
         _reiniciar().then((value) {
           setState(() {
             carouselController.jumpToPage(0);
@@ -2059,7 +2120,8 @@ class _ElectrocardiogramasGestionState
         Operadores.alertActivity(
             context: context,
             tittle: "Actualizacion de los Valores",
-            message: 'Los registros fueron Actualizados');
+            message: 'Los registros fueron Actualizados',
+            onAcept: () => Navigator.of(context).pop());
         _reiniciar().then((value) {
           setState(() {
             carouselController.jumpToPage(0);
@@ -2089,4 +2151,3 @@ class _ElectrocardiogramasGestionState
             )),
       );
 }
-

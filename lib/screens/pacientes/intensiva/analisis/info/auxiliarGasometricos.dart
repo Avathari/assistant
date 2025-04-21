@@ -1,14 +1,15 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart'
     as Gas;
 import 'package:assistant/operativity/pacientes/valores/Valorados/hidrometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/widgets/CrossLine.dart';
+import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 
 class AuxiliarGasometricos {
-
   static Widget conclusionesGasometricos() {
     return SingleChildScrollView(
       controller: ScrollController(),
@@ -16,35 +17,34 @@ class AuxiliarGasometricos {
         children: [
           TittlePanel(
               textPanel:
-              "Trastorno Primario \n${Gas.Gasometricos.trastornoPrimario} (pH ${Valores.pHArteriales})"),
+                  "Trastorno Primario \n${Gas.Gasometricos.trastornoPrimario} (pH ${Valores.pHArteriales})"),
           TittlePanel(
               textPanel:
-              "Trastorno Secundario \n${Gas.Gasometricos.trastornoSecundario} (PCO2 ${Valores.pcoArteriales!.toStringAsFixed(0)})"),
+                  "Trastorno Secundario \n${Gas.Gasometricos.trastornoSecundario} (PCO2 ${Valores.pcoArteriales!.toStringAsFixed(0)})"),
           CrossLine(
             thickness: 4,
           ),
           TittlePanel(
               textPanel:
-              "Alteración del Oxígeno \n${Gas.Gasometricos.trastornoTerciario} (pO2 ${Valores.poArteriales!.toStringAsFixed(0)})"),
+                  "Alteración del Oxígeno \n${Gas.Gasometricos.trastornoTerciario} (pO2 ${Valores.poArteriales!.toStringAsFixed(0)})"),
           TittlePanel(
               textPanel:
-              "Alteración del CO2 \n${Gas.Gasometricos.alteracionRespiratoria} (HCO3- ${Valores.pcoArteriales})"),
+                  "Alteración del CO2 \n${Gas.Gasometricos.alteracionRespiratoria} (HCO3- ${Valores.pcoArteriales})"),
           TittlePanel(
               textPanel:
-              "Alteración por Bases \n${Gas.Gasometricos.trastornoBases} (EB ${Gas.Gasometricos.EB.toStringAsFixed(2)})"),
+                  "Alteración por Bases \n${Gas.Gasometricos.trastornoBases} (EB ${Gas.Gasometricos.EB.toStringAsFixed(2)})"),
           TittlePanel(
               textPanel:
-              "Alteración del Anion Gap \n${Gas.Gasometricos.trastornoGap} (GAP ${Gas.Gasometricos.GAP.toStringAsFixed(0)})"),
+                  "Alteración del Anion Gap \n${Gas.Gasometricos.trastornoGap} (GAP ${Gas.Gasometricos.GAP.toStringAsFixed(0)})"),
         ],
       ),
     );
   }
 
   static Widget analisisOxigenacion() {
-return SingleChildScrollView(
-  controller: ScrollController(),
-  child: Column(
-      children: [
+    return SingleChildScrollView(
+      controller: ScrollController(),
+      child: Column(children: [
         ValuePanel(
           firstText: "PAFI",
           secondText: Gas.Gasometricos.PAFI.toStringAsFixed(0),
@@ -76,6 +76,11 @@ return SingleChildScrollView(
         ValuePanel(
           firstText: "Aa-O2",
           secondText: Gas.Gasometricos.GAA.toStringAsFixed(2),
+          thirdText: "mmHg",
+        ),
+        ValuePanel(
+          firstText: "Aa-O2_E",
+          secondText: Gas.Gasometricos.gradienteNormal.toStringAsFixed(2),
           thirdText: "mmHg",
         ),
         CrossLine(),
@@ -115,8 +120,14 @@ return SingleChildScrollView(
           secondText: Gas.Gasometricos.PaO2PAO2.toStringAsFixed(2),
           thirdText: "mmHg",
         ),
+        ValuePanel(
+          firstText: "Hipoxemia ?? ",
+          secondText: Gas.Gasometricos.analisisHipoxemia(),
+          thirdText: "",
+        ),
+
       ]),
-);
+    );
   }
 
   static Widget analisisAcidoBase() {
@@ -158,8 +169,7 @@ return SingleChildScrollView(
               Expanded(
                 child: ValuePanel(
                   firstText: "OSMc",
-                  secondText:
-                  Hidrometrias.osmolaridadSerica.toStringAsFixed(0),
+                  secondText: Hidrometrias.osmolaridadSerica.toStringAsFixed(0),
                   thirdText: "mOsm//L",
                 ),
               ),
@@ -172,21 +182,22 @@ return SingleChildScrollView(
               ),
             ],
           ),
-
           CrossLine(),
           Row(
             children: [
               Expanded(
                 child: ValuePanel(
                   firstText: "DIFa",
-                  secondText: Gas.Gasometricos.diferenciaIonesFuertesAparente.toStringAsFixed(0),
+                  secondText: Gas.Gasometricos.diferenciaIonesFuertesAparente
+                      .toStringAsFixed(0),
                   thirdText: "",
                 ),
               ),
               Expanded(
                 child: ValuePanel(
                   firstText: "DIFe",
-                  secondText: Gas.Gasometricos.diferenciaIonesFuertesEfectiva.toStringAsFixed(0),
+                  secondText: Gas.Gasometricos.diferenciaIonesFuertesEfectiva
+                      .toStringAsFixed(0),
                   thirdText: "",
                 ),
               ),
@@ -248,7 +259,6 @@ return SingleChildScrollView(
         ],
       ),
     );
-
   }
 
   static Widget analisisBicarbonato() {
@@ -282,8 +292,7 @@ return SingleChildScrollView(
           CrossLine(),
           ValuePanel(
             firstText: "Def. HCO3-",
-            secondText:
-            Gas.Gasometricos.deficitBicarbonato.toStringAsFixed(2),
+            secondText: Gas.Gasometricos.deficitBicarbonato.toStringAsFixed(2),
             thirdText: "mEq/L",
           ),
           CrossLine(),
@@ -314,6 +323,5 @@ return SingleChildScrollView(
         ],
       ),
     );
-
   }
 }

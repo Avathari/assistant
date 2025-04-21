@@ -26,7 +26,7 @@ import 'package:assistant/values/Strings.dart';
 import 'package:flutter/material.dart';
 
 class Pacientes {
-  static int ID_Paciente = 0, ID_Hospitalizacion = 0;
+  static int ID_Paciente = 0, ID_Hospitalizacion = 0, ID_Compendio = Valores.ID_Compendio ?? 0;
 
   static List? Pacientary = [];
 
@@ -11476,7 +11476,7 @@ class Repositorios {
 
     // Operaciones con el Padecimiento Actual *****************************************************
     "consultPadecimientoQuery":
-        "SELECT FechaPadecimiento, Padecimiento_Actual FROM pace_hosp_repo "
+        "SELECT FechaPadecimiento, Padecimiento_Actual, ID_Compendio FROM pace_hosp_repo "
             "WHERE Tipo_Analisis = 'Análisis de Ingreso' AND ID_Hosp = ? ORDER BY ID_Compendio ASC",
     "updatePadecimientoQuery": "UPDATE pace_hosp_repo "
         "SET FechaPadecimiento = ?, Padecimiento_Actual = ? "
