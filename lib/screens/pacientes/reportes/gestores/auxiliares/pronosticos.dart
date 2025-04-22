@@ -1,3 +1,4 @@
+import 'package:assistant/widgets/CrossLine.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:assistant/values/SizingInfo.dart';
@@ -89,6 +90,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                   child: Row(children: [
                     Expanded(
                       child: Spinner(
+                        fontSize: 6.0,
                         width: isMobile(context)
                             ? 60
                             : isTablet(context) || isTabletAndDesktop(context)
@@ -106,6 +108,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                     ),
                     Expanded(
                       child: Spinner(
+                        fontSize: 6.0,
                         width: isMobile(context)
                             ? 60
                             : isTablet(context) || isTabletAndDesktop(context)
@@ -123,6 +126,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                     ),
                     Expanded(
                       child: Spinner(
+                          fontSize: 6.0,
                           width: isMobile(context)
                               ? 60
                               : isTablet(context) || isTabletAndDesktop(context)
@@ -139,6 +143,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                     ),
                     Expanded(
                       child: Spinner(
+                        fontSize: 6.0,
                         width: isMobile(context)
                             ? 60
                             : isTablet(context) || isTabletAndDesktop(context)
@@ -157,7 +162,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                   ]),
                 ),
                 Expanded(
-                  flex: 3,
+                  flex: 5,
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -173,6 +178,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                             });
                           },
                         ),
+                        CrossLine(thickness: 3,height: 10),
                         Row(
                           children: [
                             Expanded(
@@ -181,7 +187,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                                   textController: pronosTextController,
                                   labelEditText: "Pronóstico médico",
                                   keyBoardType: TextInputType.multiline,
-                                  numOfLines: isTablet(context) ? 15 : 10,
+                                  numOfLines: isTablet(context) ? 15  : isMobile(context) ? 18 : 10,
                                   limitOfChars: 2000,
                                   onChange: ((value) {
                                     setState(() {
@@ -192,7 +198,7 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                                   }),
                                   inputFormat: MaskTextInputFormatter()),
                             ),
-                            Expanded(
+                            !isMobile(context) ? Expanded(
                               child: Column(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
@@ -236,7 +242,55 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
                                   GrandButton(onPress: () {}),
                                 ],
                               ),
+                            ) : Container(),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: CircleIcon(
+                                  iconed: Icons.add,
+                                  tittle: "Comentarios Previos . . . ",
+                                  onChangeValue: () {
+                                    Operadores.selectOptionsActivity(
+                                        context: context,
+                                        options: Items
+                                            .bibliografiasContempladas
+                                            .map((e) => e['Diagnostico'])
+                                            .toList(),
+                                        onClose: (valar) {
+                                          Terminal.printWarning(
+                                              message: valar);
+
+                                          for (var e in Items
+                                              .bibliografiasContempladas) {
+                                            //
+                                            if (e['Diagnostico'] == valar) {
+                                              pronosTextController.text =
+                                              "${pronosTextController.text}${e['Bibliografia']!}";
+                                            }
+                                          }
+                                          Navigator.of(context).pop();
+                                        });
+                                  }),
                             ),
+                            const SizedBox(height: 15),
+                            Expanded(
+                              child: CircleIcon(
+                                  radios: 25,
+                                  difRadios: 7,
+                                  iconed: Icons.hourglass_bottom,
+                                  tittle: "Cultivos Recabados . . . ",
+                                  onChangeValue: () => Reportes
+                                      .reportes['Pronostico_Medico'] =
+                                      pronosTextController.text =
+                                  "${pronosTextController.text} ${Auxiliares.getCultivos()}"),
+                            ),
+                            const SizedBox(height: 15),
+                            Expanded(child: GrandButton(onPress: () {})),
                           ],
                         ),
                       ],

@@ -295,7 +295,8 @@ class Archivos {
   }
 
   static createJsonFromMap(List<dynamic> map, {String filePath = ''}) async {
-    Terminal.printWarning(message: 'Creando archivo JSON en $filePath');
+    Terminal.printWarning(message: 'Creando archivo JSON en $filePath : : OBTENIDO : $map');
+    //
     if (Platform.isAndroid) {
       final directory = await getTemporaryDirectory();
       final File file = File("${directory.path}/$filePath");
@@ -1491,7 +1492,7 @@ class Dialogos {
                       iconed: Icons.camera,
                       tittle: textOptionB!,
                       onChangeValue: () {
-                        optionB!();
+                        optionB();
                       })),
             Expanded(
               child: OutlinedButton(

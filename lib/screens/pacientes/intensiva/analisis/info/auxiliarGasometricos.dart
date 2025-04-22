@@ -1,10 +1,8 @@
-import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart'
     as Gas;
 import 'package:assistant/operativity/pacientes/valores/Valorados/hidrometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/widgets/CrossLine.dart';
-import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
@@ -125,7 +123,6 @@ class AuxiliarGasometricos {
           secondText: Gas.Gasometricos.analisisHipoxemia(),
           thirdText: "",
         ),
-
       ]),
     );
   }

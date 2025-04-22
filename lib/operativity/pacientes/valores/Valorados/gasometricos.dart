@@ -251,7 +251,7 @@ class Gasometricos {
         "iCL/NA ${Gasometricos.indiceCloroSodiio.toStringAsFixed(1)}, "
         "difNa/Cl ${Gasometricos.diferenciaSodioCloro.toStringAsFixed(1)}"
         " . . ${analisisAcidoBase()}"
-        " . . ${analisisHipoxemia()}"
+        " . . ANALISIS DE OXÍGENO: ${analisisHipoxemia()}"
         "";
   }
 
@@ -483,7 +483,7 @@ class Gasometricos {
 
   static double get aGapAlbArterial {
     if (Valores.albuminaSerica != null || Valores.albuminaSerica! != 0) {
-      return GAPA + (0.25 * (4.4 - Valores.albuminaSerica!));
+      return GAP + (0.25 * (4.4 - Valores.albuminaSerica!)); // GAPA
     } else {
       return GAP;
     }
@@ -1130,39 +1130,39 @@ class Gasometricos {
 
     // Interpretación de Delta Gap
     String interpretacionDG = (Gasometricos.d_GAP < 18)
-        ? "Delta Gap < 18 → Acidosis metabólica adicional sin anión gap"
+        ? " < 18 → Acidosis metabólica adicional sin anión gap"
         : (Gasometricos.d_GAP > 30)
-            ? "Delta Gap > 30 → Alcalosis metabólica adicional"
-            : "Delta Gap entre 18–30 → No hay otro desorden metabólico adicional";
+            ? " > 30 → Alcalosis metabólica adicional"
+            : " 18 – 30 → No hay otro desorden metabólico adicional";
 
     // Interpretación del Delta Ratio
     String interpretacionDR;
     if (Gasometricos.D_d_ratio < 0.4) {
       interpretacionDR =
-          "Delta Ratio < 0.4 → Hipercloremia con AG elevado (mixto)";
+          " < 0.4 → Hipercloremia con AG elevado (mixto)";
     } else if (Gasometricos.D_d_ratio < 1.0) {
       interpretacionDR =
-          "Delta Ratio 0.5–1.0 → Acidosis metabólica mixta (AG normal + AG elevado)";
+          " 0.5–1.0 → Acidosis metabólica mixta (AG normal + AG elevado)";
     } else if (Gasometricos.D_d_ratio <= 1.6) {
       interpretacionDR =
-          "Delta Ratio 1.1–1.6 → Acidosis metabólica con AG elevado puro";
+          " 1.1–1.6 → Acidosis metabólica con AG elevado puro";
     } else {
       interpretacionDR =
-          "Delta Ratio > 1.6 → Acidosis metabólica con AG elevado + Alcalosis metabólica o acidosis respiratoria compensada";
+          " > 1.6 → Acidosis metabólica con AG elevado + Alcalosis metabólica o acidosis respiratoria compensada";
     }
 
     // Interpretación del Delta Delta
     String interpretacionDD = (Gasometricos.D_d_GAP < 1)
-        ? "Delta Delta < 1 → Acidosis metabólica mixta (AG normal y AG elevado)"
+        ? " < 1 → Acidosis metabólica mixta (AG normal y AG elevado)"
         : (Gasometricos.D_d_GAP > 2)
-            ? "Delta Delta > 2 → Acidosis metabólica con AG elevado + Alcalosis metabólica"
-            : "Delta Delta entre 1–2 → Acidosis metabólica con AG elevado sin trastorno adicional";
+            ? " > 2 → Acidosis metabólica con AG elevado + Alcalosis metabólica"
+            : " 1 – 2 → Acidosis metabólica con AG elevado sin trastorno adicional";
 
     return "ANÁLISIS ÁCIDO-BASE: "
-        // "🧪 Anión Gap: ${Gasometricos.aGapAlbArterial.toStringAsFixed(2)} $interpretacionAG "
-        // "🔺 Delta Gap: ${Gasometricos.d_GAP.toStringAsFixed(2)} $interpretacionDG "
-        "📉 Delta Ratio: ${Gasometricos.D_d_ratio.toStringAsFixed(2)} $interpretacionDR ";
-        // "🔄 Delta Delta: ${Gasometricos.D_d_GAP.toStringAsFixed(2)} $interpretacionDD ";
+        "🧪 Anión Gap: ${Gasometricos.aGapAlbArterial.toStringAsFixed(0)} $interpretacionAG "
+        "🔺 Delta Gap: ${Gasometricos.d_GAP.toStringAsFixed(0)} $interpretacionDG "
+        "📉 Delta Ratio: ${Gasometricos.D_d_ratio.toStringAsFixed(0)} $interpretacionDR "
+        "🔄 Delta Delta: ${Gasometricos.D_d_GAP.toStringAsFixed(0)} $interpretacionDD ";
   }
 
   static String analisisHipoxemia() {

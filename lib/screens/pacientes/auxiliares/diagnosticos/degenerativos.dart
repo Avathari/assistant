@@ -22,29 +22,29 @@ class _DegenerativosState extends State<Degenerativos> {
   void initState() {
     // Terminal.printWarning(
     //     message: " . . . Iniciando Actividad - Antecedentes Degenerativos");
-    Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
-      setState(() {
-        Pacientes.Patologicos = value;
-      });
-    }).onError((error, stackTrace) {
-      // Terminal.printAlert(
-      //     message: "Iniciando actividad : : \n "
-      //         "Consulta de Antecedentes Degenerativos . . .");
-      Actividades.consultarAllById(
-              Databases.siteground_database_regpace,
-              Patologicos.patologicos['consultByIdPrimaryQuery'],
-              Pacientes.ID_Paciente)
-          .then((value) {
-        setState(() {
-          // Terminal.printSuccess(
-          //     message:
-          //         "Actualizando Antecedentes Degenerativos del paciente . . . ");
-          Pacientes.Patologicos = value;
-          Archivos.createJsonFromMap(Pacientes.Patologicos!,
-              filePath: fileAssocieted);
-        });
-      });
-    });
+    // Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
+    //   setState(() {
+    //     Pacientes.Patologicos = value;
+    //   });
+    // }).onError((error, stackTrace) {
+    //   // Terminal.printAlert(
+    //   //     message: "Iniciando actividad : : \n "
+    //   //         "Consulta de Antecedentes Degenerativos . . .");
+    //   Actividades.consultarAllById(
+    //           Databases.siteground_database_regpace,
+    //           Patologicos.patologicos['consultByIdPrimaryQuery'],
+    //           Pacientes.ID_Paciente)
+    //       .then((value) {
+    //     setState(() {
+    //       // Terminal.printSuccess(
+    //       //     message:
+    //       //         "Actualizando Antecedentes Degenerativos del paciente . . . ");
+    //       Pacientes.Patologicos = value;
+    //       Archivos.createJsonFromMap(Pacientes.Patologicos!,
+    //           filePath: fileAssocieted);
+    //     });
+    //   });
+    // });
     // Terminal.printWarning(message: " . . . Actividad Iniciada");
     super.initState();
   }

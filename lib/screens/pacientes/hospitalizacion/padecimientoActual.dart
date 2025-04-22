@@ -64,7 +64,7 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
               Navigator.of(context).pop();
             },
             onAcept: () {
-              Repositorios.registrarPadecimientoActual(Values: [
+              Repositorios.registrarPadecimientoActual(context, Values: [
                 Pacientes.ID_Paciente,
                 Pacientes.ID_Hospitalizacion,
                 Valores.fechaPadecimientoActual ??
@@ -206,6 +206,12 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                 ),
                 Expanded(
                   child: ValuePanel(
+                    firstText: "ID Pace ",
+                    secondText: Pacientes.ID_Paciente.toString(),
+                  ),
+                ),
+                Expanded(
+                  child: ValuePanel(
                     firstText: "Cama ",
                     secondText: Valores.numeroCama.toString(),
                   ),
@@ -226,9 +232,95 @@ class _PadecimientoActualState extends State<PadecimientoActual> {
                         iconColor: Pacientes.ID_Compendio != 0
                             ? Colors.green
                             : Colors.red,
-                        onPress: () => Datos.portapapeles(
-                            context: context,
-                            text: "${Valores.padecimientoActual}"))),
+                        onPress: () => Pacientes.ID_Compendio == 0
+                            ? Repositorios.registrarPadecimientoActual(context,
+                                    Values: [
+                                    Pacientes.ID_Paciente,
+                                    Pacientes.ID_Hospitalizacion,
+                                    Valores.fechaPadecimientoActual ??
+                                        Calendarios.today(format: 'yyyy/MM/dd'),
+                                    Reportes.padecimientoActual,
+                                    // Valores.servicioTratanteInicial,
+                                    Valores.servicioTratante,
+                                    Calendarios.today(format: 'yyyy/MM/dd'),
+                                    //
+                                    Reportes.impresionesDiagnosticas,
+                                    //
+                                    Reportes.reportes['Subjetivo'],
+                                    Reportes.signosVitales,
+                                    Reportes.exploracionFisica,
+                                    //
+                                    Reportes.auxiliaresDiagnosticos,
+                                    Reportes.analisisComplementarios,
+                                    // Reportes.eventualidadesOcurridas,
+                                    // Reportes.terapiasPrevias,
+                                    Reportes.analisisMedico,
+                                    // Reportes.tratamientoPropuesto,
+                                    Reportes.pronosticoMedico,
+                                    // INDICACIONES MÉDICAS *******************************
+                                    Reportes.dieta.toString(),
+                                    Reportes.hidroterapia.toString(),
+                                    Reportes.insulinoterapia.toString(),
+                                    Reportes.hemoterapia.toString(),
+                                    Reportes.oxigenoterapia.toString(),
+                                    Reportes.medicamentosIndicados.toString(),
+                                    Reportes.medidasGenerales.toString(),
+                                    Reportes.pendientes.toString(),
+                                    //
+                                    Reportes.hitosHospitalarios.toString(),
+                                    //
+
+                                    Repositorios
+                                        .tipo_Analisis, // Items.tiposAnalisis[0] //
+                                  ],
+                                    ValuesEgreso: [
+                                    Pacientes.ID_Paciente,
+                                    Pacientes.ID_Hospitalizacion,
+                                    Valores.fechaPadecimientoActual ??
+                                        Calendarios.today(format: 'yyyy/MM/dd'),
+                                    Reportes.padecimientoActual,
+                                    // Valores.servicioTratanteInicial,
+                                    Valores.servicioTratante,
+                                    Calendarios.today(format: 'yyyy/MM/dd'),
+                                    Reportes.impresionesDiagnosticas,
+                                    Reportes.reportes['Subjetivo'],
+                                    Reportes.signosVitales,
+                                    Reportes.exploracionFisica,
+                                    //
+                                    Reportes.auxiliaresDiagnosticos,
+                                    Reportes.analisisComplementarios,
+                                    //
+                                    Reportes.analisisMedico,
+                                    Reportes.pronosticoMedico,
+                                    // INDICACIONES MÉDICAS *******************************
+                                    Reportes.dieta.toString(),
+                                    Reportes.hidroterapia.toString(),
+                                    Reportes.insulinoterapia.toString(),
+                                    Reportes.hemoterapia.toString(),
+                                    Reportes.oxigenoterapia.toString(),
+                                    Reportes.medicamentosIndicados.toString(),
+                                    Reportes.medidasGenerales.toString(),
+                                    Reportes.pendientes.toString(),
+                                    //
+                                    Reportes.hitosHospitalarios.toString(),
+                                    //
+                                    Items.tiposAnalisis[
+                                        3], // Repositorios.tipoAnalisis()
+                                  ])
+                                .onError((error, stackTrace) =>
+                                    Operadores.alertActivity(
+                                        context: context,
+                                        tittle:
+                                            "ERROR al Recrear Padecimiento Actual",
+                                        message:
+                                            "ERROR - $error : : $stackTrace"))
+                                .whenComplete(() {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                              }).whenComplete(() => setState(() => {}))
+                            : Datos.portapapeles(
+                                context: context,
+                                text: Valores.padecimientoActual!))),
               ],
             ),
             CrossLine(thickness: 2, height: 20),

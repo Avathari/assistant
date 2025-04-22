@@ -56,8 +56,7 @@ class _SpinnerState extends State<Spinner> {
             return widget.items!.map<Widget>((String item) {
               return Container(
                   alignment: Alignment.centerRight,
-                  child: Text(item, textAlign: TextAlign.end)
-              );
+                  child: Text(item, textAlign: TextAlign.end));
             }).toList();
           },
           onChanged: (String? newValue) {
@@ -69,7 +68,10 @@ class _SpinnerState extends State<Spinner> {
               child: Text(
                 val,
                 textAlign: TextAlign.right,
-                style: TextStyle(fontSize: widget.fontSize! - 2),
+                style: TextStyle(
+                    fontSize: widget.fontSize! > 10
+                        ? widget.fontSize! - 2
+                        : widget.fontSize! + 2),
               ),
             );
           }).toList(),
@@ -86,7 +88,6 @@ class _SpinnerState extends State<Spinner> {
                   TextStyle(color: Colors.white, fontSize: widget.fontSize!)),
         ),
       ),
-
     ]);
   }
 

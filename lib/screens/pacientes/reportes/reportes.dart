@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/conexiones/controladores/pacientes/auxiliar/extractor.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 
@@ -42,6 +43,7 @@ import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/ListValue.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
+import 'package:assistant/widgets/ValuePanel.dart';
 import 'package:flutter/material.dart';
 
 class ReportesMedicos extends StatefulWidget {
@@ -60,80 +62,46 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
 
   @override
   void initState() {
-    // Llamado a los ultimos registros agregados. ****************************
-    setState(() {
-      // Diagnosticos.registros(); // Diagnósticos
-      Quirurgicos.consultarRegistro(); // Quirúrgicos
-      Repositorios.consultarAnalisis();
-      Balances.consultarRegistro();
-      // Patologicos del Paciente *************************************
-      Archivos.readJsonToMap(
-              filePath: "${Pacientes.localRepositoryPath}patologicos.json")
-          .then((value) {
-        Pacientes.Patologicos = value;
-      }).whenComplete(() =>
-              Reportes.reportes["Antecedentes_Patologicos_Ingreso"] =
-                  Pacientes.antecedentesIngresosPatologicos());
-      // Vitales del Paciente ****************************************
-      Archivos.readJsonToMap(
-              filePath: "${Pacientes.localRepositoryPath}vitales.json")
-          .then((value) {
-        Pacientes.Vitales = value;
-        Vitales.fromJson(value.last);
-      });
-      // Diagnósticos del Paciente ****************************************
-      Archivos.readJsonToMap(
-              filePath: "${Pacientes.localRepositoryPath}diagnosticos.json")
-          .then((value) {
-        Pacientes.Diagnosticos = value;
-      });
-      // Ventilaciones del Paciente ****************************************
-      Archivos.readJsonToMap(
-              filePath: "${Pacientes.localRepositoryPath}ventilaciones.json")
-          .then((value) {
-        Pacientes.Ventilaciones = value;
-      });
-      // Alérgias del Paciente ****************************************
-      // Archivos.readJsonToMap(
-      //         filePath: "${Pacientes.localRepositoryPath}alergicos.json")
-      //     .then((value) {
-      //   Pacientes.Alergicos = value;
-      // });
+    super.initState();
 
-// *********************************************
-      if (Pacientes.ID_Hospitalizacion != 0) {
-        Repositorios.consultarAnalisis();
-      }
-      // Paraclinicos del Paciente *************************************
-      Archivos.readJsonToMap(
-              filePath: "${Pacientes.localRepositoryPath}/paraclinicos.json")
-          .then((value) {
-        Pacientes.Paraclinicos = value;
-      });
-
-      // Valores del Paciente ****************************************
-      Archivos.readJsonToMap(filePath: Pacientes.localPath).then((value) {
-        Valores.fromJson(value[0]);
-      }).onError((error, stackTrace) {
-        // Terminal.printAlert(message: "ERROR al Abrir ${Pacientes.localPath}" - $error : : $stackTrace");
-        Operadores.alertActivity(
+    // Cargar análisis si hay hospitalización activa
+    if (Pacientes.ID_Hospitalizacion != 0) Repositorios.consultarAnalisis();
+    // Cargar antecedentes patológicos
+    Archivos.readJsonToMap(
+            filePath: "${Pacientes.localRepositoryPath}patologicos.json")
+        .then((value) => Pacientes.Patologicos = value)
+        .whenComplete(() =>
+            Reportes.reportes["Antecedentes_Patologicos_Ingreso"] =
+                Pacientes.antecedentesIngresosPatologicos())
+        .onError((onError, stackTrace) => Operadores.alertActivity(
             context: context,
             tittle: "Error al Abrir ${Pacientes.localPath}",
-            message: " ERROR - $error : : $stackTrace\n"
-                "Reiniciando Loading Activity . . . ");
-        Pacientes.loadingActivity(context: context);
-      });
+            message:
+                "ERROR - $onError : : $stackTrace\nReiniciando Loading Activity . . .",
+            onAcept: () => Navigator.of(context).pop()));
 
-      // CONSULTAR NOTACIONES PREVIAS ****************************************
-      Reportes.consultarNotasHospitalizacion().then((value) => setState(() {
-            if (value.isNotEmpty) {
-              widget.indexNote = 0;
-              listNotes = value;
-            }
-          }));
+    // Cargar valores del paciente
+    Archivos.readJsonToMap(filePath: Pacientes.localPath).then((value) {
+      Valores.fromJson(value[0]);
+    }).onError((error, stackTrace) {
+      Operadores.alertActivity(
+        context: context,
+        tittle: "Error al Abrir ${Pacientes.localPath}",
+        message:
+            "ERROR - $error : : $stackTrace\nReiniciando Loading Activity . . .",
+      );
+      Pacientes.loadingActivity(context: context);
     });
-    // # # # ############## #### ######## #### ########
-    super.initState();
+
+    // Consultar notaciones previas
+    Reportes.consultarNotasHospitalizacion().then((value) {
+      if (value.isNotEmpty) {
+        setState(() {
+          widget.indexNote = 0;
+          listNotes = value;
+        });
+      }
+    });
   }
 
 // ******************************************************
@@ -147,13 +115,12 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       floatingActionButton: !isLargeDesktop(context) && !isDesktop(context)
           ? floattingActionButton(context)
           : CircleIcon(
-        iconed: Icons.send_time_extension_outlined,
-        radios: 35,
-        difRadios: 5,
-        tittle: "Extractor de Paraclínicos . . . ",
-        onChangeValue: () =>
-          AuxiliarExtractor(context),
-      ),
+              iconed: Icons.send_time_extension_outlined,
+              radios: 35,
+              difRadios: 5,
+              tittle: "Extractor de Paraclínicos . . . ",
+              onChangeValue: () => AuxiliarExtractor(context),
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: bottomNavigationBar(context),
       body: isMobile(context) || isTablet(context)
@@ -487,6 +454,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
 
   // ******************************************************
   Widget sideLeft() {
+    Terminal.printWarning(message: Valores.fechaVitales!.split(" ").toString());
+    final partes = Valores.fechaVitales!.split(" ");
+
     if (isMobile(context) || isTablet(context)) {
       return Row(
         children: [
@@ -500,24 +470,379 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                     children: [
                       isMobile(context)
                           ? Expanded(
-                              child: Container(
-                                height: isMobile(context) ? 100 : 0,
-                                margin: const EdgeInsets.all(8.0),
-                                decoration:
-                                    ContainerDecoration.roundedDecoration(
-                                        radius: 50),
-                                child: GrandIcon(
-                                  iconData: Icons.account_balance_sharp,
-                                  labelButton: "Tipo de Nota Médica",
-                                  onPress: () {
-                                    Cambios.toNextActivity(context,
-                                        tittle: 'Revisión de Valores',
-                                        chyld: Revisiones(withTitle: false));
-                                    // setState(() {
-                                    //   widget.actualPage = 19;
-                                    // });
-                                  },
-                                ),
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      height: isMobile(context) ? 100 : 0,
+                                      width: isMobile(context) ? 100 : 0,
+                                      margin: const EdgeInsets.all(2.0),
+                                      decoration:
+                                          ContainerDecoration.roundedDecoration(
+                                              radius: 50),
+                                      child: GrandIcon(
+                                        iconData: Icons.account_balance_sharp,
+                                        labelButton: "Tipo de Nota Médica",
+                                        onPress: () {
+                                          Cambios.toNextActivity(context,
+                                              tittle: 'Revisión de Valores',
+                                              chyld:
+                                                  Revisiones(withTitle: false));
+                                          // setState(() {
+                                          //   widget.actualPage = 19;
+                                          // });
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  CrossLine(),
+                                  Expanded(
+                                    flex: 3,
+                                    child: GridView(
+                                      padding: const EdgeInsets.all(5.0),
+                                      controller: ScrollController(),
+                                      gridDelegate: GridViewTools.gridDelegate(
+                                          crossAxisCount: 1,
+                                          mainAxisSpacing: 1.0,
+                                          crossAxisSpacing: 1.0,
+                                          mainAxisExtent: 50), //46
+                                      children: [
+                                        if (Valores.fechaVitales!
+                                            .split(" ")
+                                            .isNotEmpty)
+                                          ValuePanel(
+                                            firstText: partes[0],
+                                            secondText: partes.length > 1
+                                                ? partes[1]
+                                                : "",
+                                            thirdText: '',
+                                          ),
+                                        if (Valores.fechaVitales!
+                                            .split(" ")
+                                            .isEmpty)
+                                          ValuePanel(
+                                            firstText:
+                                                Valores.fechaVitales.toString(),
+                                            secondText: "",
+                                            thirdText: "",
+                                          ),
+                                        CrossLine(height: 1),
+                                        ValuePanel(
+                                          firstText: "T. Sys",
+                                          secondText: Valores
+                                              .tensionArterialSystolica
+                                              .toString(),
+                                          thirdText: "mmHg",
+                                          withEditMessage: true,
+                                          onEdit: (value) {
+                                            Operadores.editActivity(
+                                                context: context,
+                                                tittle: "Editar . . . ",
+                                                message:
+                                                    "¿Tensión sistólica? . . . ",
+                                                onAcept: (value) {
+                                                  Terminal.printSuccess(
+                                                      message:
+                                                          "recieve $value");
+                                                  setState(() {
+                                                    Valores.tensionArterialSystolica =
+                                                        int.parse(value);
+                                                    Navigator.of(context).pop();
+                                                  });
+                                                });
+                                          },
+                                        ),
+                                        ValuePanel(
+                                          firstText: "T. Dyas",
+                                          secondText: Valores
+                                              .tensionArterialDyastolica
+                                              .toString(),
+                                          thirdText: "mmHg",
+                                          withEditMessage: true,
+                                          onEdit: (value) {
+                                            Operadores.editActivity(
+                                                context: context,
+                                                tittle: "Editar . . . ",
+                                                message:
+                                                    "¿Tensión diastólica? . . . ",
+                                                onAcept: (value) {
+                                                  Terminal.printSuccess(
+                                                      message:
+                                                          "recieve $value");
+                                                  setState(() {
+                                                    Valores.tensionArterialDyastolica =
+                                                        int.parse(value);
+                                                    Navigator.of(context).pop();
+                                                  });
+                                                });
+                                          },
+                                        ),
+                                        ValuePanel(
+                                          firstText: "F. Card.",
+                                          secondText: Valores.frecuenciaCardiaca
+                                              .toString(),
+                                          thirdText: "Lat/min",
+                                          withEditMessage: true,
+                                          onEdit: (value) {
+                                            Operadores.editActivity(
+                                                context: context,
+                                                tittle: "Editar . . . ",
+                                                message:
+                                                    "¿Frecuencia cardiaca? . . . ",
+                                                onAcept: (value) {
+                                                  Terminal.printSuccess(
+                                                      message:
+                                                          "recieve $value");
+                                                  setState(() {
+                                                    Valores.frecuenciaCardiaca =
+                                                        int.parse(value);
+                                                    Navigator.of(context).pop();
+                                                  });
+                                                });
+                                          },
+                                        ),
+                                        ValuePanel(
+                                          firstText: "F. Resp.",
+                                          secondText: Valores
+                                              .frecuenciaRespiratoria
+                                              .toString(),
+                                          thirdText: "Resp/min",
+                                          withEditMessage: true,
+                                          onEdit: (value) {
+                                            Operadores.editActivity(
+                                                context: context,
+                                                tittle: "Editar . . . ",
+                                                message:
+                                                    "¿Frecuencia respiratoria? . . . ",
+                                                onAcept: (value) {
+                                                  Terminal.printSuccess(
+                                                      message:
+                                                          "recieve $value");
+                                                  setState(() {
+                                                    Valores.frecuenciaRespiratoria =
+                                                        int.parse(value);
+                                                    Navigator.of(context).pop();
+                                                  });
+                                                });
+                                          },
+                                        ),
+                                        ValuePanel(
+                                          firstText: "T. C.",
+                                          secondText: Valores.temperaturCorporal
+                                              .toString(),
+                                          thirdText: "°C",
+                                          withEditMessage: true,
+                                          onEdit: (value) {
+                                            Operadores.editActivity(
+                                                context: context,
+                                                tittle: "Editar . . . ",
+                                                message:
+                                                    "¿Temperatura corporal? . . . ",
+                                                onAcept: (value) {
+                                                  Terminal.printSuccess(
+                                                      message:
+                                                          "recieve $value");
+                                                  setState(() {
+                                                    Valores.temperaturCorporal =
+                                                        double.parse(value);
+                                                    Navigator.of(context).pop();
+                                                  });
+                                                });
+                                          },
+                                        ),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: ValuePanel(
+                                                firstText: "SpO2",
+                                                secondText: Valores
+                                                    .saturacionPerifericaOxigeno
+                                                    .toString(),
+                                                thirdText: "%",
+                                                withEditMessage: true,
+                                                onEdit: (value) {
+                                                  Operadores.editActivity(
+                                                      context: context,
+                                                      tittle: "Editar . . . ",
+                                                      message:
+                                                          "¿Saturación periférica de oxígeno? . . . ",
+                                                      onAcept: (value) {
+                                                        Terminal.printSuccess(
+                                                            message:
+                                                                "recieve $value");
+                                                        setState(() {
+                                                          Valores.saturacionPerifericaOxigeno =
+                                                              int.parse(value);
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        });
+                                                      });
+                                                },
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: ValuePanel(
+                                                firstText: "E-PO2",
+                                                secondText: Antropometrias
+                                                    .pO2equivalente
+                                                    .toStringAsFixed(2),
+                                                thirdText: "mmHg",
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        ValuePanel(
+                                          firstText: "P. Corporal",
+                                          secondText: Valores.pesoCorporalTotal
+                                              .toString(),
+                                          thirdText: "Kg",
+                                          withEditMessage: true,
+                                          onEdit: (value) {
+                                            Operadores.editActivity(
+                                                context: context,
+                                                tittle: "Editar . . . ",
+                                                message:
+                                                    "¿Peso corporal total? . . . ",
+                                                onAcept: (value) {
+                                                  Terminal.printSuccess(
+                                                      message:
+                                                          "recieve $value");
+                                                  setState(() {
+                                                    Valores.pesoCorporalTotal =
+                                                        double.parse(value);
+                                                    Navigator.of(context).pop();
+                                                  });
+                                                });
+                                          },
+                                        ),
+                                        ValuePanel(
+                                          firstText: "Estatura",
+                                          secondText:
+                                              Valores.alturaPaciente.toString(),
+                                          thirdText: "mts",
+                                          withEditMessage: true,
+                                          onEdit: (value) {
+                                            Operadores.editActivity(
+                                                context: context,
+                                                tittle: "Editar . . . ",
+                                                message:
+                                                    "¿Altura del paciente? . . . ",
+                                                onAcept: (value) {
+                                                  Terminal.printSuccess(
+                                                      message:
+                                                          "recieve $value");
+                                                  setState(() {
+                                                    Valores.alturaPaciente =
+                                                        double.parse(value);
+                                                    Navigator.of(context).pop();
+                                                  });
+                                                });
+                                          },
+                                        ),
+                                        ValuePanel(
+                                          firstText: "G. Cap.",
+                                          secondText: Valores.glucemiaCapilar
+                                              .toString(),
+                                          thirdText: "mg/dL",
+                                          withEditMessage: true,
+                                          onEdit: (value) {
+                                            Operadores.editActivity(
+                                                context: context,
+                                                tittle: "Editar . . . ",
+                                                message:
+                                                    "¿Glucemia capilar? . . . ",
+                                                onAcept: (value) {
+                                                  Terminal.printSuccess(
+                                                      message:
+                                                          "recieve $value");
+                                                  setState(() {
+                                                    Valores.glucemiaCapilar =
+                                                        int.parse(value);
+                                                    Navigator.of(context).pop();
+                                                  });
+                                                });
+                                          },
+                                        ),
+                                        CrossLine(),
+                                        ValuePanel(
+                                          firstText: "FiO2",
+                                          secondText: Valores
+                                              .fraccionInspiratoriaOxigeno
+                                              .toString(),
+                                          thirdText: "%",
+                                          withEditMessage: true,
+                                          onEdit: (value) {
+                                            Operadores.editActivity(
+                                                context: context,
+                                                tittle: "Editar . . . ",
+                                                message:
+                                                    "¿Fracción Inspiratoria Oxigeno? . . . ",
+                                                onAcept: (value) {
+                                                  Terminal.printSuccess(
+                                                      message:
+                                                          "recieve $value");
+                                                  setState(() {
+                                                    Valores.fraccionInspiratoriaOxigeno =
+                                                        int.parse(value);
+                                                    Navigator.of(context).pop();
+                                                  });
+                                                });
+                                          },
+                                        ),
+                                        ValuePanel(
+                                          firstText: "P.V.C.",
+                                          secondText: Valores
+                                              .presionVenosaCentral
+                                              .toString(),
+                                          thirdText: "cmH20",
+                                          withEditMessage: true,
+                                          onEdit: (value) {
+                                            Operadores.editActivity(
+                                                context: context,
+                                                tittle: "Editar . . . ",
+                                                message:
+                                                    "¿Presión Venosa Central? . . . ",
+                                                onAcept: (value) {
+                                                  Terminal.printSuccess(
+                                                      message:
+                                                          "recieve $value");
+                                                  setState(() {
+                                                    Valores.presionVenosaCentral =
+                                                        int.parse(value);
+                                                    Navigator.of(context).pop();
+                                                  });
+                                                });
+                                          },
+                                        ),
+                                        CrossLine(),
+                                        ValuePanel(
+                                          firstText: "Horas ayuno",
+                                          secondText:
+                                              Valores.horasAyuno.toString(),
+                                          thirdText: "Horas",
+                                          withEditMessage: true,
+                                          onEdit: (value) {
+                                            Operadores.editActivity(
+                                                context: context,
+                                                tittle: "Editar . . . ",
+                                                message:
+                                                    "¿Horas de ayuno? . . . ",
+                                                onAcept: (value) {
+                                                  Terminal.printSuccess(
+                                                      message:
+                                                          "recieve $value");
+                                                  setState(() {
+                                                    Valores.horasAyuno =
+                                                        int.parse(value);
+                                                    Navigator.of(context).pop();
+                                                  });
+                                                });
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             )
                           : Expanded(
@@ -534,12 +859,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                                   });
                                 },
                               ),
-                              //     child: Container(
-                              //   decoration: ContainerDecoration.roundedDecoration(),
-                              //   child: TittlePanel(
-                              //       padding: isTablet(context) ? 4 : 2,
-                              //       textPanel: "Tipo de Nota Médica"),
-                              // ),
+                              //
                             ),
                       Expanded(
                           flex: 2,
@@ -1272,6 +1592,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         onPressed: () => showModalBottomSheet(
             context: context,
             builder: (BuildContext context) {
+              //               setState(() => {});               //
               return Container(
                 width: 350,
                 padding: const EdgeInsets.all(8.0),
@@ -1516,7 +1837,8 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           listNotes![widget.indexNote]['Padecimiento_Actual'] ?? "";
       Reportes.reportes['Exploracion_Fisica'] = Reportes.exploracionFisica =
           listNotes![widget.indexNote]['Exploracion_Fisica'] ?? "";
-      Reportes.analisisMedico = listNotes![widget.indexNote]['Analisis_Medico'] ?? "";
+      Reportes.analisisMedico =
+          listNotes![widget.indexNote]['Analisis_Medico'] ?? "";
       //
       Reportes.reportes['Auxiliares_Diagnosticos'] =
           Reportes.auxiliaresDiagnosticos =
@@ -1541,7 +1863,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               // PRESENTACION
 
               Text(
-                listNotes![widget.indexNote]['Tipo_Analisis']  ?? "",
+                listNotes![widget.indexNote]['Tipo_Analisis'] ?? "",
                 style: Styles.textSyleGrowth(fontSize: 12),
               ),
               Text(
@@ -1560,8 +1882,10 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   : Container(),
               // DIAGNOSTICOS ********************************************
               Text(
-                  listNotes![widget.indexNote]['Diagnosticos_Hospital'] !=null ? listNotes![widget.indexNote]['Diagnosticos_Hospital']
-                      .toUpperCase() : "",
+                  listNotes![widget.indexNote]['Diagnosticos_Hospital'] != null
+                      ? listNotes![widget.indexNote]['Diagnosticos_Hospital']
+                          .toUpperCase()
+                      : "",
                   maxLines: 20,
                   style: Styles.textSyleGrowth(fontSize: 9)),
               listNotes![widget.indexNote]['Tipo_Analisis'] !=
@@ -1641,8 +1965,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                     )
                   : Container(),
               // VITALES ********************************************
-              Text(listNotes![widget.indexNote]['Signos_Vitales'],
-                  maxLines: 3, style: Styles.textSyleGrowth(fontSize: 8)),
+              if (listNotes![widget.indexNote]['Signos_Vitales'] != Null)
+                Text(listNotes![widget.indexNote]['Signos_Vitales'] ?? "",
+                    maxLines: 3, style: Styles.textSyleGrowth(fontSize: 8)),
               listNotes![widget.indexNote]['Tipo_Analisis'] !=
                           'Análisis de Gravedad' &&
                       listNotes![widget.indexNote]['Tipo_Analisis'] !=
@@ -1659,7 +1984,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   'Análisis de Egreso')
                 // EXPLORACIÓN FÍSICA ********************************************
                 Text(
-                  listNotes![widget.indexNote]['Exploracion_Fisica'],
+                  listNotes![widget.indexNote]['Exploracion_Fisica'] ?? "",
                   maxLines: 20,
                   style: Styles.textSyleGrowth(fontSize: 9),
                 ),
@@ -1685,14 +2010,15 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   ? CrossLine(thickness: 1)
                   : Container(),
               // ANÁLISIS MÉDICO ********************************************
-              Text(
-                listNotes![widget.indexNote]['Analisis_Medico'],
-                maxLines: listNotes![widget.indexNote]['Tipo_Analisis'] ==
-                        'Análisis de Egreso'
-                    ? 100
-                    : 100,
-                style: Styles.textSyleGrowth(fontSize: 9),
-              ),
+              if (listNotes![widget.indexNote]['Analisis_Medico'] != Null)
+                Text(
+                  listNotes![widget.indexNote]['Analisis_Medico'] ?? "",
+                  maxLines: listNotes![widget.indexNote]['Tipo_Analisis'] ==
+                          'Análisis de Egreso'
+                      ? 100
+                      : 100,
+                  style: Styles.textSyleGrowth(fontSize: 9),
+                ),
 
               CrossLine(thickness: 1),
               // PRONÓSTICO MÉDICO ********************************************
@@ -1708,8 +2034,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               // ),
               CrossLine(thickness: 4),
               CrossLine(thickness: 3),
-              Text(listNotes![widget.indexNote]['Pendientes'],
-                  style: Styles.textSyleGrowth(fontSize: 8)),
+              if (listNotes![widget.indexNote]['Pendientes'] != Null)
+                Text(listNotes![widget.indexNote]['Pendientes'] ?? "",
+                    style: Styles.textSyleGrowth(fontSize: 8)),
               SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -15,6 +16,11 @@ class AuxiliarExtractor {
   static List<List<dynamic>>? valoresLaboratorio = [];
   static String? nssPaciente, agregadoPaciente, fechaResultado;
   static String? result, registroPrevio = "NO ENCONTRADO";
+  //
+  static List<dynamic> idsPacientes = [],
+      listaDeReinicio =
+          []; // La Lista de Reinicio contiene el ID_Pace, más el string del path del paraclinicos.json
+  static List<Map<String, dynamic>> listaDepurada = [];
 
   // String? stringImage = '';
   // final PdfViewerController _pdfViewerController = PdfViewerController();
@@ -26,6 +32,7 @@ class AuxiliarExtractor {
 
   static obtenerInformacionDesdeInstitucional(BuildContext context) async {
     valoresLaboratorio!.clear();
+    idsPacientes.clear();
     List listaArchivosSeleccionados = [];
 
     /// Aqui se agregan los Archivos que contienen algún valor, para posteriormente eliminarse.
@@ -49,112 +56,319 @@ class AuxiliarExtractor {
                   File(filePickerResult[index].path!).readAsBytesSync());
 
           /// Extrae una lista de lineas de texto.
-          final List<TextLine> textLine =
-              PdfTextExtractor(document).extractTextLines();
-
-          await _incluirNSS(context, textLine).whenComplete(() {
-            // List<String> partes = _regresarPartesEncontradas(textLine);
-            List<String> partes = [];
-            //
+          // final List<TextLine> textLine =
+          //     PdfTextExtractor(document).extractTextLines();
+          final List<TextLine> textLine;
+          try {
+            textLine = PdfTextExtractor(document).extractTextLines();
             for (var item in textLine) {
-              String texto = item.text;
+              Terminal.printSuccess(message: "${item.text}");
+            }
 
-              RegExp regExp = RegExp(
-                  r'([A-Z]+),\s?(\d),\s?(-)|(?![\x95\s\#])(\D+|\d*\.?\d*)(?![\s\#]$)');
-
-              // RegExp(r'(?![\x95\s\#])(\D+|\d*\.?\d*)(?![\s\#]$)');
-              // (?!\s[\x95#]$)
-              //RegExp(r'(\D+|\d*\.?\d*)');
-              // (?!#)[^#]+
-              //^[a-zA-Z]+$
-              // \D+|\d*\.?\d*
-              // \d+|\D+
-              // ^
-              // r'^[+-]?([0-9]*[.])?[0-9]+$'
-              partes = regExp
-                  .allMatches(texto)
-                  .map((match) => match.group(0) ?? 'No encontrado')
-                  .toList();
+            //
+            await _incluirNSS(context, textLine).whenComplete(() {
+              // List<String> partes = _regresarPartesEncontradas(textLine);
+              List<String> partes = [];
               //
-              for (var value in Auxiliares.paraclinicosInstitucionales) {
-                // Terminal.printSuccess(message: "${partes[0].replaceAll(RegExp(r'^(.*)\s<'), "").trim()}");
-                if (partes[0].contains(value)) {
-                  // Terminal.printSuccess(message: "${partes}");
-                  // Terminal.printSuccess(message: "${partes.length}");
-                  // Terminal.printExpected(message: "${partes} : : $value");
-                  if ((partes[0] == "HIVAb-Ag No reactivo" &&
-                          value == "HIVAb-Ag No reactivo") ||
-                      (partes[0] == "HIVAb-Ag Reactivo" &&
-                          value == "HIVAb-Ag Reactivo")) {
-                    valoresLaboratorio!.add([
-                      0,
-                      idPaciente,
-                      Calendarios.fromTextoLlano(
-                              fechaResultado!.trim().split("N: ")[1].trim())
-                          .toString(),
-                      Auxiliares.queCategoriaPertenece(partes[0]
-                          .trim()
-                          .replaceAll(RegExp(r'\<[^<>]*\>'), '')),
-                      "HIVAb-Ag",
-                      if (partes[0] == "HIVAb-Ag No reactivo")
-                        "No reactivo"
-                      else
-                        "Reactivo",
-                      "",
-                    ]);
-                    // AGREGAR A LISTAS DE ARCHIVOS SELECCIONADOS
-                    listaArchivosSeleccionados
-                        .add(filePickerResult[index].path!);
-                  } else {
-                    if (partes.length > 2) {
-                      // Terminal.printSuccess(message: "${partes[0]}");
-                      if (partes[0].trim() == value || partes[0] == value) {
-                        // Terminal.printSuccess(
-                        //     message: // "ITEM ENCONTRADO "
-                        //     "${partes[0]} . "
-                        //         "${partes[1]} . "
-                        //         "${partes[2]} . "
-                        //         "");
-                        valoresLaboratorio!.add([
-                          0,
-                          idPaciente,
-                          Calendarios.fromTextoLlano(
-                                  fechaResultado!.trim().split("N: ")[1].trim())
-                              .toString(),
-                          Auxiliares.queCategoriaPertenece(partes[0]
-                              .trim()
-                              .replaceAll(RegExp(r'\<[^<>]*\>'), '')),
-                          // partes[0].split("#")[0].trim()), // Tipo_Estudio
-                          Auxiliares.queLaboratorioPertenece(partes[0]
-                              .trim()), // .replaceAll(RegExp(r'^(.*)\s<'), '').trimRight()
-                          // partes[0].split("#")[0].trim()), // Laboratorio
-                          partes[1].trim(),
-                          if (partes[2] == "S/U Reactivo > = " ||
-                              partes[2] == "S/CO Reactivo > = ")
-                            "S/U"
-                          else if (partes[2] == "IU/mL Reactivo > = " ||
-                              partes[2] == "IU/mLReactivo>=")
-                            "UI/mL"
-                          else
-                            partes[2]
+              for (var item in textLine) {
+                String texto = item.text;
+
+                RegExp regExp = RegExp(
+                    r'([A-Za-z]+),\s?(\d),\s?(-)|(?![\x95\s\#])(\D+|\d*\.?\d*)(?![\s\#]$)'
+                );
+
+
+                // RegExp(r'(?![\x95\s\#])(\D+|\d*\.?\d*)(?![\s\#]$)');
+                // (?!\s[\x95#]$)
+                //RegExp(r'(\D+|\d*\.?\d*)');
+                // (?!#)[^#]+
+                //^[a-zA-Z]+$
+                // \D+|\d*\.?\d*
+                // \d+|\D+
+                // ^
+                // r'^[+-]?([0-9]*[.])?[0-9]+$'
+                partes = regExp
+                    .allMatches(texto)
+                    .map((match) => match.group(0) ?? 'No encontrado')
+                    .toList();
+                //
+                Terminal.printOther(message: "${partes}");
+                //
+                for (var value in Auxiliares.paraclinicosInstitucionales) {
+                  // Terminal.printSuccess(message: "${partes[0].replaceAll(RegExp(r'^(.*)\s<'), "").trim()}");
+                  // Terminal.printSuccess(message: "${partes[2].trim()}");
+                  if (partes[0].contains(value)) {
+                    // Terminal.printSuccess(message: "partes[2].trim() : : ${partes[2]}");
+                    // Terminal.printSuccess(message: "${partes}");
+                    // Terminal.printSuccess(message: "${partes.length}");
+                    // Terminal.printExpected(message: "${partes} : : $value");
+                    if ((partes[0] == "HIVAb-Ag No reactivo" &&
+                            value == "HIVAb-Ag No reactivo") ||
+                        (partes[0] == "HIVAb-Ag Reactivo" &&
+                            value == "HIVAb-Ag Reactivo")) {
+                      valoresLaboratorio!.add([
+                        0,
+                        idPaciente,
+                        Calendarios.fromTextoLlano(
+                                fechaResultado!.trim().split("N: ")[1].trim())
+                            .toString(),
+                        Auxiliares.queCategoriaPertenece(partes[0]
+                            .trim()
+                            .replaceAll(RegExp(r'\<[^<>]*\>'), '')),
+                        "HIVAb-Ag",
+                        if (partes[0] == "HIVAb-Ag No reactivo")
+                          "No reactivo"
+                        else
+                          "Reactivo",
+                        "",
+                      ]);
+                      // AGREGAR A LISTAS DE ARCHIVOS SELECCIONADOS
+                      listaArchivosSeleccionados
+                          .add(filePickerResult[index].path!);
+                    }
+                    //
+                    else if ((partes[0] == "pCO" && partes[2].trim() == "Sangre Arterial")){
+                      valoresLaboratorio!.add([
+                        0,
+                        idPaciente,
+                        Calendarios.fromTextoLlano(
+                            fechaResultado!.trim().split("N: ")[1].trim())
+                            .toString(),
+                        Auxiliares.queCategoriaPertenece(partes[0]),
+                        Auxiliares.queLaboratorioPertenece("${partes[0]}${partes[2]}".trim()),
+                        partes[3],
+                        partes[4],
+                      ]);
+                      // AGREGAR A LISTAS DE ARCHIVOS SELECCIONADOS
+                      listaArchivosSeleccionados
+                          .add(filePickerResult[index].path!);
+                    }
+                    else if ((partes[0] == "pO" && partes[2].trim() == "Sangre Arterial")){
+                      valoresLaboratorio!.add([
+                        0,
+                        idPaciente,
+                        Calendarios.fromTextoLlano(
+                            fechaResultado!.trim().split("N: ")[1].trim())
+                            .toString(),
+                        Auxiliares.queCategoriaPertenece(partes[0]),
+                        Auxiliares.queLaboratorioPertenece("${partes[0]}${partes[2]}".trim()),
+                        partes[3],
+                        partes[4],
+                      ]);
+                      // AGREGAR A LISTAS DE ARCHIVOS SELECCIONADOS
+                      listaArchivosSeleccionados
+                          .add(filePickerResult[index].path!);
+                    }
+                    else if ((partes[0] == "HCO" && partes[2].trim() == "- Sangre Arterial".trim())){
+                      Terminal.printSuccess(message: "${partes[2].trim()}");
+                      valoresLaboratorio!.add([
+                        0,
+                        idPaciente,
+                        Calendarios.fromTextoLlano(
+                            fechaResultado!.trim().split("N: ")[1].trim())
+                            .toString(),
+                        Auxiliares.queCategoriaPertenece(partes[0]),
+                        Auxiliares.queLaboratorioPertenece("${partes[0]}${partes[2]}".trim()),
+                        partes[3],
+                        partes[4],
+                      ]);
+                      // AGREGAR A LISTAS DE ARCHIVOS SELECCIONADOS
+                      listaArchivosSeleccionados
+                          .add(filePickerResult[index].path!);
+                    }
+                    else if ((partes[0] == "SO" && partes[2].trim() == "c Sangre Arterial".trim())){
+                      Terminal.printSuccess(message: "${partes[2].trim()}");
+                      valoresLaboratorio!.add([
+                        0,
+                        idPaciente,
+                        Calendarios.fromTextoLlano(
+                            fechaResultado!.trim().split("N: ")[1].trim())
+                            .toString(),
+                        Auxiliares.queCategoriaPertenece(partes[0]),
+                        Auxiliares.queLaboratorioPertenece("${partes[0]}${partes[2]}".trim()),
+                        partes[3],
+                        partes[4],
+                      ]);
+                      // AGREGAR A LISTAS DE ARCHIVOS SELECCIONADOS
+                      listaArchivosSeleccionados
+                          .add(filePickerResult[index].path!);
+                    }
+                    //
+                    else if ((partes[0] == "pCO" && partes[2].trim() == "Sangre Venosa")){
+                      valoresLaboratorio!.add([
+                        0,
+                        idPaciente,
+                        Calendarios.fromTextoLlano(
+                            fechaResultado!.trim().split("N: ")[1].trim())
+                            .toString(),
+                        Auxiliares.queCategoriaPertenece("${partes[0]}${partes[2]}".trim()),
+                        Auxiliares.queLaboratorioPertenece("${partes[0]}${partes[2]}".trim()),
+                        partes[3],
+                        partes[4],
+                      ]);
+                      // AGREGAR A LISTAS DE ARCHIVOS SELECCIONADOS
+                      listaArchivosSeleccionados
+                          .add(filePickerResult[index].path!);
+                    }
+                    else if ((partes[0] == "pO" && partes[2].trim() == "Sangre Venosa")){
+                      valoresLaboratorio!.add([
+                        0,
+                        idPaciente,
+                        Calendarios.fromTextoLlano(
+                            fechaResultado!.trim().split("N: ")[1].trim())
+                            .toString(),
+                        Auxiliares.queCategoriaPertenece("${partes[0]}${partes[2]}".trim()),
+                        Auxiliares.queLaboratorioPertenece("${partes[0]}${partes[2]}".trim()),
+                        partes[3],
+                        partes[4],
+                      ]);
+                      // AGREGAR A LISTAS DE ARCHIVOS SELECCIONADOS
+                      listaArchivosSeleccionados
+                          .add(filePickerResult[index].path!);
+                    }
+                    else if ((partes[0] == "HCO" && partes[2].trim() == "- Sangre Venosa".trim())){
+                      Terminal.printSuccess(message: "${partes[2].trim()}");
+                      valoresLaboratorio!.add([
+                        0,
+                        idPaciente,
+                        Calendarios.fromTextoLlano(
+                            fechaResultado!.trim().split("N: ")[1].trim())
+                            .toString(),
+                        Auxiliares.queCategoriaPertenece("${partes[0]}${partes[2]}".trim()),
+                        Auxiliares.queLaboratorioPertenece("${partes[0]}${partes[2]}".trim()),
+                        partes[3],
+                        partes[4],
+                      ]);
+                      // AGREGAR A LISTAS DE ARCHIVOS SELECCIONADOS
+                      listaArchivosSeleccionados
+                          .add(filePickerResult[index].path!);
+                    }
+                    else if ((partes[0] == "SO" && partes[2].trim() == "c Sangre Venosa".trim())){
+                      Terminal.printSuccess(message: "${partes[2].trim()}");
+                      valoresLaboratorio!.add([
+                        0,
+                        idPaciente,
+                        Calendarios.fromTextoLlano(
+                            fechaResultado!.trim().split("N: ")[1].trim())
+                            .toString(),
+                        Auxiliares.queCategoriaPertenece("${partes[0]}${partes[2]}".trim()),
+                        Auxiliares.queLaboratorioPertenece("${partes[0]}${partes[2]}".trim()),
+                        partes[3],
+                        partes[4],
+                      ]);
+                      // AGREGAR A LISTAS DE ARCHIVOS SELECCIONADOS
+                      listaArchivosSeleccionados
+                          .add(filePickerResult[index].path!);
+                    }
+                    //
+                    else if ((partes[0] == "T" && partes[2].trim() == "Libre (Triyodotironina)".trim())){
+                      Terminal.printSuccess(message: "${partes[2].trim()}");
+                      valoresLaboratorio!.add([
+                        0,
+                        idPaciente,
+                        Calendarios.fromTextoLlano(
+                            fechaResultado!.trim().split("N: ")[1].trim())
+                            .toString(),
+                        Auxiliares.queCategoriaPertenece("${partes[0]}${partes[2]}".trim()),
+                        Auxiliares.queLaboratorioPertenece("${partes[0]}${partes[2]}".trim()),
+                        partes[3],
+                        partes[4],
+                      ]);
+                      // AGREGAR A LISTAS DE ARCHIVOS SELECCIONADOS
+                      listaArchivosSeleccionados
+                          .add(filePickerResult[index].path!);
+                    }
+                    else if ((partes[0] == "T" && partes[2].trim() == "Libre (Tiroxina)".trim())){
+                      // Terminal.printSuccess(message: "${partes[2].trim()}");
+                      valoresLaboratorio!.add([
+                        0,
+                        idPaciente,
+                        Calendarios.fromTextoLlano(
+                            fechaResultado!.trim().split("N: ")[1].trim())
+                            .toString(),
+                        Auxiliares.queCategoriaPertenece("${partes[0]}${partes[2]}".trim()),
+                        Auxiliares.queLaboratorioPertenece("${partes[0]}${partes[2]}".trim()),
+                        partes[3],
+                        partes[4],
+                      ]);
+                      // AGREGAR A LISTAS DE ARCHIVOS SELECCIONADOS
+                      listaArchivosSeleccionados
+                          .add(filePickerResult[index].path!);
+                    }
+                    //
+                    else {
+                      if (partes.length > 2) {
+                        // Terminal.printSuccess(message: "${partes[0]}");
+                        if (partes[0].trim() == value || partes[0] == value) {
+                          // Terminal.printSuccess(
+                          //     message: // "ITEM ENCONTRADO "
+                          //     "${partes[0]} . "
+                          //         "${partes[1]} . "
+                          //         "${partes[2]} . "
+                          //         "");
+                          valoresLaboratorio!.add([
+                            0,
+                            idPaciente,
+                            Calendarios.fromTextoLlano(fechaResultado!
+                                    .trim()
+                                    .split("N: ")[1]
+                                    .trim())
+                                .toString(),
+                            Auxiliares.queCategoriaPertenece(partes[0]
                                 .trim()
-                                .replaceAll(RegExp(r'[\s.*\s\*\.\!¯]'), ''),
-                        ]);
-                        // AGREGAR A LISTAS DE ARCHIVOS SELECCIONADOS
-                        listaArchivosSeleccionados
-                            .add(filePickerResult[index].path!);
+                                .replaceAll(RegExp(r'\<[^<>]*\>'), '')),
+                            // partes[0].split("#")[0].trim()), // Tipo_Estudio
+                            Auxiliares.queLaboratorioPertenece(partes[0]
+                                .trim()), // .replaceAll(RegExp(r'^(.*)\s<'), '').trimRight()
+                            // partes[0].split("#")[0].trim()), // Laboratorio
+                            partes[1].trim(),
+                            if (partes[2] == "S/U Reactivo > = " ||
+                                partes[2] == "S/CO Reactivo > = ")
+                              "S/U"
+                            else if (partes[2] == "IU/mL Reactivo > = " ||
+                                partes[2] == "IU/mLReactivo>=")
+                              "UI/mL"
+                            else
+                              partes[2]
+                                  .trim()
+                                  .replaceAll(RegExp(r'[\s.*\s\*\.\!¯]'), ''),
+                          ]);
+                          // AGREGAR A LISTAS DE ARCHIVOS SELECCIONADOS
+                          listaArchivosSeleccionados
+                              .add(filePickerResult[index].path!);
+                        }
                       }
                     }
                   }
                 }
+                //
               }
-              //
-            }
 
-            //Dispose the document.
-            document.dispose();
-          });
+              //Dispose the document.
+              document.dispose();
+            });
+          } catch (e, stack) {
+            debugPrint("❌ Error extrayendo texto del PDF: $e\n$stack");
+            Operadores.alertActivity(
+              context: context,
+              tittle: "Error al extraer texto",
+              onAcept: () => Navigator.of(context).pop(),
+              message:
+                  "Ocurrió un error al procesar el archivo PDF.\nEs posible que el archivo esté corrupto o tenga una fuente no compatible.",
+            );
+          }
         }
+
+        // idsPacientes.toSet().toList(); // No admitir duplicados
+        listaDepurada = idsPacientes
+            .map((e) => jsonEncode(e)) // convierte a String
+            .toSet() // elimina duplicados
+            .map((e) => jsonDecode(e) as Map<String, dynamic>) // vuelve a Map
+            .toList();
+
+        Terminal.printNotice(
+            message:
+                "id's Encontradas : ${idsPacientes.length} . ${listaDepurada.toString()}");
 
         // _pdfBytes =
         // await File(filePickerResult.files.single.path!).readAsBytes();
@@ -175,26 +389,12 @@ class AuxiliarExtractor {
             "${Listas.fromEachListToString(valoresLaboratorio!)} \n"
             "¿Deseas ingresar Información a la Base de Datos de Auxiliares?",
         onClose: () => Navigator.of(context).pop(),
+        // onClose: () => getRegistrosGuiados(),
         textOptionA: "Ingresar información obtenida . . . ",
         optionB: null,
         optionA: () {
           //
           if (registroPrevio != "NO ENCONTRADO") {
-            // Operadores.notifyActivity(
-            //     context: context,
-            //     tittle: "Respuesta de Consulta a Base de Datos . . . ",
-            //     message: "Prueba de eliminación . . . ",
-            //     onAcept: () {
-            //       Listas.listWithoutRepitedValues(
-            //           listaArchivosSeleccionados)
-            //           .forEach((filePath) =>
-            //           Archivos.deleteFile(filePath: filePath)
-            //       );
-            //       //
-            //       Navigator.of(context).pop();
-            //       Navigator.of(context).pop();
-            //       //
-            //     });
             Actividades.registrarAnidados(
               Databases.siteground_database_reggabo,
               Auxiliares.auxiliares['registerQuery'],
@@ -204,11 +404,20 @@ class AuxiliarExtractor {
                     context: context,
                     tittle: "Respuesta de Consulta a Base de Datos . . . ",
                     message: onValue.toString(),
-                    onAcept: () {
+                    onAcept: () async {
                       Listas.listWithoutRepitedValues(
                               listaArchivosSeleccionados)
                           .forEach((filePath) =>
-                        Archivos.deleteFile(filePath: filePath)
+                              Archivos.deleteFile(filePath: filePath));
+                      //
+                      await getRegistrosGuiados().onError(
+                        (onError, stackTrace) => Operadores.alertActivity(
+                          context: context,
+                          tittle: "Error al Consultar los Registros . . . ",
+                          message: "$onError : $stackTrace",
+                          onAcept: () {},
+                          onClose: () => Navigator.of(context).pop(),
+                        ),
                       );
                       //
                       Navigator.of(context).pop();
@@ -225,7 +434,8 @@ class AuxiliarExtractor {
                         Navigator.of(context).pop();
                       },
                       onClose: () => Navigator.of(context).pop(),
-                    ));
+                    ))
+                .whenComplete(() => null);
           } else {
             Navigator.of(context).pop();
           }
@@ -254,6 +464,7 @@ class AuxiliarExtractor {
             .allMatches(result!)
             .map((match) => match.group(0)!)
             .toList();
+
         nssPaciente = nssFinder[1];
         agregadoPaciente =
             nssFinder[3] + nssFinder[4] + nssFinder[5] + nssFinder[6];
@@ -272,7 +483,10 @@ class AuxiliarExtractor {
                 "WHERE Pace_NSS = '${Pacientes.formatearNSS(nssPaciente)}' "
                 "AND Pace_AGRE = '$agregadoPaciente'")
             .then((onValue) {
-          Terminal.printSuccess(message: "$onValue");
+          Terminal.printSuccess(
+              message: "   . ID_Pace : ${onValue[0]["ID_Pace"]} : : $onValue");
+          idsPacientes.add(onValue[0]);
+
           if (onValue.isEmpty) {
             registroPrevio = "NO ENCONTRADO";
             Operadores.alertActivity(
@@ -302,6 +516,33 @@ class AuxiliarExtractor {
           );
         });
       }
+    }
+  }
+
+  static Future<void> getRegistrosGuiados() async {
+    Terminal.printExpected(message: "${listaDepurada.toString()}\n");
+
+    for (var element in listaDepurada) {
+      String nombreCompleto = "";
+//
+      if (element['Pace_Nome_SE'] == '' || element['Pace_Nome_SE'] == null) {
+        nombreCompleto =
+            "${element['Pace_Nome_PI']} ${element['Pace_Ape_Pat']} ${element['Pace_Ape_Mat']}";
+      } else {
+        nombreCompleto =
+            "${element['Pace_Nome_PI']} ${element['Pace_Nome_SE']} ${element['Pace_Ape_Pat']} ${element['Pace_Ape_Mat']}";
+      }
+
+      listaDeReinicio.add(
+        [element["ID_Pace"], 'assets/vault/$nombreCompleto/paraclinicos.json'],
+      );
+    }
+    //
+    Terminal.printExpected(message: "listaDeReinicio . : : . $listaDeReinicio");
+    //
+    for (var element in listaDeReinicio) {
+      Auxiliares.getRegistrosGuiados(
+          idPaciente: element[0], jsonAssocieted: element[1]);
     }
   }
 }

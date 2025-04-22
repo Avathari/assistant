@@ -57,9 +57,22 @@ class _RevisionesState extends State<Revisiones> {
         .onError((onError, stackTrace) => {})
         .whenComplete(() => setState(() => {}));
     //
-    setState(() {
-      // Terminal.printNotice(message: "${Valores.fechaVitales!}");
-    });
+    Archivos.readJsonToMap(filePath: Auxiliares.fileAssocieted)
+        .then((onValue) => Pacientes.Paraclinicos = onValue)
+        .onError((onError, stackTrace) => {})
+        .whenComplete(() => setState(() => {}));
+    //
+    Archivos.readJsonToMap(filePath: Patologicos.fileAssocieted)
+        .then((onValue) => Pacientes.Patologicos = onValue)
+        .onError((onError, stackTrace) => Patologicos.consultarRegistro())
+        .whenComplete(() => setState(() => {}));
+    //
+    Archivos.readJsonToMap(filePath: Pendientes.fileAssocieted)
+        .then((onValue) => Pacientes.Pendiente = onValue)
+        .onError((onError, stackTrace) => Pendientes.consultarRegistro())
+        .whenComplete(() => setState(() => {}));
+    //
+    setState(() => {});
     //
     super.initState();
   }
@@ -77,6 +90,9 @@ class _RevisionesState extends State<Revisiones> {
   }
 
   mobileView() {
+    Terminal.printWarning(message: Valores.fechaVitales!.split(" ").toString());
+    final partes = Valores.fechaVitales!.split(" ");
+
     return RoundedPanel(
       child: TittleContainer(
         color: Colors.black,
@@ -99,20 +115,29 @@ class _RevisionesState extends State<Revisiones> {
                           crossAxisSpacing: 1.0,
                           mainAxisExtent: 50), //46
                       children: [
-                        // ValuePanel(
-                        //   firstText: Valores.fechaVitales!.split(" ")[0],
-                        //   secondText:
-                        //       Valores.fechaVitales!.split(" ").isNotEmpty
-                        //           ? Valores.fechaVitales!.split(" ")[1]
-                        //           : "",
-                        //   thirdText: '',
-                        // ),
-                        ValuePanel(
-                          firstText: Valores.fechaVitales.toString(),
-                          secondText: "",
-                          thirdText: "",
-                        ),
-                        CrossLine(),
+
+                      //
+                        if (Valores.fechaVitales!.split(" ").isNotEmpty)
+                          ValuePanel(
+                            firstText: partes[0],
+                            secondText: partes.length > 1 ? partes[1] : "",
+                            thirdText: '',
+                          ),
+                          // ValuePanel(
+                          //   firstText: Valores.fechaVitales!.split(" ")[0],
+                          //   secondText:
+                          //   Valores.fechaVitales!.split(" ").isEmpty
+                          //       ? Valores.fechaVitales!.split(" ")[1] ?? ""
+                          //       : "",
+                          //   thirdText: '',
+                          // ),
+                        if (Valores.fechaVitales!.split(" ").isEmpty)
+                          ValuePanel(
+                            firstText: Valores.fechaVitales.toString(),
+                            secondText: "",
+                            thirdText: "",
+                          ),
+                        CrossLine(height:1),
                         ValuePanel(
                           firstText: "T. Sys",
                           secondText:

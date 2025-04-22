@@ -5,6 +5,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/operadores/pdfViewer.dart';
 import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
@@ -30,7 +31,7 @@ class _HitoshospitalariosState extends State<Hitoshospitalarios> {
   Timer? _timer; // Definir un temporizador
   String? filePath;
   static Uint8List? _pdfBytes;
-  //
+  late PdfViewerController _pdfViewerController;
 
   @override
   void initState() {
@@ -43,22 +44,45 @@ class _HitoshospitalariosState extends State<Hitoshospitalarios> {
     _timer = Timer.periodic(
         Duration(seconds: 7), (timer) => _saveToFile(hitosTextController.text));
     super.initState();
+    _pdfViewerController = PdfViewerController();
   }
 
   @override
   Widget build(BuildContext context) {
     if (isMobile(context)) {
-      return EditTextArea(
-          textController: hitosTextController,
-          labelEditText: "Hitos de la Hospitalización",
-          keyBoardType: TextInputType.multiline,
-          numOfLines: 25,
-          limitOfChars: 3000,
-          withShowOption: true,
-          onSelected: () => _readFromFile(),
-          onChange: (value) => setState(() => Reportes.hitosHospitalarios =
-              Reportes.reportes['Hitos_Hospitalarios'] = value),
-          inputFormat: MaskTextInputFormatter());
+      return Column(
+        children: [
+          if (filePath != null)
+            SfPdfViewer.file(
+              File(filePath!),
+              controller: _pdfViewerController,
+              onTextSelectionChanged: (details) {
+                // if (details.selectedText != null && details.selectedText!.isNotEmpty) {
+                //   setState(() {
+                //     textoAcumulado += details.selectedText! + "\n";
+                //     _notaController.text = textoAcumulado;
+                //   });
+                //   _pdfViewerController.clearSelection(); // Oculta el botón "Copy"
+                // }
+              },
+            ),
+          Expanded(
+              flex: 4,
+              child: EditTextArea(
+                  textController: hitosTextController,
+                  labelEditText: "Hitos de la Hospitalización",
+                  keyBoardType: TextInputType.multiline,
+                  numOfLines: 25,
+                  limitOfChars: 3000,
+                  fontSize: widget.fontSize!,
+                  withShowOption: true,
+                  onSelected: () => _readFromFile(),
+                  onChange: (value) => setState(() =>
+                  Reportes.hitosHospitalarios =
+                  Reportes.reportes['Hitos_Hospitalarios'] = value),
+                  inputFormat: MaskTextInputFormatter())),
+        ],
+      );
     } else {
       return Row(
         children: [
@@ -123,16 +147,16 @@ class _HitoshospitalariosState extends State<Hitoshospitalarios> {
                             onPress: () async {
                               //TODO
                               Repositorios.actualizarHitos(
-                                  context: context,
-                                  );
-                                  // .onError((onError, stackTrace) =>
-                                  // Operadores.alertActivity(
-                                  //   context: context,
-                                  //   tittle:
-                                  //       "ERROR  Al Actualizar registro de Nota",
-                                  //   message: "ERROR : $onError : : $stackTrace",
-                                  //   onAcept: () => Navigator.of(context).pop(),
-                                  // ));
+                                context: context,
+                              );
+                              // .onError((onError, stackTrace) =>
+                              // Operadores.alertActivity(
+                              //   context: context,
+                              //   tittle:
+                              //       "ERROR  Al Actualizar registro de Nota",
+                              //   message: "ERROR : $onError : : $stackTrace",
+                              //   onAcept: () => Navigator.of(context).pop(),
+                              // ));
                             },
                           ),
                         ),

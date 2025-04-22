@@ -628,7 +628,7 @@ class _OperacionesHospitalizacionesState
                               Constantes.reinit(value: value);
                               // ******************************************** *** *
                             }).whenComplete(() {
-                      Repositorios.registrarPadecimientoActual(Values: [
+                      Repositorios.registrarPadecimientoActual(context, Values: [
                         Pacientes.ID_Paciente,
                         Pacientes.ID_Hospitalizacion,
                         Valores.fechaPadecimientoActual ??
@@ -781,7 +781,7 @@ class _OperacionesHospitalizacionesState
                     }).whenComplete(() {
                       Repositorios.tipo_Analisis = Items.tiposAnalisis[0];
                       //
-                      Repositorios.registrarPadecimientoActual(Values: [
+                      Repositorios.registrarPadecimientoActual(context, Values: [
                         Pacientes.ID_Paciente,
                         Pacientes.ID_Hospitalizacion,
                         Valores.fechaPadecimientoActual ??

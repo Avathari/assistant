@@ -26,7 +26,9 @@ import 'package:assistant/values/Strings.dart';
 import 'package:flutter/material.dart';
 
 class Pacientes {
-  static int ID_Paciente = 0, ID_Hospitalizacion = 0, ID_Compendio = Valores.ID_Compendio ?? 0;
+  static int ID_Paciente = 0,
+      ID_Hospitalizacion = 0,
+      ID_Compendio = Valores.ID_Compendio ?? 0;
 
   static List? Pacientary = [];
 
@@ -5920,7 +5922,7 @@ class Vitales {
       Valores.fechaVitales = json['Pace_Feca_SV'].toString();
       // Variables Vitales ********* *************** **********
       Valores.tensionArterialSystolica =
-          json['Pace_SV_tas']?? int.parse(json['Pace_SV_tas'].toString());
+          json['Pace_SV_tas'] ?? int.parse(json['Pace_SV_tas'].toString());
 
       //
       Valores.tensionArterialDyastolica =
@@ -5941,15 +5943,21 @@ class Vitales {
       Valores.glucemiaCapilar = int.parse(json['Pace_SV_glu'].toString());
       Valores.horasAyuno = int.parse(json['Pace_SV_glu_ayu'].toString());
       //
-      Valores.insulinaGastada = json['Pace_SV_insulina']?? int.parse(json['Pace_SV_insulina'].toString());
+      Valores.insulinaGastada = json['Pace_SV_insulina'] ??
+          int.parse(json['Pace_SV_insulina'].toString());
       //
-      Valores.factorActividad = json['Pace_SV_fa']?? int.parse(json['Pace_SV_fa'].toString());
-      Valores.factorEstres = json['Pace_SV_fe']?? int.parse(json['Pace_SV_fe'].toString());
+      Valores.factorActividad =
+          double.tryParse(json['Pace_SV_fa']?.toString() ?? '') ?? 0;
+      Valores.factorEstres =
+          json['Pace_SV_fe'] ?? int.parse(json['Pace_SV_fe'].toString());
 
       // Variables Antropométricas ********* *************** **********
-      Valores.circunferenciaCuello = json['Pace_SV_cue']?? int.parse(json['Pace_SV_cue'].toString());
-      Valores.circunferenciaCintura = json['Pace_SV_cin']?? int.parse(json['Pace_SV_cin'].toString());
-      Valores.circunferenciaCadera = json['Pace_SV_cad']?? int.parse(json['Pace_SV_cad'].toString());
+      Valores.circunferenciaCuello =
+          json['Pace_SV_cue'] ?? int.parse(json['Pace_SV_cue'].toString());
+      Valores.circunferenciaCintura =
+          json['Pace_SV_cin'] ?? int.parse(json['Pace_SV_cin'].toString());
+      Valores.circunferenciaCadera =
+          json['Pace_SV_cad'] ?? int.parse(json['Pace_SV_cad'].toString());
       //
       Valores.circunferenciaMesobraquial =
           int.parse(json['Pace_SV_cmb'].toString());
@@ -6523,7 +6531,7 @@ class Auxiliares {
         emulated: false);
   }
 
-  static void registros({String? tipoEstudio}) {
+  static void registros({String? tipoEstudio, int? idPaciente = 0}) {
     Actividades.consultarAllById(
             Databases.siteground_database_reggabo,
             Auxiliares.auxiliares['consultByIdPrimaryQuery'],
@@ -6544,6 +6552,26 @@ class Auxiliares {
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR - $error : : $stackTrace");
     });
+  }
+
+  /// Consulta el registro unicamente con idPaciente, el cual, por defecto, es int iniciado en 0
+  ///
+  /// Guarda registro en fileAssocieted, el cual es una dirección de assets, para almacenar datos en un JSON.
+  ///
+  static void getRegistrosGuiados(
+      {int? idPaciente = 0, String? jsonAssocieted}) {
+    Terminal.printWarning(
+        message:
+            "Registros guiados por $idPaciente . . . Almacenados en $jsonAssocieted");
+    //
+    if (idPaciente != null && idPaciente != 0) {
+      Actividades.consultarAllById(Databases.siteground_database_reggabo,
+              Auxiliares.auxiliares['consultByIdPrimaryQuery'], idPaciente!)
+          .then((value) =>
+              Archivos.createJsonFromMap(value, filePath: jsonAssocieted!))
+          .onError((error, stackTrace) =>
+              Terminal.printAlert(message: "ERROR - $error : : $stackTrace"));
+    }
   }
 
   static String porTipoEstudio(
@@ -7463,8 +7491,12 @@ class Auxiliares {
             return 'Ca++';
           } else if (estudio == 'Potasio Arterial') {
             return 'aK+';
+          } else if (estudio == 'Sodio Arterial') {
+            return 'aN+';
+          } else if (estudio == "Glucosa Arterial") {
+            return 'aGlu-';
           } else if (estudio == 'Ácido Láctico' || estudio == 'Acido Láctico') {
-            return 'Lact--';
+            return 'aLact--';
           } else {
             return estudio;
           }
@@ -7483,10 +7515,14 @@ class Auxiliares {
             return 'FiO2';
           } else if (estudio == 'Calcio Ionico') {
             return 'Ca++';
-          } else if (estudio == 'Potasio Arterial') {
-            return 'aK+';
+          } else if (estudio == 'Potasio Venosa') {
+            return 'vK+';
+          } else if (estudio == 'Sodio Venosa') {
+            return 'vN+';
+          } else if (estudio == "Glucosa Venosa") {
+            return 'vGlu-';
           } else if (estudio == 'Ácido Láctico') {
-            return 'Lact--';
+            return 'vLact--';
           } else {
             return estudio;
           }
@@ -7777,12 +7813,12 @@ class Auxiliares {
       "Glucosa Venoso", // GLUart
       "Lactato Venoso", // LACart
       // CO-Oximetria
-      "Hemoglobina Arterial", // 13 : tHb
-      "Oxihemoglobina Arterial", // 14 : O2Hb
-      "Carboxihemoglobina Arterial", // 15 : COHb
-      "Metahemoglobina Arterial", // 16 : MetHb
-      "Hemoglobina Reducida Arterial", // 17 :  HHb
-      "Hematocrito Arterial", // 18 : HtcA
+      "Hemoglobina Venoso", // 13 : tHb
+      "Oxihemoglobina Venoso", // 14 : O2Hb
+      "Carboxihemoglobina Venoso", // 15 : COHb
+      "Metahemoglobina Venoso", // 16 : MetHb
+      "Hemoglobina Reducida Venoso", // 17 :  HHb
+      "Hematocrito Venoso", // 18 : HtcA
       "",
     ],
     //
@@ -8154,7 +8190,7 @@ class Auxiliares {
     Categorias[1]: ["mg/dL"],
     Categorias[2]: ["mEq/L", "mmol/L", "mg/dL"],
     Categorias[3]: ["UI/L", "g/dL", "mg/dL"],
-    Categorias[4]: ["mUI/L", "pg/mL", "ng/dL", ""],
+    Categorias[4]: ["mUI/L", "pg/mL", "ng/dL", "pg/mL -", ""],
     Categorias[5]: ["UI/L"],
     Categorias[6]: ["mg/dL"],
     Categorias[7]: ["", "seg"],
@@ -8635,11 +8671,29 @@ class Auxiliares {
     "HIVAb-Ag No reactivo",
     "HIVAb-Ag Reactivo",
     // GASOMETRIAS
-    // "pH Sangre Arterial",
-    // "pCO2 Sangre Arterial",
-    // "pO2 Sangre Arterial",
-    // "HCO3- Sangre Arterial",
-    // "SO2c Sangre Arterial",
+    "pH Sangre Arterial",
+    "pCO Sangre Arterial",
+    "pO Sangre Arterial",
+    "HCO Sangre Arterial",
+    "TCO Sangre Arterial",
+    "SOc Sangre Arterial",
+    "Htc Sangre Arterial",
+    "THbc Sangre Arterial",
+    //
+    "Na+ Sangre Arterial ",
+    "K+ Sangre Arterial",
+    "Ca++ Sangre Arterial",
+    "Glucosa Sangre Arterial",
+    "Lactato Sangre Arterial",
+    // GASOMETRIAS
+    "pH Sangre Venosa",
+    "pCO Sangre Venosa",
+    "pO Sangre Venosa",
+    "HCO Sangre Venosa",
+    "TCO Sangre Venosa",
+    "SOc Sangre Venosa",
+    "Htc Sangre Venosa",
+    "THbc Sangre Venosa",
     //
     "Factor reumatoide",
     "Velocidad de sedimentación globular",
@@ -8790,6 +8844,39 @@ class Auxiliares {
       case "SO2c Sangre Arterial":
         return Categorias[9];
       //
+      case "Na+ Sangre Arterial":
+        return Categorias[9];
+      case "K+ Sangre Arterial":
+        return Categorias[9];
+      case "Ca++ Sangre Arterial":
+        return Categorias[9];
+      case "Glucosa Sangre Arterial":
+        return Categorias[9];
+      case "Lactato Sangre Arterial":
+        return Categorias[9];
+      //
+      case "Htc Sangre Arterial":
+        return Categorias[9];
+      case "THbc Sangre Arterial":
+        return Categorias[9];
+
+    // GASOMETRIAS VENOSAS
+      case "pH Sangre Venosa":
+        return Categorias[10];
+      case "pCOSangre Venosa":
+        return Categorias[10];
+      case "pOSangre Venosa":
+        return Categorias[10];
+      case "HCO- Sangre Venosa":
+        return Categorias[10];
+      case "SOc Sangre Venosa":
+        return Categorias[10];
+        //
+      case "Htc Sangre Venosa":
+        return Categorias[10];
+      case "THbc Sangre Venosa":
+        return Categorias[10];
+      //
       case "Bilirrubina total":
         return Categorias[3];
       case "Bilirrubina directa":
@@ -8827,6 +8914,15 @@ class Auxiliares {
       case "CK-MB (CK Fracción MB)":
         return Categorias[18];
       //
+      case "pCO":
+        return Categorias[9];
+      case "pO":
+        return Categorias[9];
+      case "HCO":
+        return Categorias[9];
+      case "SO":
+        return Categorias[9];
+      //
       case "Factor reumatoide":
         return Categorias[8];
       case "Velocidad de sedimentación globular":
@@ -8836,12 +8932,13 @@ class Auxiliares {
       case "Procalcitonina":
         return Categorias[8];
       //
-      case "T3 Libre (Triyodotironina)": // 4
+      case "TLibre (Triyodotironina)": // 4
         return Categorias[4];
-      case "T4 Libre (Tiroxina)":
+      case "TLibre (Tiroxina)":
         return Categorias[4];
       case "TSH (H. Estimulante de la tiroides)":
         return Categorias[4];
+      //
       case "Colecalciferol (vitamina D3)": // 24
         return Categorias[24];
       case "PTH (Paratohormona)": // 23
@@ -8895,7 +8992,7 @@ class Auxiliares {
   /// del compendio de Auxiliares.Laboratorios
   ///
   static String queLaboratorioPertenece(String laboratorioRealizado) {
-    // Terminal.printSuccess(message: "${partes[0]}");
+    // Terminal.printSuccess(message: "${laboratorioRealizado}");
     switch (laboratorioRealizado) {
       case "Eritrocitos":
         return "Eritrocitos";
@@ -9002,17 +9099,50 @@ class Auxiliares {
         return "HIVAg-Ag";
       case "HIVAb-Ag Reactivo":
         return "HIVAg-Ag";
-      // GASOMETRIAS
+      // GASOMETRIAS ARTERIALES
       case "pH Sangre Arterial":
         return "pH";
-      case "pCO2 Sangre Arterial":
+      case "pCOSangre Arterial":
         return "Presión de Dióxido de Carbono";
-      case "pO2 Sangre Arterial":
+      case "pOSangre Arterial":
         return "Presión de Oxígeno";
-      case "HCO3- Sangre Arterial":
+      case "HCO- Sangre Arterial":
         return "Bicarbonato Sérico";
-      case "SO2c Sangre Arterial":
+      case "SOc Sangre Arterial":
         return "Saturación de Oxígeno";
+      //
+      case "Htc Sangre Arterial":
+        return "Hematocrito Arterial";
+      case "THbc Sangre Arterial":
+        return "Hemoglobina Arterial";
+    //
+      case "Na+ Sangre Arterial":
+        return "Sodio Arterial";
+      case "K+ Sangre Arterial":
+        return "Potasio Arterial";
+      case "Ca++ Sangre Arterial":
+        return "Calcio Ionico";
+      case "Glucosa Sangre Arterial":
+        return "Glucosa Arterial";
+      case "Lactato Sangre Arterial":
+        return "Lactato Arterial";
+    // GASOMETRIAS VENOSAS
+      case "pH Sangre Venosa":
+        return "pH";
+      case "pCOSangre Venosa":
+        return "Presión de Dióxido de Carbono";
+      case "pOSangre Venosa":
+        return "Presión de Oxígeno";
+      case "HCO- Sangre Venosa":
+        return "Bicarbonato Sérico";
+      case "SOc Sangre Venosa":
+        return "Saturación de Oxígeno";
+    //
+      case "Htc Sangre Venosa":
+        return "Hematocrito Venoso";
+      case "THbc Sangre Venosa":
+        return "Hemoglobina Venoso";
+
       //
       case "CK Creatinfosfoquinasa":
         return "CK Total";
@@ -9028,9 +9158,9 @@ class Auxiliares {
       case "Procalcitonina": // 8
         return "Procalcitonina";
 
-      case "T3 Libre (Triyodotironina)": // 4
+      case "TLibre (Triyodotironina)": // 4
         return "T3-L";
-      case "T4 Libre (Tiroxina)":
+      case "TLibre (Tiroxina)":
         return "T4-L";
       case "TSH (H. Estimulante de la tiroides)":
         return "TSH";
@@ -10607,7 +10737,8 @@ class Ventilaciones {
     if (json.isNotEmpty) {
       Valores.fechaVentilaciones = json['Feca_VEN'] ?? '';
       Valores.modalidadVentilatoria = json['VM_Mod'] ?? '';
-      Valores.volumenTidal = json['Pace_Vt'] ?? double.parse(json['Pace_Vt'].toString());
+      Valores.volumenTidal =
+          json['Pace_Vt'] ?? double.parse(json['Pace_Vt'].toString());
       Valores.frecuenciaVentilatoria =
           Valores.frecuenciaRespiratoria = json['Pace_Fr'] ?? 0;
       Valores.fraccionInspiratoriaVentilatoria = json['Pace_Fio'] ?? 0;
@@ -10913,17 +11044,51 @@ class Repositorios {
   static List<String> actualDiagno = Opciones.horarios();
 
   //
-  static Future<void> registrarPadecimientoActual(
-      {BuildContext? context,
-      required List Values,
-      required List ValuesEgreso}) async {
+  static Future<void> registrarPadecimientoActual(BuildContext context,
+      {required List Values, required List ValuesEgreso}) async {
     String response = "";
     //
-    await Actividades.registrar(
-      Databases.siteground_database_reghosp,
-      Repositorios.repositorio['registerIngresoQuery'],
-      Values,
-    ).then((value) {
+    await Actividades.registrar(Databases.siteground_database_reghosp,
+        Repositorios.repositorio['registerIngresoQuery'], [
+      Pacientes.ID_Paciente,
+      Pacientes.ID_Hospitalizacion,
+      Valores.fechaPadecimientoActual ??
+          Calendarios.today(format: 'yyyy/MM/dd'),
+      Reportes.padecimientoActual,
+      // Valores.servicioTratanteInicial,
+      Valores.servicioTratante,
+      Calendarios.today(format: 'yyyy/MM/dd'),
+      //
+      Reportes.impresionesDiagnosticas,
+      //
+      Reportes.reportes['Subjetivo'],
+      Reportes.signosVitales,
+      Reportes.exploracionFisica,
+      //
+      Reportes.auxiliaresDiagnosticos,
+      Reportes.analisisComplementarios,
+      // Reportes.eventualidadesOcurridas,
+      // Reportes.terapiasPrevias,
+      Reportes.analisisMedico,
+      // Reportes.tratamientoPropuesto,
+      Reportes.pronosticoMedico,
+      // INDICACIONES MÉDICAS *******************************
+      Reportes.dieta.toString(),
+      Reportes.hidroterapia.toString(),
+      Reportes.insulinoterapia.toString(),
+      Reportes.hemoterapia.toString(),
+      Reportes.oxigenoterapia.toString(),
+      Reportes.medicamentosIndicados.toString(),
+      Reportes.medidasGenerales.toString(),
+      Reportes.pendientes.toString(),
+      //
+      Reportes.hitosHospitalarios.toString(),
+      //
+
+      Repositorios.tipo_Analisis, // Items.tiposAnalisis[0] //
+    ]
+        // Values,
+        ).then((value) {
       response = value;
       //
       Archivos.deleteFile(
@@ -10933,17 +11098,47 @@ class Repositorios {
       //
     }).whenComplete(() async {
       if (tipo_Analisis == "Análisis de Ingreso") {
-        await Actividades.registrar(
-          Databases.siteground_database_reghosp,
-          Repositorios.repositorio['registerIngresoQuery'],
-          ValuesEgreso,
-        )
+        await Actividades.registrar(Databases.siteground_database_reghosp,
+                Repositorios.repositorio['registerIngresoQuery'], [
+          Pacientes.ID_Paciente,
+          Pacientes.ID_Hospitalizacion,
+          Valores.fechaPadecimientoActual ??
+              Calendarios.today(format: 'yyyy/MM/dd'),
+          Reportes.padecimientoActual,
+          // Valores.servicioTratanteInicial,
+          Valores.servicioTratante,
+          Calendarios.today(format: 'yyyy/MM/dd'),
+          Reportes.impresionesDiagnosticas,
+          Reportes.reportes['Subjetivo'],
+          Reportes.signosVitales,
+          Reportes.exploracionFisica,
+          //
+          Reportes.auxiliaresDiagnosticos,
+          Reportes.analisisComplementarios,
+          //
+          Reportes.analisisMedico,
+          Reportes.pronosticoMedico,
+          // INDICACIONES MÉDICAS *******************************
+          Reportes.dieta.toString(),
+          Reportes.hidroterapia.toString(),
+          Reportes.insulinoterapia.toString(),
+          Reportes.hemoterapia.toString(),
+          Reportes.oxigenoterapia.toString(),
+          Reportes.medicamentosIndicados.toString(),
+          Reportes.medidasGenerales.toString(),
+          Reportes.pendientes.toString(),
+          //
+          Reportes.hitosHospitalarios.toString(),
+          //
+          Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
+        ] // ValuesEgreso,
+                )
             .whenComplete(() => Archivos.createJsonFromMap(Pacientes.Notas!,
                 filePath:
                     "${Pacientes.localRepositoryPath}/reportes/reportes.json"))
             .whenComplete(() {
           Operadores.notifyActivity(
-            context: context!,
+            context: context,
             tittle: "Repositorio Registrado . . . ",
             message: response,
           );
@@ -10952,7 +11147,7 @@ class Repositorios {
     }).onError((error, stackTrace) {
       Terminal.printAlert(message: "ERROR - $error : $stackTrace");
       Operadores.alertActivity(
-          context: context!,
+          context: context,
           tittle: "Error Al Registrar",
           message: "ERROR : : $error : $stackTrace");
     });
@@ -11424,7 +11619,6 @@ class Repositorios {
         "ID_Pace, ID_Hosp, "
         "FechaPadecimiento, Padecimiento_Actual, "
         "ServicioMedico, FechaRealizacion, "
-        // "Personales_No_Patologicos, Personales_Patologicos, "
         "Diagnosticos_Hospital, "
         "Subjetivo, Signos_Vitales, Exploracion_Fisica, "
         "Auxiliares_Diagnosticos, Analisis_Complementario, "
