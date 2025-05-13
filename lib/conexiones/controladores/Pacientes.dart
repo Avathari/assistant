@@ -5949,38 +5949,38 @@ class Vitales {
       Valores.factorActividad =
           double.tryParse(json['Pace_SV_fa']?.toString() ?? '') ?? 0;
       Valores.factorEstres =
-          json['Pace_SV_fe'] ?? int.parse(json['Pace_SV_fe'].toString());
+          json['Pace_SV_fe'] ?? double.tryParse(json['Pace_SV_fe'].toString());
 
       // Variables Antropométricas ********* *************** **********
       Valores.circunferenciaCuello =
-          json['Pace_SV_cue'] ?? int.parse(json['Pace_SV_cue'].toString());
+          json['Pace_SV_cue'] ?? int.tryParse(json['Pace_SV_cue'].toString());
       Valores.circunferenciaCintura =
-          json['Pace_SV_cin'] ?? int.parse(json['Pace_SV_cin'].toString());
+          json['Pace_SV_cin'] ?? int.tryParse(json['Pace_SV_cin'].toString());
       Valores.circunferenciaCadera =
-          json['Pace_SV_cad'] ?? int.parse(json['Pace_SV_cad'].toString());
+          json['Pace_SV_cad'] ?? int.tryParse(json['Pace_SV_cad'].toString());
       //
       Valores.circunferenciaMesobraquial =
-          int.parse(json['Pace_SV_cmb'].toString());
+          int.tryParse(json['Pace_SV_cmb'].toString());
       //
 
       // Circunferencias y Pliegues ************ ****************** *************
       Valores.circunferenciaPectoral =
-          int.parse(json['Pace_SV_c_pect'].toString());
+          int.tryParse(json['Pace_SV_c_pect'].toString());
       Valores.pliegueCutaneoBicipital =
-          int.parse(json['Pace_SV_pcb'].toString() ?? '0');
+          int.tryParse(json['Pace_SV_pcb'].toString() ?? '0');
       Valores.pliegueCutaneoEscapular =
-          int.parse(json['Pace_SV_pse'].toString());
-      Valores.pliegueCutaneoIliaco = int.parse(json['Pace_SV_psi'].toString());
+          int.tryParse(json['Pace_SV_pse'].toString());
+      Valores.pliegueCutaneoIliaco = int.tryParse(json['Pace_SV_psi'].toString());
       Valores.pliegueCutaneoTricipital =
-          int.parse(json['Pace_SV_pst'].toString());
+          int.tryParse(json['Pace_SV_pst'].toString());
       Valores.circunferenciaFemoralIzquierda =
-          int.parse(json['Pace_SV_c_fem_izq'].toString());
+          int.tryParse(json['Pace_SV_c_fem_izq'].toString());
       Valores.circunferenciaFemoralDerecha =
-          int.parse(json['Pace_SV_c_fem_der'].toString());
+          int.tryParse(json['Pace_SV_c_fem_der'].toString());
       Valores.circunferenciaSuralIzquierda =
-          int.parse(json['Pace_SV_c_suro_izq'].toString());
+          int.tryParse(json['Pace_SV_c_suro_izq'].toString());
       Valores.circunferenciaSuralDerecha =
-          int.parse(json['Pace_SV_c_suro_der'].toString());
+          int.tryParse(json['Pace_SV_c_suro_der'].toString());
     }
     //
     // Terminal.printExpected(message: "$json");
@@ -7495,7 +7495,12 @@ class Auxiliares {
             return 'aN+';
           } else if (estudio == "Glucosa Arterial") {
             return 'aGlu-';
-          } else if (estudio == 'Ácido Láctico' || estudio == 'Acido Láctico') {
+          } else if (estudio == "Hematocrito Arterial") {
+            return 'aHto';
+          }else if (estudio == "Hemoglobina Arterial") {
+            return 'aHb';
+          }
+          else if (estudio == 'Ácido Láctico' || estudio == 'Acido Láctico') {
             return 'aLact--';
           } else {
             return estudio;
@@ -7521,7 +7526,12 @@ class Auxiliares {
             return 'vN+';
           } else if (estudio == "Glucosa Venosa") {
             return 'vGlu-';
-          } else if (estudio == 'Ácido Láctico') {
+          } else if (estudio == "Hematocrito Venosa") {
+            return 'vHto';
+          }else if (estudio == "Hemoglobina Venosa") {
+            return 'vHb';
+          }
+          else if (estudio == 'Ácido Láctico') {
             return 'vLact--';
           } else {
             return estudio;
@@ -8734,7 +8744,7 @@ class Auxiliares {
     "INR (Relación Internacional Normalizada",
 //
     "Fibrinógeno",
-    "Dímero D",
+    "Dimero D",
 //
     "Ferritina",
     "Transferrina",
@@ -10738,7 +10748,7 @@ class Ventilaciones {
       Valores.fechaVentilaciones = json['Feca_VEN'] ?? '';
       Valores.modalidadVentilatoria = json['VM_Mod'] ?? '';
       Valores.volumenTidal =
-          json['Pace_Vt'] ?? double.parse(json['Pace_Vt'].toString());
+          double.tryParse(json['Pace_Vt'].toString());
       Valores.frecuenciaVentilatoria =
           Valores.frecuenciaRespiratoria = json['Pace_Fr'] ?? 0;
       Valores.fraccionInspiratoriaVentilatoria = json['Pace_Fio'] ?? 0;
@@ -10759,7 +10769,7 @@ class Ventilaciones {
       // Terminal.printWarning(message: Ventometrias.flujoVentilatorioMedido.toString());
 
       //
-      Valores.volumenTidal = toDoubleFromInt(json: json, keyEntered: 'Pace_Vt');
+      // Valores.volumenTidal = toDoubleFromInt(json: json, keyEntered: 'Pace_Vt');
     }
   }
 }

@@ -72,7 +72,7 @@ class _HitoshospitalariosState extends State<Hitoshospitalarios> {
                   textController: hitosTextController,
                   labelEditText: "Hitos de la Hospitalización",
                   keyBoardType: TextInputType.multiline,
-                  numOfLines: 25,
+                  numOfLines: 35,
                   limitOfChars: 3000,
                   fontSize: widget.fontSize!,
                   withShowOption: true,

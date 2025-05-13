@@ -8,6 +8,7 @@ import 'package:assistant/conexiones/controladores/pacientes/auxiliar/extractor.
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/home.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
+import 'package:assistant/screens/pacientes/auxiliares/detalles/menus.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/info/Hospitalizado.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/info/auxliarHospitalizados.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
@@ -441,7 +442,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
       Terminal.printAlert(
           message: 'Archivo ${Pacientes.localPath} No Encontrado');
       Terminal.printWarning(message: 'Iniciando busqueda en Valores . . . ');
-      var response = await Valores().load(context); // print("response $response");
+      var response =
+          await Valores().load(context); // print("response $response");
 
       // ignore: use_build_context_synchronously
       if (response == true) {
@@ -596,17 +598,27 @@ class _HospitalizadosState extends State<Hospitalizados> {
                               "${Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos) != "" ? "MICROBIOLOGICOS\n" : ""}"
                               "${Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos)}"),
                       onChangeValue: () async {
+                        Operadores.loadingActivity(
+                            dismisable: false,
+                            context: context,
+                            tittle: "Historial de Paraclinicos . . . ",
+                            message:
+                            "Buscando Historial de Paraclinicos . . . ",
+                            onCloss: () => Navigator.of(context).pop());
+                        //
                         await snapshot.data![index]
                             .getParaclinicosHistorial()
-                            .then((response) async => setState(
-                                ()  {
-                                  // Terminal.printNotice(message: response.toString());
-                                  Pacientes.Paraclinicos = snapshot
-                                      .data![index].paraclinicos = response;
-                                  //
-                                  Archivos.createJsonFromMap(response, filePath: snapshot
-                                      .data![index].paraclinicosRepositoryPath);
-                                }));
+                            .then((response) async => setState(() {
+                          // Terminal.printNotice(message: response.toString());
+                          Pacientes.Paraclinicos = snapshot
+                              .data![index].paraclinicos = response;
+                          //
+                          Archivos.createJsonFromMap(response,
+                              filePath: snapshot.data![index]
+                                  .paraclinicosRepositoryPath);
+                        }))
+                            .whenComplete(
+                                () => Navigator.of(context).pop());
                       },
                     ),
                   ),
@@ -1127,10 +1139,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                           foundedItems![index]
                                               .ventilaciones
                                               .last,
-                                          foundedItems![index]
-                                              .vitales
-                                              .last,
-                                    )),
+                                          foundedItems![index].vitales.last,
+                                        )),
 
                                     // Datos.portapapeles(
                                     // context: context,
@@ -1188,6 +1198,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                         : "Sin BI's",
                                   ),
                                 ),
+                                // Expanded(child: Menus.accionesMediciones(context),),
                               ],
                             ),
                           ),
@@ -1219,17 +1230,27 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                   "${Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos) != "" ? "MICROBIOLOGICOS\n" : ""}"
                                   "${Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos)}"),
                           onChangeValue: () async {
+                            Operadores.loadingActivity(
+                                dismisable: false,
+                                context: context,
+                                tittle: "Historial de Paraclinicos . . . ",
+                                message:
+                                    "Buscando Historial de Paraclinicos . . . ",
+                                onCloss: () => Navigator.of(context).pop());
+                            //
                             await snapshot.data![index]
                                 .getParaclinicosHistorial()
-                                .then((response) async => setState(
-                                    ()  {
-                                  // Terminal.printNotice(message: response.toString());
-                                  Pacientes.Paraclinicos = snapshot
-                                      .data![index].paraclinicos = response;
-                                  //
-                                  Archivos.createJsonFromMap(response, filePath: snapshot
-                                      .data![index].paraclinicosRepositoryPath);
-                                }));
+                                .then((response) async => setState(() {
+                                      // Terminal.printNotice(message: response.toString());
+                                      Pacientes.Paraclinicos = snapshot
+                                          .data![index].paraclinicos = response;
+                                      //
+                                      Archivos.createJsonFromMap(response,
+                                          filePath: snapshot.data![index]
+                                              .paraclinicosRepositoryPath);
+                                    }))
+                                .whenComplete(
+                                    () => Navigator.of(context).pop());
                           },
                         ),
                       ),
@@ -1823,6 +1844,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
       await hospitalized[i].getPadecimientoActual();
       await hospitalized[i].getCronicosHistorial();
       await hospitalized[i].getParaclinicosHistorial(reload: true);
+      //
+      await hospitalized[i].getVitalesHistorial();
+      await hospitalized[i].getBalancesHistorial(reload: true);
+      await hospitalized[i].getVentilacionnesHistorial();
 
       // ⚠️ Ejecutar los métodos pesados en paralelo, pero en el mismo isolate
       // await Future.wait(<Future>[
@@ -1835,18 +1860,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
       //   hospitalized[i].getParaclinicosHistorial(),
       // ]);
 
-      // compute(cargarHistoriales, {
-      //   "id": int.parse(response[i]["ID_Pace"].toString()),
-      //   "data": response[i]
-      // });
       // await hospitalized[i].getDiagnosticosHistorial();
-      // await hospitalized[i].getVitalesHistorial();
       // //
-      // await hospitalized[i].getVentilacionnesHistorial();
-      // //
-      // await hospitalized[i].getBalancesHistorial(reload: true);
-      // //
-
       // await hospitalized[i].getPendientesHistorial();
       // await hospitalized[i].getLicenciasHistorial();
       // //
@@ -1866,6 +1881,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
       listado.addAll([hospitalized[i]!.toJson()]);
     }
     Archivos.createJsonFromMap(listado, filePath: fileAssocieted);
+    //
     //
     setState(() {
       // ACTUALIZAR . . .
@@ -1941,7 +1957,6 @@ class _HospitalizadosState extends State<Hospitalizados> {
     await paciente.getPendientesHistorial(reload: true);
     await paciente.getLicenciasHistorial();
     await paciente.getParaclinicosHistorial(reload: true);
-
   }
 
   //

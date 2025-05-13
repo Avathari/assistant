@@ -26,6 +26,8 @@ class _GasometricosState extends State<Gasometricos> {
   void initState() {
       Archivos.readJsonToMap(filePath: Vitales.fileAssocieted)
           .then((onValue) => Vitales.fromJson(onValue!.last)).whenComplete(() => setState(() => {}));
+      // Archivos.readJsonToMap(filePath: Auxiliares.fileAssocieted)
+      //     .then((onValue) => Auxiliares.fromJson(onValue)).whenComplete(() => setState(() => {}));
       super.initState();
 
     //

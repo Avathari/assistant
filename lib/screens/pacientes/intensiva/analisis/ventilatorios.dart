@@ -6,6 +6,7 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/menus.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
+import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
@@ -27,26 +28,22 @@ class _VentilatoriosState extends State<Ventilatorios> {
 
   @override
   void initState() {
-    Archivos.readJsonToMap(
-        filePath: Vitales.fileAssocieted).then((onValue){
-      Vitales.fromJson(onValue!.last);
-      Archivos.readJsonToMap(
-          filePath: Ventilaciones.fileAssocieted).then((onValue){
-        Ventilaciones.fromJson(onValue!.last);
-      });
-    }).whenComplete((){
-      setState(() {
-        //
-        Valores.distensibilidadEstaticaMedida =
-            Ventometrias.distensibilidadPulmonarEstatica;
-        //
-        Terminal.printExpected(
-            message: "Ventilatorios : : \n"
-                "PEEP ${Valores.presionFinalEsiracion} cmH2O\n"
-                "Pplat ${Valores.presionPlateau} cmH2O\n"
-                "");
-      });
-    });
+    Archivos.readJsonToMap(filePath: Vitales.fileAssocieted)
+        .then((onValue) => Vitales.fromJson(onValue!.last))
+        .whenComplete(() => setState(() => {}));
+    Archivos.readJsonToMap(filePath: Ventilaciones.fileAssocieted)
+        .then((onValue) => Ventilaciones.fromJson(onValue!.last))
+        .whenComplete(() => setState(() {
+              Valores.distensibilidadEstaticaMedida =
+                  Ventometrias.distensibilidadPulmonarEstatica;
+              //
+              Terminal.printExpected(
+                  message: "Ventilatorios : : \n"
+                      "PEEP ${Valores.presionFinalEsiracion} cmH2O\n"
+                      "Pplat ${Valores.presionPlateau} cmH2O\n"
+                      "");
+            }));
+    //
     super.initState();
   }
 
@@ -74,15 +71,18 @@ class _VentilatoriosState extends State<Ventilatorios> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          if (Valores.fechaVentilaciones != "") ValuePanel(
-                            firstText: Valores.fechaVentilaciones!.split(" ")[0],
-                            secondText: Valores.fechaVentilaciones!.split(" ")[1],
-                            thirdText: '',
-                          ),
+                          if (Valores.fechaVentilaciones != "")
+                            ValuePanel(
+                              firstText:
+                                  Valores.fechaVentilaciones!.split(" ")[0],
+                              secondText:
+                                  Valores.fechaVentilaciones!.split(" ")[1],
+                              thirdText: '',
+                            ),
                           ValuePanel(
                             firstText: 'Vt',
                             secondText:
-                                Valores.volumenTidal!.toStringAsFixed(0),
+                                Valores.volumenTidal !=null ? Valores.volumenTidal!.toStringAsFixed(0) :"", //
                             thirdText: 'mL',
                           ),
                           CrossLine(),
@@ -161,8 +161,8 @@ class _VentilatoriosState extends State<Ventilatorios> {
                           CrossLine(),
                           ValuePanel(
                             firstText: "VTi (Cstat/Dp)",
-                            secondText: Ventometrias.volumenTidalIdeal
-                                .toStringAsFixed(0),
+                            secondText: "",
+                            // Ventometrias.volumenTidalIdeal.toStringAsFixed(0),
                             thirdText: "L/cmH2O",
                           ),
                           CrossLine(),
@@ -385,17 +385,14 @@ class _VentilatoriosState extends State<Ventilatorios> {
                                                   thirdText: "",
                                                 ),
                                               ),
-
                                             ],
                                           ),
                                           ValuePanel(
                                             firstText: "EET",
-                                            secondText: "${Ventometrias
-                                                .distanciaArcadaIdeal
-                                                .toStringAsFixed(0)} cm",
+                                            secondText:
+                                                "${Ventometrias.distanciaArcadaIdeal.toStringAsFixed(0)} cm",
                                             thirdText: "",
                                           ),
-
                                         ]),
                                       ),
                                     ),
@@ -518,18 +515,16 @@ class _VentilatoriosState extends State<Ventilatorios> {
                       },
                     ),
                   ),
-                  Expanded(child: Menus.popUpVentometrias(context)
-                      // CircleIcon(
-                      //   difRadios: 11,
-                      //   tittle: "Copiar en Portapapeles",
-                      //   iconed: Icons.copy_all,
-                      //   onChangeValue: () {
-                      //
-                      // Datos.portapapeles(
-                      //     context: context, text: Ventometrias.ventilador);
-                      //   },
-                      // ),
-                      ),
+                  Expanded(
+                    child: Menus.popUpVentometrias(context),
+                  ),
+                  CircleIcon(
+                      difRadios: 11,
+                      tittle: "Copiar en Portapapeles",
+                      iconed: Icons.pause_presentation,
+                      onChangeValue: () => Datos.portapapeles(
+                          context: context,
+                          text: Ventometrias.medidasPreparatorias)),
                 ],
               ),
             ),

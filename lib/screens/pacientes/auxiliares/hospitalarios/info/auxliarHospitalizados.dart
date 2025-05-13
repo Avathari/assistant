@@ -1085,8 +1085,10 @@ class HospitalaryStrings {
   static String ventilacionesString(last, foundedItems) {
     // Terminal.printAlert(message: "${last.runtimeType}");
     // Terminal.printAlert(message: "${last.toString()}");
-    Vitales.fromJson(foundedItems);
-    Ventilaciones.fromJson(last);
+    Vitales.fromJson(foundedItems).whenComplete(() {
+      Ventilaciones.fromJson(last);
+    });
+
     return "${Valores.fechaVentilaciones!} : : ${Ventometrias.ventiladorCorto}";
   }
 }

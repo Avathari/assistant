@@ -228,39 +228,58 @@ class _ElectrocardiogramasGestionState
                         ),
                         Expanded(
                           flex: 10,
-                          child: RefreshIndicator(
+                          child: values == null
+                              ? const Center(child: CircularProgressIndicator())
+                              : RefreshIndicator(
+                            color: Colors.white,
+                            backgroundColor: Colors.black,
                             onRefresh: _reiniciar,
                             child: FutureBuilder<List>(
-                                initialData: values!,
-                                future: Future.value(values!),
-                                builder: (context, AsyncSnapshot snapshot) {
-                                  if (snapshot.hasError) print(snapshot.error);
-                                  return snapshot.hasData
-                                      ? GridView.builder(
-                                          padding: const EdgeInsets.all(8.0),
-                                          gridDelegate:
-                                              GridViewTools.gridDelegate(
-                                            crossAxisCount:
-                                                isMobile(context) ? 1 : 2,
-                                            mainAxisExtent:
-                                                isMobile(context) ? 170 : 150,
-                                            crossAxisSpacing: 4.0,
-                                            mainAxisSpacing: 4.0,
-                                          ),
-                                          shrinkWrap: true,
-                                          itemCount: snapshot.data == null
-                                              ? 0
-                                              : snapshot.data.length,
-                                          itemBuilder: (context, posicion) {
-                                            return itemSelected(
-                                                context: context,
-                                                data: snapshot.data,
-                                                index: posicion);
-                                          })
-                                      : Container();
-                                }),
+                              initialData: values,
+                              future: Future.value(values),
+                              builder: (context, AsyncSnapshot snapshot) {
+                                print('Snapshot state: ${snapshot.connectionState}');
+                                print('Has data: ${snapshot.hasData}');
+                                print('Data: ${snapshot.data}');
+
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  return const Center(child: CircularProgressIndicator());
+                                } else if (snapshot.hasError) {
+                                  print('Error: ${snapshot.error}');
+                                  return const Center(child: Text('Error al cargar.'));
+                                } else if (!snapshot.hasData || snapshot.data == null) {
+                                  return const Center(child: Text('Sin datos.'));
+                                }
+
+                                final List data = snapshot.data;
+
+                                // ⛔ Aquí validamos si el único elemento es un mapa con error
+                                if (data.length == 1 && data[0] is Map && data[0].containsKey('Error')) {
+                                  return Center(child: Text(data[0]['Error']));
+                                }
+
+                                // ✅ Construir el GridView si todo está bien
+                                return GridView.builder(
+                                  padding: const EdgeInsets.all(8.0),
+                                  gridDelegate: GridViewTools.gridDelegate(
+                                    crossAxisCount: isMobile(context) ? 1 : 3,
+                                    mainAxisExtent: isMobile(context) ? 150 : 170,
+                                  ),
+                                  shrinkWrap: true,
+                                  itemCount: data.length,
+                                  itemBuilder: (context, posicion) {
+                                    return itemSelected(
+                                      context: context,
+                                      data: data,
+                                      index: posicion,
+                                    );
+                                  },
+                                );
+                              },
+
+                            ),
                           ),
-                        ),
+                        )
                       ],
                     ),
                     Column(

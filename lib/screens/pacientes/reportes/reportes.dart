@@ -64,8 +64,19 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
   void initState() {
     super.initState();
 
-    // Cargar análisis si hay hospitalización activa
-    if (Pacientes.ID_Hospitalizacion != 0) Repositorios.consultarAnalisis();
+    /// Trasladado a Revisiones en Dashboard..Visuales
+    // // Cargar análisis si hay hospitalización activa
+    // if (Pacientes.ID_Hospitalizacion != 0) Repositorios.consultarAnalisis();
+    // Consultar notaciones previas
+    Reportes.consultarNotasHospitalizacion().then((value) {
+      if (value.isNotEmpty) {
+        setState(() {
+          widget.indexNote = 0;
+          listNotes = value;
+        });
+      }
+    });
+
     // Cargar antecedentes patológicos
     Archivos.readJsonToMap(
             filePath: "${Pacientes.localRepositoryPath}patologicos.json")
@@ -93,15 +104,6 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       Pacientes.loadingActivity(context: context);
     });
 
-    // Consultar notaciones previas
-    Reportes.consultarNotasHospitalizacion().then((value) {
-      if (value.isNotEmpty) {
-        setState(() {
-          widget.indexNote = 0;
-          listNotes = value;
-        });
-      }
-    });
   }
 
 // ******************************************************
@@ -264,6 +266,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                     iconed: Icons.system_update_alt,
                     tittle: 'Cargando . . . ',
                     onChangeValue: () async {
+                      // Cargar análisis si hay hospitalización activa
+                      if (Pacientes.ID_Hospitalizacion != 0) Repositorios.consultarAnalisis();
+                      //
                       Pacientes.loadingActivity(context: context).then((value) {
                         if (value == true) {
                           // Terminal.printAlert( message:'Archivo ${Pacientes.localPath} Re-Creado $value');

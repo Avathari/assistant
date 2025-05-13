@@ -1,8 +1,11 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart';
+import 'package:assistant/operativity/pacientes/valores/Valorados/hidrometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
+import 'package:assistant/screens/pacientes/intensiva/analisis/hidricos.dart';
 
 class Ventometrias {
   static String get pruebaVentilacionEspontanea =>
@@ -144,7 +147,7 @@ class Ventometrias {
           "F. Resp. ${Valores.frecuenciaVentilatoria} Vent/min, "
           "FiO2 ${Valores.fraccionInspiratoriaVentilatoria} %, "
           "PEEP ${Valores.presionFinalEsiracion} mmHg, "
-          "Vt ${Valores.volumenTidal!.toStringAsFixed(0)} mmHg. "
+          "Vt ${Valores.volumenTidal!.toStringAsFixed(0)} mmHg . .  "
           "$ventilatorios";
     } else if (modoVentilatorio == 'AC-VCP') {
       return "VMI $modoVentilatorio con "
@@ -188,10 +191,9 @@ class Ventometrias {
           "P. pulmonar insp. ${Valores.presionInspiratoriaPico} cmH2O, "
           "P. pulmonar esp. ${Valores.presionFinalEsiracion} cmH2O";
     } else if (modoVentilatorio == 'AC-VCV') {
-      PS =
+      PS = "VM ${Ventometrias.volumenMinuto.toStringAsFixed(1)} L/min, "
           "Flujo ${Ventometrias.flujoVentilatorioMedido.toStringAsFixed(2)} L/min, "
           // "VTI ${Valores.volumenTidal} mL; "
-          "VM ${Ventometrias.volumenMinuto.toStringAsFixed(1)} L/min, "
           "PIP ${Valores.presionMaxima} cmH2O, "
           "Pplat ${Valores.presionPlateau} cmH2O. "
           "PmVA ${Ventometrias.presionMediaViaAerea.toStringAsFixed(0)} cmH2O, "
@@ -239,6 +241,16 @@ class Ventometrias {
     return PS;
   }
 
+  // PREPARATIVOS
+  static String get medidasPreparatorias => ""
+      "PP ${Antropometrias.pesoCorporalPredicho.toStringAsFixed(1)} kG, "
+      "Vt(6) ${volumentTidal6.toStringAsFixed(0)} - "
+      "Vt(8) ${volumentTidal8.toStringAsFixed(0)} mL, "
+      "EET ${distanciaArcadaIdeal.toStringAsFixed(0)} cm . "
+      "ACT ${Hidrometrias.aguaCorporalTotal.toStringAsFixed(2)} Lts, "
+      "AM ${Valores.aguaMetabolica.toStringAsFixed(0)} mL .  "
+      "";
+
   // FÓRMULAS
   static double get volumentTidal6 => (Antropometrias.pesoCorporalPredicho * 6);
 
@@ -257,8 +269,7 @@ class Ventometrias {
       return (Valores.distensibilidadEstaticaMedida! *
           Ventometrias.drivingPressure);
     } else {
-      return (Ventometrias.distensibilidadPulmonarEstatica *
-          Ventometrias.drivingPressure);
+      return double.nan;
     }
   }
 

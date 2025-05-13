@@ -216,7 +216,8 @@ class Gasometricos {
         "SO2 ${Valores.soArteriales} %, "
         "HCO3- ${Valores.bicarbonatoArteriales!.toStringAsFixed(2)} mmol/L, "
         "HCO3std ${Gasometricos.EBecf.toStringAsFixed(2)} mmol/L, "
-        "EB ${Gasometricos.EB.toStringAsFixed(2)} mmol/L "
+        "EB ${Gasometricos.EB.toStringAsFixed(2)} mmol/L . : "
+        "${analizarCompensacionAcidoBase()}"
         ". "
         "${Valores.temperaturCorporal != 0 ? "Temp ${Valores.temperaturCorporal}" : ""}°C, "
         "FiO2 ${Valores.fioArteriales}%, "
@@ -250,7 +251,7 @@ class Gasometricos {
         // "EBe ${Valores.pHArteriales} mmol/L, "
         "iCL/NA ${Gasometricos.indiceCloroSodiio.toStringAsFixed(1)}, "
         "difNa/Cl ${Gasometricos.diferenciaSodioCloro.toStringAsFixed(1)}"
-        " . . ${analisisAcidoBase()}"
+        " . . ${analisisAcidoBase()} . ${analisisCloro()} . "
         " . . ANALISIS DE OXÍGENO: ${analisisHipoxemia()}"
         "";
   }
@@ -1189,5 +1190,53 @@ class Gasometricos {
 
     return "🧪 Hipoxemia con GAA elevado. Sugiere V/Q bajo o shunt. "
         "Se recomienda gasometría con FiO₂ al 100% para diferenciar.";
+  }
+
+  static String analisisCloro(){
+    String interpretacionDifNaCl = "";
+    if (Gasometricos.diferenciaSodioCloro < 31) {
+      interpretacionDifNaCl = "(difNa/Cl < 31 mEq/L) Hipercloremia ";
+    } else {
+      interpretacionDifNaCl = "(≥ 31 mEq/L) Relación sodio/cloro dentro de rango esperado ";
+    }
+
+    String interpretacionIClNa = "";
+    if (Gasometricos.indiceCloroSodiio < 0.75) {
+      interpretacionIClNa = "(iCl/Na < 0.75) Efecto alcalinizante en el plasma ";
+    } else if (Gasometricos.indiceCloroSodiio <= 0.79) {
+      interpretacionIClNa = "(iCl/Na 0.75 - 0.79) Acidosis mixta ";
+    } else {
+      interpretacionIClNa = "(iCl/Na > 0.79) Acidosis secundaria a hipercloremia ";
+    }
+
+    return "Análisis Cloro: "
+        "difNaCl: $interpretacionDifNaCl; "
+        "iClNa: $interpretacionIClNa";
+  }
+
+  static String analizarCompensacionAcidoBase() {
+
+    // Interpretación del pCO2 esperado vs medido
+    String interpretacionPCO2 = "";
+    if (Gasometricos.PCO2esperado > Valores.pcoArteriales!) {
+      interpretacionPCO2 = "Alcalosis respiratoria (PCO2e > PCO2m)";
+    } else if ((Gasometricos.PCO2esperado - Valores.pcoArteriales!).abs() < 1.5) {
+      interpretacionPCO2 = "Trastorno puro (PCO2e ≈ PCO2m)";
+    } else {
+      interpretacionPCO2 = "Acidosis respiratoria (PCO2e < PCO2m)";
+    }
+
+    // Interpretación del exceso de base esperado vs medido
+    String interpretacionEB = "";
+    if (Gasometricos.excesoBaseEsperado > Gasometricos.EB) {
+      interpretacionEB = "Acidosis metabólica (EBe > EBm)";
+    } else if (Gasometricos.excesoBaseEsperado < Gasometricos.EB) {
+      interpretacionEB = "Alcalosis metabólica (EBe < EBm)";
+    } else {
+      interpretacionEB = "Exceso de base en rango esperado";
+    }
+
+    return
+      "por PCO2e $interpretacionPCO2, por EBe $interpretacionEB";
   }
 }

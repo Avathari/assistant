@@ -10,7 +10,7 @@ class ValuePanel extends StatefulWidget {
 
   bool? withEditMessage, withBorder;
   final ValueChanged<String>? onEdit;
-  void Function()? onLongPress;
+  void Function()? onLongPress, onPress;
 
   ValuePanel({
     super.key,
@@ -23,6 +23,7 @@ class ValuePanel extends StatefulWidget {
     this.heigth = 46,
     this.withEditMessage = false,
     this.withBorder = true, // false,
+    this.onPress,
     this.onLongPress,
     this.onEdit,
   });

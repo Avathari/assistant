@@ -77,6 +77,8 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
             " . . . Iniciando Actividad - Repositorio Paraclinicos del Pacientes");
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       setState(() {
+        Terminal.printOther(message: " . . . Value : ${value.toString()}");
+        //
         values = value;
         Terminal.printData(message: values.toString());
         Terminal.printSuccess(
@@ -319,7 +321,8 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                                     ),
                                     onClose: (value) {
                                       setState(() {
-                                        searchTextController.text = Valores.fechaElectrocardiograma = value;
+                                        searchTextController.text = Valores
+                                            .fechaElectrocardiograma = value;
                                         _runFilterSearch(value);
                                         Navigator.of(context).pop();
                                       });
@@ -327,50 +330,81 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                               },
                               onChange: (value) {
                                 setState(
-                                      () {
+                                  () {
                                     _runFilterSearch(value);
                                   },
                                 );
                               },
-
                             ),
                           ),
                           Expanded(
                             flex: 10,
-                            child: RefreshIndicator(
-                              color: Colors.white,
-                              backgroundColor: Colors.black,
-                              onRefresh: _reiniciar,
-                              child: FutureBuilder<List>(
-                                  initialData: values!,
-                                  future: Future.value(values!),
-                                  builder: (context, AsyncSnapshot snapshot) {
-                                    if (snapshot.hasError)
-                                      print(snapshot.error);
-                                    return snapshot.hasData
-                                        ? GridView.builder(
-                                            padding: const EdgeInsets.all(8.0),
-                                            gridDelegate:
-                                                GridViewTools.gridDelegate(
-                                              crossAxisCount:
-                                                  isMobile(context) ? 1 : 3,
-                                              mainAxisExtent:
-                                                  isMobile(context) ? 150 : 170,
-                                            ),
-                                            shrinkWrap: true,
-                                            itemCount: snapshot.data == null
-                                                ? 0
-                                                : snapshot.data.length,
-                                            itemBuilder: (context, posicion) {
-                                              return itemSelected(
-                                                  context: context,
-                                                  data: snapshot.data,
-                                                  index: posicion);
-                                            })
-                                        : Container();
-                                  }),
-                            ),
-                          ),
+                            child: values == null
+                                ? const Center(
+                                    child: CircularProgressIndicator())
+                                : RefreshIndicator(
+                                    color: Colors.white,
+                                    backgroundColor: Colors.black,
+                                    onRefresh: _reiniciar,
+                                    child: FutureBuilder<List>(
+                                      initialData: values,
+                                      future: Future.value(values),
+                                      builder:
+                                          (context, AsyncSnapshot snapshot) {
+                                        print(
+                                            'Snapshot state: ${snapshot.connectionState}');
+                                        print('Has data: ${snapshot.hasData}');
+                                        print('Data: ${snapshot.data}');
+
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return const Center(
+                                              child:
+                                                  CircularProgressIndicator());
+                                        } else if (snapshot.hasError) {
+                                          print('Error: ${snapshot.error}');
+                                          return const Center(
+                                              child: Text('Error al cargar.'));
+                                        } else if (!snapshot.hasData ||
+                                            snapshot.data == null) {
+                                          return const Center(
+                                              child: Text('Sin datos.'));
+                                        }
+
+                                        final List data = snapshot.data;
+
+                                        // ⛔ Aquí validamos si el único elemento es un mapa con error
+                                        if (data.length == 1 &&
+                                            data[0] is Map &&
+                                            data[0].containsKey('Error')) {
+                                          return Center(
+                                              child: Text(data[0]['Error']));
+                                        }
+
+                                        // ✅ Construir el GridView si todo está bien
+                                        return GridView.builder(
+                                          padding: const EdgeInsets.all(8.0),
+                                          gridDelegate:
+                                              GridViewTools.gridDelegate(
+                                            crossAxisCount:
+                                                isMobile(context) ? 1 : 3,
+                                            mainAxisExtent:
+                                                isMobile(context) ? 150 : 170,
+                                          ),
+                                          shrinkWrap: true,
+                                          itemCount: data.length,
+                                          itemBuilder: (context, posicion) {
+                                            return itemSelected(
+                                              context: context,
+                                              data: data,
+                                              index: posicion,
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                          )
                         ],
                       ),
                       PhotoView(
@@ -383,13 +417,12 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                               value: progress == null
                                   ? null
                                   : progress.cumulativeBytesLoaded /
-                                  progress.expectedTotalBytes!,
+                                      progress.expectedTotalBytes!,
                             ),
                           ),
                         ),
                       ),
                       operationScreen(),
-
                     ],
                   ),
                 ),
@@ -405,33 +438,49 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              IconButton(icon: Icon(Icons.domain), onPressed: () {carouselController.jumpToPage(0);}),
-              IconButton(icon: Icon(Icons.app_registration), onPressed: () {carouselController.jumpToPage(2);}),
+              IconButton(
+                  icon: Icon(Icons.domain),
+                  onPressed: () {
+                    carouselController.jumpToPage(0);
+                  }),
+              IconButton(
+                  icon: Icon(Icons.app_registration),
+                  onPressed: () {
+                    carouselController.jumpToPage(2);
+                  }),
               SizedBox(width: 55), // espacio para el botón flotante
-              IconButton(icon: Icon(Icons.image_aspect_ratio), onPressed: () {carouselController.jumpToPage(1);}),
-              IconButton(icon: Icon(Icons.photo_camera_back_outlined), onPressed: () {Operadores.optionsActivity(
-                context: context,
-                tittle: 'Cargar imagen del Electrocardiograma',
-                onClose: () {
-                  Navigator.of(context).pop();
-                },
-                textOptionA: 'Cargar desde Dispositivo',
-                optionA: () async {
-                  var bytes = await Directorios.choiseFromDirectory();
-                  setState(() {
-                    stringImage = base64Encode(bytes);
-                    Navigator.of(context).pop();
-                  });
-                },
-                textOptionB: 'Cargar desde Cámara',
-                optionB: () async {
-                  var bytes = await Directorios.choiseFromCamara();
-                  setState(() {
-                    stringImage = base64Encode(bytes);
-                    Navigator.of(context).pop();
-                  });
-                },
-              );}),
+              IconButton(
+                  icon: Icon(Icons.image_aspect_ratio),
+                  onPressed: () {
+                    carouselController.jumpToPage(1);
+                  }),
+              IconButton(
+                  icon: Icon(Icons.photo_camera_back_outlined),
+                  onPressed: () {
+                    Operadores.optionsActivity(
+                      context: context,
+                      tittle: 'Cargar imagen del Electrocardiograma',
+                      onClose: () {
+                        Navigator.of(context).pop();
+                      },
+                      textOptionA: 'Cargar desde Dispositivo',
+                      optionA: () async {
+                        var bytes = await Directorios.choiseFromDirectory();
+                        setState(() {
+                          stringImage = base64Encode(bytes);
+                          Navigator.of(context).pop();
+                        });
+                      },
+                      textOptionB: 'Cargar desde Cámara',
+                      optionB: () async {
+                        var bytes = await Directorios.choiseFromCamara();
+                        setState(() {
+                          stringImage = base64Encode(bytes);
+                          Navigator.of(context).pop();
+                        });
+                      },
+                    );
+                  }),
             ],
           ),
         ),
@@ -443,7 +492,6 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
               )
             : null);
   }
-
 
   void deleteDialog(Map<String, dynamic> element) {
     Operadores.alertActivity(
@@ -634,7 +682,8 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                 onSelected: () {
                   textDateEstudyController.text =
                       Calendarios.today(format: "yyyy/MM/dd HH:mm:ss");
-                }, textController: textDateEstudyController,
+                },
+                textController: textDateEstudyController,
               ),
               Spinner(
                   width: isDesktop(context)
@@ -983,11 +1032,19 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
       Terminal.printExpected(
           message:
               "operationActivity : :  $operationActivity : : method ${Imagenologias.imagenologias['registerQuery']}");
+      // Espera unos segundos . . .
+      Operadores.loadingActivity(
+          context: context,
+          tittle: "Enlazando a base de datos . . . ",
+          message: "");
+      //
       Actividades.registrar(
         Databases.siteground_database_reggabo,
         Imagenologias.imagenologias['registerQuery'],
         aux,
       ).then((value) {
+        Navigator.pop(context);
+        //
         Operadores.alertActivity(
             context: context,
             tittle: "Registro de los Valores",
@@ -1009,6 +1066,26 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
               });
             });
       }).onError((error, stackTrace) {
+        Operadores.notifyActivity(
+            context: context,
+            tittle: "ERROR - Registro de los Valores Fallido",
+            message: '$error : : $stackTrace',
+            onClose: () {
+              Navigator.pop(context);
+              _reiniciar().then((value) {
+                setState(() {
+                  carouselController.jumpToPage(0);
+                });
+              });
+            },
+            onAcept: () {
+              Navigator.pop(context);
+              _reiniciar().then((value) {
+                setState(() {
+                  carouselController.jumpToPage(0);
+                });
+              });
+            });
         Terminal.printWarning(message: "ERROR - $error");
       });
     } else {
@@ -1051,16 +1128,24 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
 
   //
   Future<void> _reiniciar() async {
+    // Espera unos segundos . . .
+    Operadores.loadingActivity(
+        context: context,
+        tittle: "Buscando en la base de datos . . . ",
+        message: "");
     Terminal.printExpected(message: "Reinicio de los valores . . .");
     Actividades.consultarAllById(
-        Databases.siteground_database_reggabo,
-        Imagenologias.imagenologias['consultByIdPrimaryQuery'],
-        Pacientes.ID_Paciente)
+            Databases.siteground_database_reggabo,
+            Imagenologias.imagenologias['consultByIdPrimaryQuery'],
+            Pacientes.ID_Paciente)
         .then((value) {
       setState(() {
         Archivos.createJsonFromMap(value, filePath: fileAssocieted);
         values = value;
       });
+    }).whenComplete(() {
+      Navigator.of(context).pop();
+      setState(() {});
     });
   }
 
@@ -1068,7 +1153,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
     List? results = [];
 
     if (enteredKeyword.isEmpty) {
-     _reiniciar();
+      _reiniciar();
     } else {
       results = Listas.listFromMap(
           lista: values!,
@@ -1080,5 +1165,4 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
       });
     }
   }
-
 }
