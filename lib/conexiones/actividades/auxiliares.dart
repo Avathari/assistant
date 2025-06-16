@@ -1051,7 +1051,7 @@ class Operadores {
                   borderRadius: BorderRadius.all(Radius.circular(20))),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: SizedBox(height: 700, child: chyldrim),
+                child: SizedBox(height: 700, width: 300, child: chyldrim),
               ),
             );
           } else {

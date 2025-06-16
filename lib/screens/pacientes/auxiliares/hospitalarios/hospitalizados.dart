@@ -11,6 +11,7 @@ import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/menus.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/info/Hospitalizado.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/info/auxliarHospitalizados.dart';
+import 'package:assistant/screens/pacientes/auxiliares/revisiones/auxiliares/auxiliaresRevisiones.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/situacionesHospitalizacion.dart';
 import 'package:assistant/values/SizingInfo.dart';
@@ -454,6 +455,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
 
   // VISTAS *******************************************************
   GestureDetector desktopView(AsyncSnapshot snapshot, int index) {
+    Pacientes.ID_Hospitalizacion =
+        foundedItems![index].hospitalizedData['ID_Hosp'];
+    //
     return GestureDetector(
       // onTap: () {
       //   Terminal.printExpected(
@@ -565,6 +569,15 @@ class _HospitalizadosState extends State<Hospitalizados> {
                       ),
                     ),
                     CrossLine(),
+                    Expanded(
+                        flex: 6,
+                        child: Row(
+                          children: [
+                            Expanded(child: RevisionDispositivos()),
+                            CrossLine(thickness: 2, color: Colors.grey),
+                            Expanded(child: RevisionPrevios())
+                          ],
+                        )),
                   ],
                 ),
               ),
@@ -603,22 +616,21 @@ class _HospitalizadosState extends State<Hospitalizados> {
                             context: context,
                             tittle: "Historial de Paraclinicos . . . ",
                             message:
-                            "Buscando Historial de Paraclinicos . . . ",
+                                "Buscando Historial de Paraclinicos . . . ",
                             onCloss: () => Navigator.of(context).pop());
                         //
                         await snapshot.data![index]
                             .getParaclinicosHistorial()
                             .then((response) async => setState(() {
-                          // Terminal.printNotice(message: response.toString());
-                          Pacientes.Paraclinicos = snapshot
-                              .data![index].paraclinicos = response;
-                          //
-                          Archivos.createJsonFromMap(response,
-                              filePath: snapshot.data![index]
-                                  .paraclinicosRepositoryPath);
-                        }))
-                            .whenComplete(
-                                () => Navigator.of(context).pop());
+                                  // Terminal.printNotice(message: response.toString());
+                                  Pacientes.Paraclinicos = snapshot
+                                      .data![index].paraclinicos = response;
+                                  //
+                                  Archivos.createJsonFromMap(response,
+                                      filePath: snapshot.data![index]
+                                          .paraclinicosRepositoryPath);
+                                }))
+                            .whenComplete(() => Navigator.of(context).pop());
                       },
                     ),
                   ),
@@ -627,28 +639,27 @@ class _HospitalizadosState extends State<Hospitalizados> {
                     onLongPress: () async {
                       await foundedItems![index]
                           .getBalancesHistorial()
-                          .whenComplete(() {
+                          .whenComplete(() async {
                         Datos.portapapeles(
                             context: context,
-                            text: HospitalaryStrings.balancesString(
+                            text: await HospitalaryStrings.balancesString(
                                 foundedItems![index].balances.last,
                                 foundedItems,
                                 index));
                       });
                     },
                     firstText: foundedItems![index].balances.isNotEmpty
-                        ? foundedItems![index].balances.last[0] != null
+                        ? foundedItems![index].balances.last[0].runtimeType
+                                is List<dynamic>
                             ? foundedItems![index]
                                 .balances
                                 .last[0]['Pace_bala_Fecha']
                                 .toString()
-                            : foundedItems![index].balances.last != null
-                                ? foundedItems![index]
-                                    .balances
-                                    .last['Pace_bala_Fecha']
-                                    .toString()
-                                : 'Sin Balance Hídrico'
-                        : 'Sin Balance Hídrico',
+                            : foundedItems![index]
+                                .balances
+                                .last['Pace_bala_Fecha']
+                                .toString()
+                        : "Sin Balance Hídrico",
                   ),
                   ValuePanel(
                     onLongPress: () => Datos.portapapeles(
@@ -663,11 +674,12 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         : 'Sin Signos Vitales',
                   ),
                   ValuePanel(
-                    onLongPress: () => Datos.portapapeles(
+                    onLongPress: () async => Datos.portapapeles(
                         context: context,
-                        text: HospitalaryStrings.ventilacionesString(
-                            foundedItems![index].ventilaciones.last,
-                            foundedItems)),
+                        text: await HospitalaryStrings.ventilacionesString(
+                          foundedItems![index].ventilaciones.last,
+                          foundedItems![index].vitales.last,
+                        )),
                     firstText: foundedItems![index].ventilaciones.isNotEmpty
                         ? foundedItems![index]
                             .ventilaciones
@@ -687,7 +699,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
             if (isLargeDesktop(context))
               Expanded(child: Paneles.middlePanel(context, snapshot, index)),
             Expanded(
-              flex: 5,
+              flex: 5, // 3
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -701,6 +713,13 @@ class _HospitalizadosState extends State<Hospitalizados> {
                 ],
               ),
             ),
+            // Expanded(flex: 2, child: Row(
+            //   children: [
+            //     Expanded(child: RevisionDispositivos()),
+            //     CrossLine(thickness: 2, color: Colors.grey),
+            //     Expanded(child: RevisionPrevios())
+            //   ],
+            // )),
             Expanded(
                 flex: 2,
                 child: Column(
@@ -722,6 +741,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                             // ***************************************************
                           }),
                     ),
+
                     Expanded(
                         flex: 2,
                         child: Paneles.opcionesPanel(
@@ -1132,9 +1152,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                 Expanded(
                                   flex: 2,
                                   child: ValuePanel(
-                                    onLongPress: () => Datos.portapapeles(
+                                    onLongPress: () async => Datos.portapapeles(
                                         context: context,
-                                        text: HospitalaryStrings
+                                        text: await HospitalaryStrings
                                             .ventilacionesString(
                                           foundedItems![index]
                                               .ventilaciones
@@ -1168,10 +1188,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                     onChangeValue: () async {
                                       await foundedItems![index]
                                           .getBalancesHistorial()
-                                          .whenComplete(() {
+                                          .whenComplete(() async {
                                         Datos.portapapeles(
                                             context: context,
-                                            text: HospitalaryStrings
+                                            text: await HospitalaryStrings
                                                 .balancesString(
                                                     foundedItems![index]
                                                         .balances
@@ -1272,6 +1292,18 @@ class _HospitalizadosState extends State<Hospitalizados> {
                             flex: 5,
                             child: Paneles.cronicosPanel(
                                 context, snapshot, index)),
+                        Expanded(
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  Datos.portapapeles(context: context, text: snapshot.data![index]
+                                      .revisionHospitalaria ==
+                                      null
+                                      ? 'Sin Revisión Actual Registrada'
+                                      : " ${snapshot.data![index].revisionHospitalaria['Hitos_Hospitalarios'] ?? ''}");
+                                  //
+                                },
+                                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                                child: Text("Revisión Hospitalaria", style: Styles.textSyleGrowth(fontSize: 8),))),
                         // Expanded(
                         //     flex: 5, child: diagnosticosPanel(snapshot, index)),
                         // Expanded(
@@ -1842,6 +1874,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
       //
       await hospitalized[i].getHospitalizationRegister();
       await hospitalized[i].getPadecimientoActual();
+      await hospitalized[i].getRevisionHospitalaria();
+      //
       await hospitalized[i].getCronicosHistorial();
       await hospitalized[i].getParaclinicosHistorial(reload: true);
       //
@@ -1906,6 +1940,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
     await foundedItems![index].getHospitalizationRegister();
     // setState(() => tittle = "Consultando Padecimiento Actual . ");
     await foundedItems![index].getPadecimientoActual();
+    await foundedItems![index].getRevisionHospitalaria();
+    //
     await foundedItems![index].getCronicosHistorial();
     await foundedItems![index].getDiagnosticosHistorial();
     await foundedItems![index].getVitalesHistorial(reload: true);

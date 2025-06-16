@@ -40,23 +40,26 @@ class Paneles {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (snapshot.data!.isNotEmpty) Text(
-                  "${snapshot.data![index].generales['Pace_Ape_Pat'] ?? ''} "
-                  "${snapshot.data![index].generales['Pace_Ape_Mat'] ?? ''} "
-                  "${snapshot.data![index].generales['Pace_Nome_PI'] ?? ''} "
-                  "${snapshot.data![index].generales['Pace_Nome_SE'] ?? ''}",
+              if (snapshot.data!.isNotEmpty)
+                Text(
+                    "${snapshot.data![index].generales['Pace_Ape_Pat'] ?? ''} "
+                    "${snapshot.data![index].generales['Pace_Ape_Mat'] ?? ''} "
+                    "${snapshot.data![index].generales['Pace_Nome_PI'] ?? ''} "
+                    "${snapshot.data![index].generales['Pace_Nome_SE'] ?? ''}",
+                    maxLines: 2,
+                    style: Styles.textSyleGrowth(fontSize: 14)),
+              if (snapshot.data!.isNotEmpty)
+                Text(
+                  "Ocupación: ${snapshot.data![index].generales['Pace_Ocupa'] ?? ''}",
                   maxLines: 2,
-                  style: Styles.textSyleGrowth(fontSize: 14)),
-              if (snapshot.data!.isNotEmpty) Text(
-                "Ocupación: ${snapshot.data![index].generales['Pace_Ocupa'] ?? ''}",
-                maxLines: 2,
-                style: Styles.textSyleGrowth(fontSize: 10),
-              ),
-              if (snapshot.data!.isNotEmpty) Text(
-                "Edad ${snapshot.data[index].generales['Pace_Eda'] ?? ''} Años . ",
-                maxLines: 1,
-                style: Styles.textSyleGrowth(fontSize: 10),
-              ),
+                  style: Styles.textSyleGrowth(fontSize: 10),
+                ),
+              if (snapshot.data!.isNotEmpty)
+                Text(
+                  "Edad ${snapshot.data[index].generales['Pace_Eda'] ?? ''} Años . ",
+                  maxLines: 1,
+                  style: Styles.textSyleGrowth(fontSize: 10),
+                ),
               // Text(
               //   "Hemotipo: ${snapshot.data[index].hospitalizedData['Pace_Hemo'] ?? ''}",
               //   maxLines: 2,
@@ -73,10 +76,11 @@ class Paneles {
               //   overflow: TextOverflow.ellipsis,
               //   style: Styles.textSyleGrowth(fontSize: 10),
               // ),
-              if (snapshot.data!.isNotEmpty) Text(
-                  "NG.: ${snapshot.data[index].hospitalizedData['Feca_INI_Hosp'] ?? ''} - "
-                  "D.E.H.: ${Calendarios.differenceInDaysToNow(snapshot.data[index].hospitalizedData['Feca_INI_Hosp'] ?? DateTime.now().toString())}",
-                  style: Styles.textSyleGrowth(fontSize: 12)),
+              if (snapshot.data!.isNotEmpty)
+                Text(
+                    "NG.: ${snapshot.data[index].hospitalizedData['Feca_INI_Hosp'] ?? ''} - "
+                    "D.E.H.: ${Calendarios.differenceInDaysToNow(snapshot.data[index].hospitalizedData['Feca_INI_Hosp'] ?? DateTime.now().toString())}",
+                    style: Styles.textSyleGrowth(fontSize: 12)),
               CrossLine()
             ],
           ),
@@ -89,23 +93,47 @@ class Paneles {
 
   static Widget padesView(
       BuildContext context, AsyncSnapshot snapshot, int index) {
+    double? fontSize = isMobile(context) ? 14.0 : 10.0;
+
     if (snapshot.data!.isNotEmpty) {
       if (snapshot.data![index].padecimientoActual.isEmpty) {
         return GestureDetector(
             onDoubleTap: () {
               Operadores.openWindow(
                   context: context,
-                  chyldrim: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                  chyldrim: Row(
                     children: [
-                      Text(
-                        snapshot.data![index].padecimientoActual == null
-                            ? 'Sin Padecimiento Actual'
-                            : "Padecimiento Actual:\n ${snapshot.data![index].padecimientoActual['Padecimiento_Actual'] ?? ''}",
-                        maxLines: isMobile(context) ? 30 : 10,
-                        softWrap: true,
-                        style: Styles.textSyleGrowth(fontSize: 10),
-                        textAlign: TextAlign.justify,
+                      Expanded(
+                        flex: 5,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8.0),
+                              margin: const EdgeInsets.all(8.0),
+                              child: Text(
+                                snapshot.data![index].padecimientoActual == null
+                                    ? 'Sin Padecimiento Actual'
+                                    : "Padecimiento Actual:\n ${snapshot.data![index].padecimientoActual['Padecimiento_Actual'] ?? ''}",
+                                maxLines: isMobile(context) ? 30 : 30,
+                                softWrap: true,
+                                style: Styles.textSyleGrowth(fontSize: fontSize!),
+                                textAlign: TextAlign.justify,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: RotatedBox(
+                          quarterTurns: 1,
+                          child: Slider(
+                              label: fontSize.toString(),
+                              min: 2,
+                              max: 20,
+                              value: fontSize!,
+                              onChanged: (double value) => fontSize = value),
+                        ),
                       ),
                     ],
                   ));
@@ -113,7 +141,7 @@ class Paneles {
             child: Text(
               "PA: Sin padecimiento actual registrado . . . ",
               maxLines: isLargeDesktop(context) ? 65 : 45,
-              style: Styles.textSyleGrowth(fontSize: 8),
+              style: Styles.textSyleGrowth(fontSize: fontSize!),
               textAlign: TextAlign.start,
             ));
       } else {
@@ -193,37 +221,40 @@ class Paneles {
   static Widget cronicosPanel(
       BuildContext context, AsyncSnapshot snapshot, int index) {
     return TittleContainer(
-        color: isMobile(context) ? Theming.cuaternaryColor : Colors.black,
-        tittle: "Crónico(s) ",
-        child: ListView.separated(
-          itemCount: snapshot.data!.isNotEmpty ?snapshot.data![index].patologicos.length : 0,
-          itemBuilder: (BuildContext context, ind) {
-            return ElevatedButton(
-              onPressed: () {
-                Pacientes.Diagnosticos = snapshot.data![index].patologicos;
-                Operadores.optionsActivity(
-                    context: context,
-                    tittle: "Diagnóstico seleccionado . . . ",
-                    message: Patologicos.getPatologicos(
-                        snapshot.data![index].patologicos[ind]),
-                    onClose: () => Navigator.of(context).pop(),
-                    textOptionA: "Copiar antecedente en portapapeles . . . ",
-                    optionA: () => Datos.portapapeles(
-                        context: context,
-                        text: Patologicos.getPatologicos(
-                            snapshot.data![index].patologicos[ind])));
-              },
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-              child: Text(
-                snapshot.data![index].patologicos[ind]['Pace_APP_DEG'] ?? "",
-                style: Styles.textSyleGrowth(fontSize: 8),
-              ),
-            );
-          },
-          separatorBuilder: (BuildContext context, int index) {
-            return const SizedBox(height: 8);
-          },
-        ),);
+      color: isMobile(context) ? Theming.cuaternaryColor : Colors.black,
+      tittle: "Crónico(s) ",
+      child: ListView.separated(
+        itemCount: snapshot.data!.isNotEmpty
+            ? snapshot.data![index].patologicos.length
+            : 0,
+        itemBuilder: (BuildContext context, ind) {
+          return ElevatedButton(
+            onPressed: () {
+              Pacientes.Diagnosticos = snapshot.data![index].patologicos;
+              Operadores.optionsActivity(
+                  context: context,
+                  tittle: "Diagnóstico seleccionado . . . ",
+                  message: Patologicos.getPatologicos(
+                      snapshot.data![index].patologicos[ind]),
+                  onClose: () => Navigator.of(context).pop(),
+                  textOptionA: "Copiar antecedente en portapapeles . . . ",
+                  optionA: () => Datos.portapapeles(
+                      context: context,
+                      text: Patologicos.getPatologicos(
+                          snapshot.data![index].patologicos[ind])));
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+            child: Text(
+              snapshot.data![index].patologicos[ind]['Pace_APP_DEG'] ?? "",
+              style: Styles.textSyleGrowth(fontSize: 8),
+            ),
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return const SizedBox(height: 8);
+        },
+      ),
+    );
   }
 
   static Widget diagnosticosPanel(
@@ -259,56 +290,156 @@ class Paneles {
 
   static Widget pendientesPanel(
       BuildContext context, AsyncSnapshot snapshot, int index) {
-    return TittleContainer(
-      tittle: 'Pendiente(s)',
-      color: isMobile(context) ? Theming.cuaternaryColor : Colors.black,
-      child: Column(
-        children: [
-          Expanded(
-              flex: 5,
-              child: ListView.builder(
-                  itemCount: snapshot.data![index].pendientes.length,
-                  itemBuilder: (BuildContext context, int ind) {
-                    if (snapshot.data![index].pendientes[ind]['Pace_PEN'] !=
-                        'Procedimientos') {
-                      if (snapshot.data![index].pendientes[ind]
-                                  ['Pace_PEN_realized'] ==
-                              true ||
-                          snapshot.data![index].pendientes[ind]
-                                  ['Pace_PEN_realized'] ==
-                              1) {
-                        return ElevatedButton(
-                          onPressed: () {
-                            Pacientes.Pendiente =
-                                snapshot.data![index].pendientes;
-                            Operadores.optionsActivity(
+
+    return Column(children: [
+      Expanded(
+          flex: 1,
+          child: TittleContainer(
+            tittle: 'Indicaciones(s)',
+            color: isMobile(context) ? Theming.cuaternaryColor : Colors.black,
+            child: Column(
+              children: [
+                Expanded(
+                    flex: 5,
+                    child: ListView.builder(
+                        itemCount: snapshot.data![index].pendientes.length,
+                        itemBuilder: (BuildContext context, int ind) {
+                          //
+                          return snapshot.data![index].pendientes[ind]['Pace_PEN']?.toString().trim() == "Indicaciones" &&
+                              snapshot.data![index].pendientes[ind]['Pace_PEN_realized']?.toString().trim() == "1"
+                              ? ElevatedButton(
+                            onPressed: () {
+                              Pacientes.Pendiente = snapshot.data![index].pendientes;
+                              Operadores.optionsActivity(
                                 context: context,
-                                tittle: "Diagnóstico seleccionado . . . ",
-                                message: Pendientes.getPendiente(
-                                    snapshot.data![index].pendientes[ind]),
+                                tittle: "Indicación seleccionada . . . ",
+                                message: Pendientes.getIndicaciones(snapshot.data![index].pendientes[ind]),
                                 onClose: () => Navigator.of(context).pop(),
-                                textOptionA:
-                                    "Copiar antecedente en portapapeles . . . ",
+                                textOptionA: "Copiar antecedente en portapapeles . . . ",
                                 optionA: () => Datos.portapapeles(
-                                    context: context,
-                                    text: Pendientes.getPendiente(snapshot
-                                        .data![index].pendientes[ind])));
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black),
-                          child: Text(
-                            snapshot.data![index].pendientes[ind]
-                                ['Pace_Desc_PEN'],
-                            style: Styles.textSyleGrowth(fontSize: 8),
-                          ),
-                        );
-                      }
-                    }
-                    return null;
-                  })),
-        ],
-      ),
-    );
+                                  context: context,
+                                  text: Pendientes.getIndicaciones(snapshot.data![index].pendientes[ind]),
+                                ),
+                              );
+                            },
+                            style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                            child: Text(
+                              snapshot.data![index].pendientes[ind]['Pace_Desc_PEN'],
+                              style: Styles.textSyleGrowth(fontSize: 8),
+                            ),
+                          )
+                              : const SizedBox.shrink(); // <- Evita que retorne null
+
+                        })),
+              ],
+            ),
+          )),
+      CrossLine(thickness: 2, color: Colors.grey),
+      Expanded(
+          flex: 1,
+          child: TittleContainer(
+            tittle: 'Pendiente(s)',
+            color: isMobile(context) ? Theming.cuaternaryColor : Colors.black,
+            child: Column(
+              children: [
+                Expanded(
+                    flex: 5,
+                    child: ListView.builder(
+                        itemCount: snapshot.data![index].pendientes.length,
+                        itemBuilder: (BuildContext context, int ind) {
+                          if (snapshot.data![index].pendientes[ind]
+                                  ['Pace_PEN'] !=
+                              'Procedimientos') {
+                            if (snapshot.data![index].pendientes[ind]
+                                        ['Pace_PEN_realized'] ==
+                                    false ||
+                                snapshot.data![index].pendientes[ind]
+                                        ['Pace_PEN_realized'] ==
+                                    0) {
+                              return ElevatedButton(
+                                onPressed: () {
+                                  Pacientes.Pendiente =
+                                      snapshot.data![index].pendientes;
+                                  Operadores.optionsActivity(
+                                      context: context,
+                                      tittle: "Diagnóstico seleccionado . . . ",
+                                      message: Pendientes.getPendiente(snapshot
+                                          .data![index].pendientes[ind]),
+                                      onClose: () =>
+                                          Navigator.of(context).pop(),
+                                      textOptionA:
+                                          "Copiar antecedente en portapapeles . . . ",
+                                      optionA: () => Datos.portapapeles(
+                                          context: context,
+                                          text: Pendientes.getPendiente(snapshot
+                                              .data![index].pendientes[ind])));
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.black),
+                                child: Text(
+                                  snapshot.data![index].pendientes[ind]
+                                      ['Pace_Desc_PEN'],
+                                  style: Styles.textSyleGrowth(fontSize: 8),
+                                ),
+                              );
+                            }
+                          }
+                          return null;
+                        })),
+              ],
+            ),
+          )),
+    ]);
+    // return TittleContainer(
+    //   tittle: 'Pendiente(s)',
+    //   color: isMobile(context) ? Theming.cuaternaryColor : Colors.black,
+    //   child: Column(
+    //     children: [
+    //       Expanded(
+    //           flex: 5,
+    //           child: ListView.builder(
+    //               itemCount: snapshot.data![index].pendientes.length,
+    //               itemBuilder: (BuildContext context, int ind) {
+    //                 if (snapshot.data![index].pendientes[ind]['Pace_PEN'] !=
+    //                     'Procedimientos') {
+    //                   if (snapshot.data![index].pendientes[ind]
+    //                               ['Pace_PEN_realized'] ==
+    //                           true ||
+    //                       snapshot.data![index].pendientes[ind]
+    //                               ['Pace_PEN_realized'] ==
+    //                           1) {
+    //                     return ElevatedButton(
+    //                       onPressed: () {
+    //                         Pacientes.Pendiente =
+    //                             snapshot.data![index].pendientes;
+    //                         Operadores.optionsActivity(
+    //                             context: context,
+    //                             tittle: "Diagnóstico seleccionado . . . ",
+    //                             message: Pendientes.getPendiente(
+    //                                 snapshot.data![index].pendientes[ind]),
+    //                             onClose: () => Navigator.of(context).pop(),
+    //                             textOptionA:
+    //                                 "Copiar antecedente en portapapeles . . . ",
+    //                             optionA: () => Datos.portapapeles(
+    //                                 context: context,
+    //                                 text: Pendientes.getPendiente(snapshot
+    //                                     .data![index].pendientes[ind])));
+    //                       },
+    //                       style: ElevatedButton.styleFrom(
+    //                           backgroundColor: Colors.black),
+    //                       child: Text(
+    //                         snapshot.data![index].pendientes[ind]
+    //                             ['Pace_Desc_PEN'],
+    //                         style: Styles.textSyleGrowth(fontSize: 8),
+    //                       ),
+    //                     );
+    //                   }
+    //                 }
+    //                 return null;
+    //               })),
+    //     ],
+    //   ),
+    // );
   }
 
   static Widget signosVitales(
@@ -520,7 +651,8 @@ class Paneles {
                         text: Auxiliares.porFecha(
                             fechaActual: list[ind], esAbreviado: true));
                   },
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.black),
                   child: Text(
                     Calendarios.formatDate(list[ind]) ?? "",
                     style: Styles.textSyleGrowth(fontSize: 8),
@@ -682,7 +814,7 @@ class Paneles {
           child: SingleChildScrollView(
             controller: ScrollController(),
             child: Text(
-              "${Auxiliares.getUltimo(esAbreviado: true)}\n${Auxiliares.getGasometrico()}${Auxiliares.getReactantes()}${Auxiliares.getCoagulacion()}${Auxiliares.getEspeciales(esAbreviado: true)}" ,
+              "${Auxiliares.getUltimo(esAbreviado: true)}\n${Auxiliares.getGasometrico()}${Auxiliares.getReactantes()}${Auxiliares.getCoagulacion()}${Auxiliares.getEspeciales(esAbreviado: true)}",
               overflow: TextOverflow.ellipsis,
               style: Styles.textSyleGrowth(fontSize: 8),
               maxLines: 7,
@@ -695,18 +827,21 @@ class Paneles {
     return Container(
       child: Row(
         children: [
-          Expanded(flex: 4,
+          Expanded(
+            flex: 4,
             child: ListView(
               children: widgets,
             ),
           ),
-          Expanded(child: Column(
+          Expanded(
+              child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-            CircleIcon(onChangeValue: () {
-              Datos.portapapeles(context: context, text: param);
-            }),
-          ],))
+              CircleIcon(onChangeValue: () {
+                Datos.portapapeles(context: context, text: param);
+              }),
+            ],
+          ))
         ],
       ),
     );
@@ -941,14 +1076,15 @@ class Paneles {
                   children: pendientes,
                 ),
               ),
-              Expanded(child: CircleIcon(
-                iconed: Icons.archive_outlined,
-                  onChangeValue: () async {
-
-                    // Terminal.printExpected(message: foundedItems[index].toString());
-                    //
-                    await Internado.updateStatus(listadoFrom: foundedItems[index]);
-              })),
+              Expanded(
+                  child: CircleIcon(
+                      iconed: Icons.archive_outlined,
+                      onChangeValue: () async {
+                        // Terminal.printExpected(message: foundedItems[index].toString());
+                        //
+                        await Internado.updateStatus(
+                            listadoFrom: foundedItems[index]);
+                      })),
             ],
           )));
     }
@@ -1057,15 +1193,15 @@ class HospitalaryStrings {
         "(${last['Pace_SV_glu_ayu']} Horas)";
   }
 
-  static String balancesString(last, List? foundedItems, int index) {
+  static Future<String> balancesString(last, List? foundedItems, int index) async {
     // Terminal.printAlert(message: "${last[0].runtimeType}");
     //
     if (last[0].runtimeType is List<dynamic>) {
-      Balances.fromJson(last[0]);
+      await Balances.fromJson(last[0]);
     } else if (last[0].runtimeType is Map<String, dynamic>) {
-      Balances.fromJson(last);
+      await Balances.fromJson(last);
     } else {
-      Balances.fromJson(last);
+      await Balances.fromJson(last);
     }
 
     //
@@ -1082,10 +1218,10 @@ class HospitalaryStrings {
         ")";
   }
 
-  static String ventilacionesString(last, foundedItems) {
+  static Future<String> ventilacionesString(last, foundedItems) async {
     // Terminal.printAlert(message: "${last.runtimeType}");
     // Terminal.printAlert(message: "${last.toString()}");
-    Vitales.fromJson(foundedItems).whenComplete(() {
+    await Vitales.fromJson(foundedItems).whenComplete(() {
       Ventilaciones.fromJson(last);
     });
 

@@ -32,7 +32,7 @@ class Internado {
       imagenologicos = [],
       electrocardiogramas = [],
       ventilaciones = [];
-  late Map<String, dynamic> generales, hospitalizedData, padecimientoActual;
+  late Map<String, dynamic> generales, hospitalizedData, padecimientoActual, revisionHospitalaria;
 
   /// CONTRUCTOR de Pacientes Hospitalizados : Funciones básicas
   Internado(this.idPaciente, Map<String, dynamic> json) {
@@ -78,6 +78,7 @@ class Internado {
       "generales": generales,
       "hospitalizedData": hospitalizedData,
       "padecimientoActual": padecimientoActual,
+      "revisionHospitalaria": revisionHospitalaria,
       "vitales": vitales,
       "patologicos": patologicos,
       "diagnosticos": diagnosticos,
@@ -102,6 +103,13 @@ class Internado {
         Repositorios.repositorio['consultPadecimientoQuery'],
         idHospitalizado,
       ).then((value) => padecimientoActual = value);
+
+  Future<Map<String, dynamic>> getRevisionHospitalaria() async =>
+      await Actividades.consultarId(
+        Databases.siteground_database_reghosp,
+        Repositorios.repositorio['consultRevisionQuery'],
+        idHospitalizado,
+      ).then((value) => revisionHospitalaria = value);
 
   Future<Map<String, dynamic>> getHospitalizationRegister() async =>
       await Actividades.consultarId(

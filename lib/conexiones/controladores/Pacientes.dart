@@ -10069,6 +10069,21 @@ class Pendientes {
             "$indicaciones$estudios$tramites$envios"
             "";
   }
+
+  static String getIndicaciones(Map<String, dynamic> pendiente) {
+    Terminal.printExpected(message: json.toString());
+    String
+        indicaciones = "";
+
+   if (pendiente['Pace_PEN'] == "Indicaciones") {
+          indicaciones =
+          "     ${pendiente['Pace_Desc_PEN']} - ${pendiente['Feca_PEN']} : ${pendiente['Pace_Commen_PEN']}" //  - ${i['Pace_PEN_realized']}"
+              "\n";
+        }
+
+    return indicaciones;
+
+  }
 }
 
 class Reportes {
@@ -10503,12 +10518,14 @@ class Balances {
   };
 
   // *********** *********** ********* ****
-  static void fromJson(Map<String, dynamic> json) {
+  static  Future<void> fromJson(Map<String, dynamic> json) async {
     // Terminal.printExpected(
     //     message: "Balances seleccionados $json . : ${json.runtimeType}");
 
     if (json['Error'] == "No se encontraron datos") {
-    } else {
+      return;
+    }
+
       Balances.ID_Balances = json['ID_Bala'];
       Valores.fechaRealizacionBalances = json['Pace_bala_Fecha'];
 
@@ -10544,7 +10561,7 @@ class Balances {
 
       Valores.horario = json['Pace_bala_HOR'];
       Valores.uresis = double.parse(json['Pace_bala_Uresis'].toString() ?? '0');
-    }
+
 
     // Valores.balanceTotal = Valores.ingresos - Valores.egresos;
     // Valores.diuresis = (Valores.uresis / Valores.pesoCorporalTotal!) / Valores.horario;
@@ -11682,6 +11699,10 @@ class Repositorios {
     "consultPadecimientoQuery":
         "SELECT FechaPadecimiento, Padecimiento_Actual, ID_Compendio FROM pace_hosp_repo "
             "WHERE Tipo_Analisis = 'Análisis de Ingreso' AND ID_Hosp = ? ORDER BY ID_Compendio ASC",
+    // Operaciones con la Revisión Hospitalaria *****************************************************
+    "consultRevisionQuery":
+    "SELECT FechaPadecimiento, Padecimiento_Actual, Hitos_Hospitalarios, ID_Compendio FROM pace_hosp_repo "
+        "WHERE  ID_Hosp = ? ORDER BY ID_Compendio ASC",
     "updatePadecimientoQuery": "UPDATE pace_hosp_repo "
         "SET FechaPadecimiento = ?, Padecimiento_Actual = ? "
         "WHERE ID_Hosp = ? AND Tipo_Analisis = ? AND ID_Pace = ?",

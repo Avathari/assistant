@@ -49,6 +49,8 @@ class _HitoshospitalariosState extends State<Hitoshospitalarios> {
 
   @override
   Widget build(BuildContext context) {
+    widget.fontSize = isMobile(context) ? 14.0 : 8.0;
+
     if (isMobile(context)) {
       return Column(
         children: [
