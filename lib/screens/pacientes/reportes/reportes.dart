@@ -2,6 +2,7 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/conexiones/controladores/pacientes/auxiliar/extractor.dart';
+import 'package:assistant/conexiones/controladores/pacientes/cargadores/loading.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
@@ -101,7 +102,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
         message:
             "ERROR - $error : : $stackTrace\nReiniciando Loading Activity . . .",
       );
-      Pacientes.loadingActivity(context: context);
+      CargadoresPacientes.loadingActivity(context: context);
     });
 
   }
@@ -269,7 +270,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                       // Cargar análisis si hay hospitalización activa
                       if (Pacientes.ID_Hospitalizacion != 0) Repositorios.consultarAnalisis();
                       //
-                      Pacientes.loadingActivity(context: context).then((value) {
+                      CargadoresPacientes.loadingActivity(context: context).then((value) {
                         if (value == true) {
                           // Terminal.printAlert( message:'Archivo ${Pacientes.localPath} Re-Creado $value');
                           Navigator.of(context).pop();
@@ -2130,7 +2131,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                 ),
                 tooltip: 'Cargando . . . ',
                 onPressed: () async {
-                  Pacientes.loadingActivity(context: context).then((value) {
+                  CargadoresPacientes.loadingActivity(context: context).then((value) {
                     if (value == true) {
                       // Terminal.printAlert( message:'Archivo ${Pacientes.localPath} Re-Creado $value');
                       Navigator.of(context).pop();

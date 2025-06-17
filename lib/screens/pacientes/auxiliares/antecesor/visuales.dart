@@ -1,6 +1,7 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/conexiones/controladores/pacientes/auxiliar/extractor.dart';
+import 'package:assistant/conexiones/controladores/pacientes/cargadores/loading.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/gasometricos.dart'
     as Gas;
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
@@ -80,9 +81,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
         Vitales.fromJson(onValue!.last);
       }).whenComplete(() {
         setState(() {});
-      }).onError((onError, tackTrace) {
-
-      });
+      }).onError((onError, tackTrace) {});
       setState(() {}); // si necesitas refrescar UI
     });
 
@@ -1033,37 +1032,65 @@ class _VisualPacientesState extends State<VisualPacientes> {
                 },
               ),
               IconButton(
-                icon: const Icon(
-                  Icons.system_update_alt,
-                  color: Colors.white,
-                ),
-                tooltip: 'Cargando . . . ',
-                onPressed: () async {
-                  Pacientes.loadingActivity(context: context).then((value) {
-                    if (value == true) {
+                  icon: const Icon(
+                    Icons.system_update_alt,
+                    color: Colors.white,
+                  ),
+                  tooltip: 'Cargando . . . ',
+                  onPressed: () {
+                    CargadoresPacientes.loadingActivity(context: context)
+                        .then((value) async {
+                      if (value == true) {
+                        Terminal.printAlert(
+                            message:
+                                'Archivo ${Pacientes.localPath} Re-Creado $value');
+
+                        try {
+                          final dataVitales = await Archivos.readJsonToMap(
+                                  filePath: Vitales.fileAssocieted)
+                              .onError((onError, stackTrace) {});
+                          final dataHosp = await Archivos.readJsonToMap(
+                                  filePath: Hospitalizaciones.fileAssocieted)
+                              .onError((onError, stackTrace) {});
+
+                          if (dataVitales != null && dataVitales.isNotEmpty) {
+                            Vitales.fromJson(dataVitales.last);
+                          }
+
+                          if (dataHosp != null && dataHosp.isNotEmpty) {
+                            Hospitalizaciones.fromJson(dataHosp.first);
+                          }
+
+                          setState(() {});
+                          if (context.mounted) {
+                            Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) => VisualPacientes(actualPage: 0)),
+                          );
+                          }
+                        } catch (e, stack) {
+                          Terminal.printAlert(
+                              message:
+                                  "❌ Error al leer archivos JSON: $e\n$stack");
+                          Operadores.alertActivity(
+                            message: "Error al leer archivos: $e",
+                            context: context,
+                            tittle: "Error al Inicializar Visual",
+                            onAcept: () => Navigator.of(context).pop(),
+                          );
+                        }
+                      }
+                    }).onError((error, stackTrace) {
                       Terminal.printAlert(
                           message:
-                              'Archivo ${Pacientes.localPath} Re-Creado $value');
-                      Archivos.readJsonToMap(filePath: Vitales.fileAssocieted)
-                          .then((onValue) => Vitales.fromJson(onValue!.last))
-                          .whenComplete(() => setState(() => {}));
-                      //
-                      Archivos.readJsonToMap(filePath: Hospitalizaciones.fileAssocieted)
-                          .then((onValue) => Hospitalizaciones.fromJson(onValue!.first))
-                          .whenComplete(() => setState(() => {}));
-                      //
-                      Navigator.of(context).pop();
-                    }
-                  }).onError((error, stackTrace) {
-                    Terminal.printAlert(
-                        message:
-                            "ERROR - toVisual : : $error : : Descripción : $stackTrace");
-                    Operadores.alertActivity(
+                              "ERROR - toVisual : : $error : : Descripción : $stackTrace");
+                      Operadores.alertActivity(
                         message: "ERROR - toVisual : : $error",
                         context: context,
-                        tittle: 'Error al Inicial Visual');
-                  }).whenComplete(() => setState(() {}));
-                },
+                        tittle: 'Error al Inicial Visual',
+                        onAcept: () => Navigator.of(context).pop(),
+                      );
+                    });
+                  },
               ),
             ],
           ),

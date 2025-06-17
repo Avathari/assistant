@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/conexiones/controladores/pacientes/cargadores/loading.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/menus.dart';
@@ -186,66 +187,99 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                             bottom: 2.0,
                                             right: 2.0),
                                         child: GestureDetector(
-                                          onTap: () {
+                                          onTap: () async {
                                             try {
-                                              Pacientes.ID_Paciente = snapshot
-                                                  .data[posicion]['ID_Pace'];
-                                              Pacientes.Paciente =
-                                                  snapshot.data[posicion];
-                                              setState(() {
-                                                Pacientes.fromJson(
-                                                    snapshot.data[posicion]);
-                                              });
-                                              // Terminal.printNotice(message: "Nombre conformado ${Pacientes.nombreCompleto}",);
-                                              // Consulta de Antecedentes No Patológicos **** ***** ******* ****
-                                              Eticos.consultarRegistro();
-                                              Viviendas.consultarRegistro();
-                                              Higienes.consultarRegistro();
-                                              Diarios.consultarRegistro();
-                                              Alimenticios.consultarRegistro();
-                                              Limitaciones.consultarRegistro();
-                                              Sustancias.consultarRegistro();
+                                              // Asignación del paciente
+                                              Pacientes.ID_Paciente = snapshot.data[posicion]['ID_Pace'];
+                                              Pacientes.Paciente = snapshot.data[posicion];
+                                              Pacientes.fromJson(snapshot.data[posicion]);
 
-                                              Toxicomanias.consultarRegistro();
+                                              // Notificadores
+                                              final statusNotifier = ValueNotifier<String>("Inicializando carga...");
+                                              final subStatusNotifier = ValueNotifier<String>("Preparando interfaz...");
+                                              final progressNotifier = ValueNotifier<double>(0.0);
+                                              bool cancelado = false;
 
-                                              toVisual(
-                                                  context, Constantes.Update);
-                                            } catch (e, stacktrace) {
-                                              Terminal.printAlert(
-                                                  message:
-                                                      "ERROR - toVisual : : $e \n\t\t: $stacktrace");
-                                              Operadores.alertActivity(
-                                                  context: context,
-                                                  tittle:
-                                                      'Error al Inicial Visual . . . ',
-                                                  message:
-                                                      "ERROR - toVisual : : $e \n\t\t: $stacktrace",
-                                                  onClose: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  onAcept: () {
-                                                    // Consulta de Antecedentes No Patológicos **** ***** ******* ****
-                                                    Eticos.consultarRegistro();
-                                                    Viviendas
-                                                        .consultarRegistro();
-                                                    Higienes
-                                                        .consultarRegistro();
-                                                    Diarios.consultarRegistro();
-                                                    Alimenticios
-                                                        .consultarRegistro();
-                                                    Limitaciones
-                                                        .consultarRegistro();
-                                                    Sustancias
-                                                        .consultarRegistro();
+                                              // Mostrar diálogo de progreso
+                                              Operadores.showProgressDialog(
+                                                context: context,
+                                                tittle: "Cargando antecedentes...",
+                                                statusNotifier: statusNotifier,
+                                                subStatusNotifier: subStatusNotifier,
+                                                progressNotifier: progressNotifier,
+                                                onCancel: () {
+                                                  cancelado = true;
+                                                  statusNotifier.value = "Cancelado por el usuario";
+                                                  Navigator.of(context).pop();
+                                                },
+                                              );
 
-                                                    Toxicomanias
-                                                        .consultarRegistro();
+                                              // Lista de funciones a ejecutar con descripción
+                                              final List<Future<void> Function()> tareas = [
+                                                    () async {
+                                                  subStatusNotifier.value = "Cargando datos éticos";
+                                                  await Eticos.consultarRegistro();
+                                                },
+                                                    () async {
+                                                  subStatusNotifier.value = "Cargando datos de vivienda";
+                                                  await Viviendas.consultarRegistro();
+                                                },
+                                                    () async {
+                                                  subStatusNotifier.value = "Cargando higiene";
+                                                  await Higienes.consultarRegistro();
+                                                },
+                                                    () async {
+                                                  subStatusNotifier.value = "Cargando actividades diarias";
+                                                  await Diarios.consultarRegistro();
+                                                },
+                                                    () async {
+                                                  subStatusNotifier.value = "Cargando hábitos alimenticios";
+                                                  await Alimenticios.consultarRegistro();
+                                                },
+                                                    () async {
+                                                  subStatusNotifier.value = "Cargando limitaciones físicas";
+                                                  await Limitaciones.consultarRegistro();
+                                                },
+                                                    () async {
+                                                  subStatusNotifier.value = "Cargando consumo de sustancias";
+                                                  await Sustancias.consultarRegistro();
+                                                },
+                                                    () async {
+                                                  subStatusNotifier.value = "Cargando toxicomanías";
+                                                  await Toxicomanias.consultarRegistro();
+                                                },
+                                              ];
 
-                                                    toVisual(context,
-                                                        Constantes.Update);
-                                                  });
+                                              // Ejecutar las tareas secuencialmente con progreso
+                                              for (int i = 0; i < tareas.length; i++) {
+                                                if (cancelado) return;
+                                                statusNotifier.value = "Procesando módulo ${i + 1} de ${tareas.length}";
+                                                progressNotifier.value = (i + 1) / tareas.length;
+                                                await tareas[i]();
+                                                await Future.delayed(const Duration(milliseconds: 250)); // Transición suave
+                                              }
+
+                                              // Cerrar diálogo y navegar
+                                              statusNotifier.value = "Finalizando...";
+                                              subStatusNotifier.value = "Abriendo interfaz visual";
+                                              await Future.delayed(const Duration(milliseconds: 400));
+                                              Navigator.of(context).pop(); // Cierra el AlertDialog
+
+                                              toVisual(context, Constantes.Update);
+                                            } catch (e, stackTrace) {
+                                              Terminal.printAlert(message: "ERROR - toVisual : : $e \n\t\t: $stackTrace");
+                                              Navigator.of(context).pop(); // Asegura cerrar el diálogo si hubo error
+
+                                               Operadores.alertActivity(
+                                                context: context,
+                                                tittle: 'Error al Inicial Visual',
+                                                message: "ERROR - toVisual : : $e",
+                                                onClose: () => Navigator.of(context).pop(),
+                                                onAcept: () => toVisual(context, Constantes.Update),
+                                              );
                                             }
                                           },
+
                                           child: Container(
                                             padding: const EdgeInsets.only(
                                                 left: 10.0,
@@ -798,32 +832,52 @@ class _GestionPacientesState extends State<GestionPacientes> {
         ),
       );
     }).onError((error, stackTrace) async {
-      Operadores.loadingActivity(
-        context: context,
-        tittle: "Iniciando interfaz . . . ",
-        message: "Iniciando Interfaz",
-      );
-      Terminal.printAlert(
-          message: 'Archivo ${Pacientes.localPath} No Encontrado');
-      Terminal.printWarning(message: 'Iniciando búsqueda en Valores . . . ');
-      var response = await Valores().load(context).onError((error, stackTrace) {
+      // Operadores.loadingActivity(
+      //   context: context,
+      //   tittle: "Iniciando interfaz . . . ",
+      //   message: "Iniciando Interfaz",
+      // );
+      // Terminal.printAlert(
+      //     message: 'Archivo ${Pacientes.localPath} No Encontrado');
+      // Terminal.printWarning(message: 'Iniciando búsqueda en Valores . . . ');
+      // var response = await Valores().load(context).onError((error, stackTrace) {
+      //   Operadores.alertActivity(
+      //       context: context,
+      //       tittle: "Error al Cargar Valores . . . ",
+      //       message: "ERROR : : $error : $stackTrace",
+      //       onAcept: () {
+      //         Navigator.of(context).pop();
+      //       });
+      //   return false;
+      // }); // print("response $response");
+      CargadoresPacientes.loadingActivity(context: context).then((value) {
+        if (value == true) {
+          Terminal.printAlert(
+              message:
+              'Archivo ${Pacientes.localPath} Re-Creado $value');
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) => VisualPacientes(actualPage: 0),
+            ),
+          );
+        }
+      }).onError((error, stackTrace) {
+        Terminal.printAlert(
+            message:
+            "ERROR - toVisual : : $error : : Descripción : $stackTrace");
         Operadores.alertActivity(
+            message: "ERROR - toVisual : : $error",
             context: context,
-            tittle: "Error al Cargar Valores . . . ",
-            message: "ERROR : : $error : $stackTrace",
-            onAcept: () {
-              Navigator.of(context).pop();
-            });
-        return false;
-      }); // print("response $response");
+            tittle: 'Error al Inicial Visual');
+      }).whenComplete(() => setState(() {}));
       //
-      if (response == true) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) => VisualPacientes(actualPage: 0),
-          ),
-        );
-      }
+      // if (response == true) {
+      //   Navigator.of(context).push(
+      //     MaterialPageRoute(
+      //       builder: (BuildContext context) => VisualPacientes(actualPage: 0),
+      //     ),
+      //   );
+      // }
     });
   }
 

@@ -1265,6 +1265,7 @@ class Operadores {
   //
   static Future<void> showProgressDialog({
     required BuildContext context,
+    String? tittle = 'Cargando pacientes...',
     required ValueNotifier<String> statusNotifier,
     required ValueNotifier<String> subStatusNotifier,
     required ValueNotifier<double> progressNotifier,
@@ -1275,7 +1276,7 @@ class Operadores {
       context: context,
       builder: (_) => AlertDialog(
         backgroundColor: Theming.secondaryColor,
-        title: const Text('Cargando pacientes...',style: const TextStyle(color: Colors.white)),
+        title:  Text(tittle!,style: const TextStyle(color: Colors.white)),
         content: SizedBox(
           width: 500,
           height: 120,

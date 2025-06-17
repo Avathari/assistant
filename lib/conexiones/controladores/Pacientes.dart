@@ -1572,32 +1572,6 @@ class Pacientes {
 
   //
 
-  static Future<bool> loadingActivity({required BuildContext context}) async {
-    Operadores.loadingActivity(
-      context: context,
-      tittle: "Iniciando interfaz . . . ",
-      message: "Iniciando Interfaz",
-    );
-    //
-    Terminal.printWarning(message: 'Iniciando búsqueda en Valores . . . ');
-    try {
-      var response = await Valores().load(context).onError((error, stackTrace) {
-        Operadores.alertActivity(
-            message: "ERROR - Valores : : $error : $stackTrace . ",
-            context: context,
-            tittle: 'Error al Iniciar Valores . . . ');
-        return false;
-      });
-      return response;
-    } on Exception catch (error) {
-      Terminal.printAlert(message: "ERROR - Valores : : $error");
-      Operadores.alertActivity(
-          message: "ERROR - Valores : : $error",
-          context: context,
-          tittle: 'Error al Iniciar Valores . . . ');
-    }
-    return false;
-  }
 
   //
   static Future<void> getValores(BuildContext context,
@@ -2032,7 +2006,7 @@ class Eticos {
   // ********* ******** ******* ********* ***
   static Map<String, dynamic> Eticas = {};
   // ********* ******** ******* ********* ***
-  static void consultarRegistro() {
+  static Future<void> consultarRegistro() async {
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       Eticos.Eticas = value;
 
@@ -2235,7 +2209,7 @@ class Viviendas {
   // ********* ******** ******* ********* ***
   static Map<String, dynamic> Vivienda = {};
   // ********* ******** ******* ********* ***
-  static void consultarRegistro() {
+  static Future<void> consultarRegistro() async {
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       // Asignación de Valores ********* ******** ******* ********* ***
       Viviendas.Vivienda = value;
@@ -2773,7 +2747,7 @@ class Alimenticios {
   // ********* ******** ******* ********* ***
   static Map<String, dynamic> Alimenticio = {};
   // ********* ******** ******* ********* ***
-  static void consultarRegistro() {
+  static Future<void> consultarRegistro() async {
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       // Asignación de Valores ********* ******** ******* ********* ***
       Alimenticios.Alimenticio = value;
@@ -3006,7 +2980,7 @@ class Diarios {
   // ********* ******** ******* ********* ***
   static Map<String, dynamic> Diario = {};
   // ********* ******** ******* ********* ***
-  static void consultarRegistro() {
+  static Future<void> consultarRegistro() async {
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       // Asignación de Valores ********* ******** ******* ********* ***
       Diarios.Diario = value;
@@ -3254,7 +3228,7 @@ class Higienes {
   // ********* ******** ******* ********* ***
   static Map<String, dynamic> Higiene = {};
   // ********* ******** ******* ********* ***
-  static void consultarRegistro() {
+  static Future<void> consultarRegistro() async {
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       // Asignación de Valores ********* ******** ******* ********* ***
       Higienes.Higiene = value;
@@ -3457,7 +3431,7 @@ class Limitaciones {
   // ********* ******** ******* ********* ***
   static Map<String, dynamic> Limitacion = {};
   // ********* ******** ******* ********* ***
-  static void consultarRegistro() {
+  static Future<void> consultarRegistro() async {
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       // Asignación de Valores ********* ******** ******* ********* ***
       Limitaciones.Limitacion = value;
@@ -3698,7 +3672,7 @@ class Sustancias {
   // ********* ******** ******* ********* ***
   static Map<String, dynamic> Sustancia = {};
   // ********* ******** ******* ********* ***
-  static void consultarRegistro() {
+  static Future<void> consultarRegistro() async {
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       // Asignación de Valores ********* ******** ******* ********* ***
       Sustancias.Sustancia = value;
@@ -3919,7 +3893,7 @@ class Toxicomanias {
   // ********* ******** ******* ********* ***
   static Map<String, dynamic> Toxicomania = {};
   // ********* ******** ******* ********* ***
-  static void consultarRegistro() {
+  static Future<void> consultarRegistro() async {
     Archivos.readJsonToMap(filePath: fileAssocieted).then((value) {
       // Asignación de Valores ********* ******** ******* ********* ***
       Toxicomanias.Toxicomania = value;

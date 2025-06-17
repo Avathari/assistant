@@ -5,6 +5,7 @@ import 'package:assistant/conexiones/actividades/wordGenerate/DocApi.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/conexiones/controladores/pacientes/auxiliar/extractor.dart';
+import 'package:assistant/conexiones/controladores/pacientes/cargadores/loading.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/home.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
@@ -418,39 +419,88 @@ class _HospitalizadosState extends State<Hospitalizados> {
     Directrices.coordenada =
         true; // Variable Global para VisualPacientes devuelva a Hospitalizados.dart
     //
-    Terminal.printData(
-        message: 'Nombre obtenido ${Pacientes.nombreCompleto}\n'
-            '${Pacientes.localPath}');
-    Archivos.readJsonToMap(filePath: Pacientes.localPath).then((value) {
-      Pacientes.Paciente = value[0];
-      setState(() {
-        Pacientes.imagenPaciente = value[0]['Pace_FIAT'];
-      });
-      Terminal.printSuccess(message: 'Archivo ${Pacientes.localPath} Obtenido');
-      Valores.fromJson(value[0]);
+    CargadoresPacientes.loadingActivity(context: context)
+        .then((value) async {
+      if (value == true) {
+        Terminal.printAlert(
+            message:
+            'Archivo ${Pacientes.localPath} Re-Creado $value');
 
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (BuildContext context) => VisualPacientes(actualPage: 0),
-        ),
-      );
-    }).onError((error, stackTrace) async {
-      Operadores.loadingActivity(
-        context: context,
-        tittle: "Iniciando interfaz . . . ",
-        message: "Iniciando Interfaz",
-      );
-      Terminal.printAlert(
-          message: 'Archivo ${Pacientes.localPath} No Encontrado');
-      Terminal.printWarning(message: 'Iniciando busqueda en Valores . . . ');
-      var response =
-          await Valores().load(context); // print("response $response");
+        try {
+          final dataVitales = await Archivos.readJsonToMap(
+              filePath: Vitales.fileAssocieted)
+              .onError((onError, stackTrace) {});
+          final dataHosp = await Archivos.readJsonToMap(
+              filePath: Hospitalizaciones.fileAssocieted)
+              .onError((onError, stackTrace) {});
 
-      // ignore: use_build_context_synchronously
-      if (response == true) {
-        Cambios.toNextPage(context, VisualPacientes(actualPage: 0));
+          if (dataVitales != null && dataVitales.isNotEmpty) {
+            Vitales.fromJson(dataVitales.last);
+          }
+
+          if (dataHosp != null && dataHosp.isNotEmpty) {
+            Hospitalizaciones.fromJson(dataHosp.first);
+          }
+
+          setState(() {});
+          if (context.mounted) Cambios.toNextPage(context, VisualPacientes(actualPage: 0));
+        } catch (e, stack) {
+          Terminal.printAlert(
+              message:
+              "❌ Error al leer archivos JSON: $e\n$stack");
+          Operadores.alertActivity(
+            message: "Error al leer archivos: $e",
+            context: context,
+            tittle: "Error al Inicializar Visual",
+            onAcept: () => Navigator.of(context).pop(),
+          );
+        }
       }
+    }).onError((error, stackTrace) {
+      Terminal.printAlert(
+          message:
+          "ERROR - toVisual : : $error : : Descripción : $stackTrace");
+      Operadores.alertActivity(
+        message: "ERROR - toVisual : : $error",
+        context: context,
+        tittle: 'Error al Inicial Visual',
+        onAcept: () => Navigator.of(context).pop(),
+      );
     });
+    //
+    // Terminal.printData(
+    //     message: 'Nombre obtenido ${Pacientes.nombreCompleto}\n'
+    //         '${Pacientes.localPath}');
+    // Archivos.readJsonToMap(filePath: Pacientes.localPath).then((value) {
+    //   Pacientes.Paciente = value[0];
+    //   setState(() {
+    //     Pacientes.imagenPaciente = value[0]['Pace_FIAT'];
+    //   });
+    //   Terminal.printSuccess(message: 'Archivo ${Pacientes.localPath} Obtenido');
+    //   Valores.fromJson(value[0]);
+    //
+    //   Navigator.of(context).push(
+    //     MaterialPageRoute(
+    //       builder: (BuildContext context) => VisualPacientes(actualPage: 0),
+    //     ),
+    //   );
+    // }).onError((error, stackTrace) async {
+    //   Operadores.loadingActivity(
+    //     context: context,
+    //     tittle: "Iniciando interfaz . . . ",
+    //     message: "Iniciando Interfaz",
+    //   );
+    //   Terminal.printAlert(
+    //       message: 'Archivo ${Pacientes.localPath} No Encontrado');
+    //   Terminal.printWarning(message: 'Iniciando busqueda en Valores . . . ');
+    //   var response =
+    //       await Valores().load(context); // print("response $response");
+    //
+    //   // ignore: use_build_context_synchronously
+    //   if (response == true) {
+    //     Cambios.toNextPage(context, VisualPacientes(actualPage: 0));
+    //   }
+    // });
   }
 
   // VISTAS *******************************************************
@@ -761,20 +811,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
                     )),
                     Expanded(
                         child: CircleIcon(
-                            tittle: 'Recargar Registro . . . ',
-                            iconed: Icons.recent_actors_rounded,
-                            onChangeValue: () {
-                              // Operadores.loadingActivity(
-                              //   context: context,
-                              //   dismisable: false,
-                              //   tittle:
-                              //       "Consultando nuevamente registro . . . ",
-                              //   message: " . . . ",
-                              // );
-                              //
-                              _refreshActualList(index).whenComplete(
-                                  () => Navigator.of(context).pop());
-                            })),
+                      tittle: 'Recargar Registro . . . ',
+                      iconed: Icons.recent_actors_rounded,
+                      onChangeValue: () => _refreshActualList(index),
+                    )),
                   ],
                 )),
             Expanded(
@@ -960,19 +1000,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
                     }),
                 if (!isTablet(context))
                   CircleIcon(
-                      tittle: 'Recargar Registro . . . ',
-                      iconed: Icons.recent_actors_rounded,
-                      onChangeValue: () {
-                        // Operadores.loadingActivity(
-                        //   context: context,
-                        //   dismisable: false,
-                        //   tittle: "Consultando nuevamente registro . . . ",
-                        //   message: " . . . ",
-                        // );
-                        //
-                        _refreshActualList(index)
-                            .whenComplete(() => Navigator.of(context).pop());
-                      }),
+                    tittle: 'Recargar Registro . . . ',
+                    iconed: Icons.recent_actors_rounded,
+                    onChangeValue: () => _refreshActualList(index),
+                  ),
                 GrandIcon(
                     iconData: Icons.hourglass_bottom,
                     labelButton: 'Cutivos y Hemocultivos . . . ',
@@ -1633,7 +1664,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         tittle: 'Recargar Registro . . . ',
                         iconed: Icons.recent_actors_rounded,
                         onChangeValue: () => _refreshActualList(index),
-                            // .whenComplete(() => Navigator.of(context).pop()),
+                        // .whenComplete(() => Navigator.of(context).pop()),
                       )),
                 ],
               ),
@@ -1888,30 +1919,37 @@ class _HospitalizadosState extends State<Hospitalizados> {
       for (int i = 0; i < total; i++) {
         if (cancelado) break;
 
-        final paciente = Internado(int.parse(response[i]["ID_Pace"].toString()), response[i]);
+        final paciente = Internado(
+            int.parse(response[i]["ID_Pace"].toString()), response[i]);
         hospitalized.add(paciente);
 
         final nombre = paciente.nombreCompleto;
         final progreso = ((i + 1) / total) * 100;
-        statusNotifier.value = "Cargando a: $nombre (${i + 1}/$total)"; // (${progreso.toStringAsFixed(2)}%)
+        statusNotifier.value =
+            "Cargando a: $nombre (${i + 1}/$total)"; // (${progreso.toStringAsFixed(2)}%)
         progressNotifier.value = (i + 1) / total;
         final erroresPaciente = <String>[];
 
         // Función para capturar errores por módulo
-        Future<void> runModulo(String nombreModulo, Future<void> Function() funcion) async {
+        Future<void> runModulo(
+            String nombreModulo, Future<void> Function() funcion) async {
           try {
             subStatusNotifier.value = nombreModulo;
             await funcion();
           } catch (e) {
             erroresPaciente.add(nombreModulo);
-            Terminal.printAlert(message: "❌ Error en $nombreModulo del paciente $nombre");
+            Terminal.printAlert(
+                message: "❌ Error en $nombreModulo del paciente $nombre");
           }
         }
 
         // Módulos secuenciales obligatorios
-        await runModulo("Datos de hospitalización", () => paciente.getHospitalizationRegister());
-        await runModulo("Padecimiento actual", () => paciente.getPadecimientoActual());
-        await runModulo("Revisión hospitalaria", () => paciente.getRevisionHospitalaria());
+        await runModulo("Datos de hospitalización",
+            () => paciente.getHospitalizationRegister());
+        await runModulo(
+            "Padecimiento actual", () => paciente.getPadecimientoActual());
+        await runModulo(
+            "Revisión hospitalaria", () => paciente.getRevisionHospitalaria());
 
         // Módulos pesados en paralelo
         await Future.wait([
@@ -1919,12 +1957,18 @@ class _HospitalizadosState extends State<Hospitalizados> {
           runModulo("Pendientes", () => paciente.getPendientesHistorial()),
           runModulo("Licencias", () => paciente.getLicenciasHistorial()),
           runModulo("Signos vitales", () => paciente.getVitalesHistorial()),
-          runModulo("Balances", () => paciente.getBalancesHistorial(reload: true)),
-          runModulo("Ventilaciones", () => paciente.getVentilacionnesHistorial()),
-          runModulo("Paraclínicos", () => paciente.getParaclinicosHistorial(reload: true)),
-          runModulo("Imagenología", () => paciente.getImagenologicosHistorial()),
-          runModulo("Electrocardiogramas", () => paciente.getElectrocardiogramasHistorial()),
-          runModulo("Antecedentes crónicos", () => paciente.getCronicosHistorial()),
+          runModulo(
+              "Balances", () => paciente.getBalancesHistorial(reload: true)),
+          runModulo(
+              "Ventilaciones", () => paciente.getVentilacionnesHistorial()),
+          runModulo("Paraclínicos",
+              () => paciente.getParaclinicosHistorial(reload: true)),
+          runModulo(
+              "Imagenología", () => paciente.getImagenologicosHistorial()),
+          runModulo("Electrocardiogramas",
+              () => paciente.getElectrocardiogramasHistorial()),
+          runModulo(
+              "Antecedentes crónicos", () => paciente.getCronicosHistorial()),
         ]);
 
         if (erroresPaciente.isNotEmpty) {
@@ -1955,36 +1999,43 @@ class _HospitalizadosState extends State<Hospitalizados> {
         final duracion = DateTime.now().difference(inicio);
         final totalExitosos = response.length - fallosPorPaciente.length;
 
-        String resumen = "✅ $totalExitosos paciente(s) cargado(s) correctamente.\n";
+        String resumen =
+            "✅ $totalExitosos paciente(s) cargado(s) correctamente.\n";
         if (fallosPorPaciente.isNotEmpty) {
           resumen += "❌ ${fallosPorPaciente.length} con errores:\n";
           for (var entry in fallosPorPaciente) {
-            resumen += "\n• ${entry['nombre']} (ID ${entry['id']})\n  ↳ Falló en: ${entry['fallos'].join(", ")}";
+            resumen +=
+                "\n• ${entry['nombre']} (ID ${entry['id']})\n  ↳ Falló en: ${entry['fallos'].join(", ")}";
           }
         }
         resumen += "\n\n🕒 Duración total: ${duracion.inSeconds} segundos.";
 
         // Guardar log detallado
-        final logFilePath = fileAssocieted.replaceAll(".json", "_log_${DateTime.now().toIso8601String().substring(0,10)}.json");
-        await Archivos.createJsonFromMap([{
-          "fecha": DateTime.now().toIso8601String(),
-          "duracion_segundos": duracion.inSeconds,
-          "pacientes_totales": response.length,
-          "exitosos": totalExitosos,
-          "con_errores": fallosPorPaciente.length,
-          "errores_detallados": fallosPorPaciente,
-        }], filePath: logFilePath);
+        final logFilePath = fileAssocieted.replaceAll(".json",
+            "_log_${DateTime.now().toIso8601String().substring(0, 10)}.json");
+        await Archivos.createJsonFromMap([
+          {
+            "fecha": DateTime.now().toIso8601String(),
+            "duracion_segundos": duracion.inSeconds,
+            "pacientes_totales": response.length,
+            "exitosos": totalExitosos,
+            "con_errores": fallosPorPaciente.length,
+            "errores_detallados": fallosPorPaciente,
+          }
+        ], filePath: logFilePath);
 
         await showDialog(
           context: context,
           builder: (_) => AlertDialog(
             backgroundColor: Theming.secondaryColor,
-            title: const Text("Resumen de carga",style: const TextStyle(color: Colors.white)),
-            content: Text(resumen),
+            title: const Text("Resumen de carga",
+                style: const TextStyle(color: Colors.white)),
+            content: Text(resumen, style: const TextStyle(color: Colors.grey)),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text("Aceptar"),
+                child: const Text("Aceptar",
+                    style: const TextStyle(color: Colors.grey)),
               )
             ],
           ),
@@ -2037,33 +2088,44 @@ class _HospitalizadosState extends State<Hospitalizados> {
     try {
       statusNotifier.value = "Actualizando a: $nombre";
 
-      Future<void> runModulo(String nombreModulo, Future<void> Function() funcion) async {
+      Future<void> runModulo(
+          String nombreModulo, Future<void> Function() funcion) async {
         if (cancelado) return;
         try {
           subStatusNotifier.value = nombreModulo;
           await funcion();
         } catch (e) {
           erroresPaciente.add(nombreModulo);
-          Terminal.printAlert(message: "❌ Error en $nombreModulo del paciente $nombre");
+          Terminal.printAlert(
+              message: "❌ Error en $nombreModulo del paciente $nombre");
         }
       }
 
       progressNotifier.value = 0.10;
-      await runModulo("Datos de hospitalización", () => nuevoPaciente.getHospitalizationRegister());
+      await runModulo("Datos de hospitalización",
+          () => nuevoPaciente.getHospitalizationRegister());
       progressNotifier.value = 0.20;
-      await runModulo("Padecimiento actual", () => nuevoPaciente.getPadecimientoActual());
+      await runModulo(
+          "Padecimiento actual", () => nuevoPaciente.getPadecimientoActual());
       progressNotifier.value = 0.30;
-      await runModulo("Revisión hospitalaria", () => nuevoPaciente.getRevisionHospitalaria());
+      await runModulo("Revisión hospitalaria",
+          () => nuevoPaciente.getRevisionHospitalaria());
 
       progressNotifier.value = 0.45;
 
       await Future.wait([
-        runModulo("Antecedentes crónicos", () => nuevoPaciente.getCronicosHistorial()),
-        runModulo("Diagnósticos", () => nuevoPaciente.getDiagnosticosHistorial()),
-        runModulo("Signos vitales", () => nuevoPaciente.getVitalesHistorial(reload: true)),
-        runModulo("Ventilaciones", () => nuevoPaciente.getVentilacionnesHistorial(reload: true)),
-        runModulo("Balances", () => nuevoPaciente.getBalancesHistorial(reload: true)),
-        runModulo("Paraclínicos", () => nuevoPaciente.getParaclinicosHistorial(reload: true)),
+        runModulo("Antecedentes crónicos",
+            () => nuevoPaciente.getCronicosHistorial()),
+        runModulo(
+            "Diagnósticos", () => nuevoPaciente.getDiagnosticosHistorial()),
+        runModulo("Signos vitales",
+            () => nuevoPaciente.getVitalesHistorial(reload: true)),
+        runModulo("Ventilaciones",
+            () => nuevoPaciente.getVentilacionnesHistorial(reload: true)),
+        runModulo(
+            "Balances", () => nuevoPaciente.getBalancesHistorial(reload: true)),
+        runModulo("Paraclínicos",
+            () => nuevoPaciente.getParaclinicosHistorial(reload: true)),
         runModulo("Pendientes", () => nuevoPaciente.getPendientesHistorial()),
         // runModulo("Imagenología", () => nuevoPaciente.getImagenologicosHistorial()),
         // runModulo("Electrocardiogramas", () => nuevoPaciente.getElectrocardiogramasHistorial()),
@@ -2081,26 +2143,31 @@ class _HospitalizadosState extends State<Hospitalizados> {
 
       setState(() {
         HospitalaryMethods.orderByCamas(foundedItems!);
-        Terminal.printSuccess(message: "✅ Registro de $nombre actualizado con éxito.");
+        Terminal.printSuccess(
+            message: "✅ Registro de $nombre actualizado con éxito.");
       });
 
       if (erroresPaciente.isNotEmpty) {
         final duracion = DateTime.now().difference(inicio);
-        final logFilePath = fileAssocieted.replaceAll(".json", "_refresh_log_${DateTime.now().toIso8601String().substring(0,10)}.json");
+        final logFilePath = fileAssocieted.replaceAll(".json",
+            "_refresh_log_${DateTime.now().toIso8601String().substring(0, 10)}.json");
 
-        await Archivos.createJsonFromMap([{
-          "fecha": DateTime.now().toIso8601String(),
-          "id": pacienteId,
-          "nombre": nombre,
-          "duracion_segundos": duracion.inSeconds,
-          "errores": erroresPaciente,
-        }], filePath: logFilePath);
+        await Archivos.createJsonFromMap([
+          {
+            "fecha": DateTime.now().toIso8601String(),
+            "id": pacienteId,
+            "nombre": nombre,
+            "duracion_segundos": duracion.inSeconds,
+            "errores": erroresPaciente,
+          }
+        ], filePath: logFilePath);
 
         await showDialog(
           context: context,
           builder: (_) => AlertDialog(
             title: const Text("Actualización parcial"),
-            content: Text("🔶 El paciente $nombre fue actualizado, pero se detectaron errores en los módulos:\n\n${erroresPaciente.join("\n")}"),
+            content: Text(
+                "🔶 El paciente $nombre fue actualizado, pero se detectaron errores en los módulos:\n\n${erroresPaciente.join("\n")}"),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
@@ -2110,7 +2177,6 @@ class _HospitalizadosState extends State<Hospitalizados> {
           ),
         );
       }
-
     } catch (e, stack) {
       if (!cancelado && mounted) {
         Navigator.of(context).pop();

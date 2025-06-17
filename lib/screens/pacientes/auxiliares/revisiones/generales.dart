@@ -1,6 +1,7 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/conexiones/controladores/pacientes/cargadores/loading.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/auxiliares/auxiliaresGenerales.dart';
@@ -2275,7 +2276,7 @@ class _GeneralesState extends State<Generales> {
               ),
               tooltip: 'Cargando . . . ',
               onPressed: () async {
-                Pacientes.loadingActivity(context: context).then((value) {
+                CargadoresPacientes.loadingActivity(context: context).then((value) {
                   if (value == true) {
                     Terminal.printAlert(
                         message:
