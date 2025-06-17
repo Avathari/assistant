@@ -1276,12 +1276,15 @@ class Operadores {
       builder: (_) => AlertDialog(
         backgroundColor: Theming.secondaryColor,
         title: const Text('Cargando pacientes...',style: const TextStyle(color: Colors.white)),
-        content: Container(
+        content: SizedBox(
           width: 500,
+          height: 120,
           child: Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              const SizedBox(height: 20),
               ValueListenableBuilder<String>(
                 valueListenable: statusNotifier,
                 builder: (_, value, __) => Text(value, style: const TextStyle(color: Colors.white),),

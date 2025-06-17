@@ -764,13 +764,13 @@ class _HospitalizadosState extends State<Hospitalizados> {
                             tittle: 'Recargar Registro . . . ',
                             iconed: Icons.recent_actors_rounded,
                             onChangeValue: () {
-                              Operadores.loadingActivity(
-                                context: context,
-                                dismisable: false,
-                                tittle:
-                                    "Consultando nuevamente registro . . . ",
-                                message: " . . . ",
-                              );
+                              // Operadores.loadingActivity(
+                              //   context: context,
+                              //   dismisable: false,
+                              //   tittle:
+                              //       "Consultando nuevamente registro . . . ",
+                              //   message: " . . . ",
+                              // );
                               //
                               _refreshActualList(index).whenComplete(
                                   () => Navigator.of(context).pop());
@@ -963,12 +963,12 @@ class _HospitalizadosState extends State<Hospitalizados> {
                       tittle: 'Recargar Registro . . . ',
                       iconed: Icons.recent_actors_rounded,
                       onChangeValue: () {
-                        Operadores.loadingActivity(
-                          context: context,
-                          dismisable: false,
-                          tittle: "Consultando nuevamente registro . . . ",
-                          message: " . . . ",
-                        );
+                        // Operadores.loadingActivity(
+                        //   context: context,
+                        //   dismisable: false,
+                        //   tittle: "Consultando nuevamente registro . . . ",
+                        //   message: " . . . ",
+                        // );
                         //
                         _refreshActualList(index)
                             .whenComplete(() => Navigator.of(context).pop());
@@ -1632,11 +1632,8 @@ class _HospitalizadosState extends State<Hospitalizados> {
                       child: CircleIcon(
                         tittle: 'Recargar Registro . . . ',
                         iconed: Icons.recent_actors_rounded,
-                        onChangeValue: () => Operadores.dummyLoadingActivity(
-                            context: context,
-                            tittle: "Recargar Información del Registro . . . ",
-                            message: "",
-                            task: _refreshActualList(index)),
+                        onChangeValue: () => _refreshActualList(index),
+                            // .whenComplete(() => Navigator.of(context).pop()),
                       )),
                 ],
               ),
@@ -2051,9 +2048,14 @@ class _HospitalizadosState extends State<Hospitalizados> {
         }
       }
 
+      progressNotifier.value = 0.10;
       await runModulo("Datos de hospitalización", () => nuevoPaciente.getHospitalizationRegister());
+      progressNotifier.value = 0.20;
       await runModulo("Padecimiento actual", () => nuevoPaciente.getPadecimientoActual());
+      progressNotifier.value = 0.30;
       await runModulo("Revisión hospitalaria", () => nuevoPaciente.getRevisionHospitalaria());
+
+      progressNotifier.value = 0.45;
 
       await Future.wait([
         runModulo("Antecedentes crónicos", () => nuevoPaciente.getCronicosHistorial()),
@@ -2067,7 +2069,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
         // runModulo("Electrocardiogramas", () => nuevoPaciente.getElectrocardiogramasHistorial()),
       ]);
 
-      progressNotifier.value = 1.0;
+      progressNotifier.value = 0.65;
 
       statusNotifier.value = "Guardando datos localmente...";
       subStatusNotifier.value = "Archivo JSON";
