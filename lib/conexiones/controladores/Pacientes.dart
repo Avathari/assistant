@@ -10242,6 +10242,7 @@ class Reportes {
     antecedentesPerinatales = "";
     antecedentesSexuales = "";
     padecimientoActual = "";
+    hitosHospitalarios = "";
     //
     signosVitales = "";
     exploracionFisica = "";

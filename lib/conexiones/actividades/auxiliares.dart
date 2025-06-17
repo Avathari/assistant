@@ -1261,6 +1261,66 @@ class Operadores {
           }, onAcept);
         });
   }
+
+  //
+  static Future<void> showProgressDialog({
+    required BuildContext context,
+    required ValueNotifier<String> statusNotifier,
+    required ValueNotifier<String> subStatusNotifier,
+    required ValueNotifier<double> progressNotifier,
+    required VoidCallback onCancel,
+  }) {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (_) => AlertDialog(
+        backgroundColor: Theming.secondaryColor,
+        title: const Text('Cargando pacientes...',style: const TextStyle(color: Colors.white)),
+        content: Container(
+          width: 500,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ValueListenableBuilder<String>(
+                valueListenable: statusNotifier,
+                builder: (_, value, __) => Text(value, style: const TextStyle(color: Colors.white),),
+              ),
+              const SizedBox(height: 4),
+              ValueListenableBuilder<String>(
+                valueListenable: subStatusNotifier,
+                builder: (_, value, __) => Text(
+                  "↳ $value",
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+              ),
+              const SizedBox(height: 12),
+              ValueListenableBuilder<double>(
+                valueListenable: progressNotifier,
+                builder: (_, value, __) => Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    LinearProgressIndicator(value: value),
+                    const SizedBox(height: 4),
+                    Text("${(value * 100).toStringAsFixed(2)} %",style: const TextStyle(color: Colors.white)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: onCancel,
+            child: const Text('Cancelar'),
+          )
+        ],
+      ),
+    );
+  }
+
+
+
 }
 
 class Dialogos {

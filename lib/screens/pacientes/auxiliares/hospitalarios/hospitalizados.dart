@@ -748,6 +748,19 @@ class _HospitalizadosState extends State<Hospitalizados> {
                             context, foundedItems, index)),
                     Expanded(
                         child: CircleIcon(
+                      tittle: "Revisión Hospitalaria",
+                      iconed: Icons.history_edu,
+                      onChangeValue: () {
+                        Datos.portapapeles(
+                            context: context,
+                            text: snapshot.data![index].revisionHospitalaria?[
+                                    'Hitos_Hospitalarios'] ??
+                                'Sin Revisión Actual Registrada');
+                        //
+                      },
+                    )),
+                    Expanded(
+                        child: CircleIcon(
                             tittle: 'Recargar Registro . . . ',
                             iconed: Icons.recent_actors_rounded,
                             onChangeValue: () {
@@ -1295,15 +1308,21 @@ class _HospitalizadosState extends State<Hospitalizados> {
                         Expanded(
                             child: ElevatedButton(
                                 onPressed: () {
-                                  Datos.portapapeles(context: context, text: snapshot.data![index]
-                                      .revisionHospitalaria ==
-                                      null
-                                      ? 'Sin Revisión Actual Registrada'
-                                      : " ${snapshot.data![index].revisionHospitalaria['Hitos_Hospitalarios'] ?? ''}");
+                                  Datos.portapapeles(
+                                      context: context,
+                                      text: snapshot.data![index]
+                                                  .revisionHospitalaria ==
+                                              null
+                                          ? 'Sin Revisión Actual Registrada'
+                                          : " ${snapshot.data![index].revisionHospitalaria['Hitos_Hospitalarios'] ?? ''}");
                                   //
                                 },
-                                style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-                                child: Text("Revisión Hospitalaria", style: Styles.textSyleGrowth(fontSize: 8),))),
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.black),
+                                child: Text(
+                                  "Revisión Hospitalaria",
+                                  style: Styles.textSyleGrowth(fontSize: 8),
+                                ))),
                         // Expanded(
                         //     flex: 5, child: diagnosticosPanel(snapshot, index)),
                         // Expanded(
@@ -1839,144 +1858,272 @@ class _HospitalizadosState extends State<Hospitalizados> {
       );
 
   // METHODS
-  Future<Null> _pullListRefresh() async {
-    Terminal.printAlert(
-        message: "Iniciando actividad : : \n "
-            "Consulta de pacientes hospitalizados . . . NUEVA FUNCION");
-    //
-    Operadores.loadingActivity(
-        context: context,
-        tittle: 'Actualizando Valores . . . ',
-        message: 'Actualizando . . . ',
-        onCloss: () {
-          Navigator.of(context).pop();
-        });
-    // CONSULTA DE VALORES ****************************************
-    List hospitalized = []; // Lista de Pacientes Hospitalizados * * *
+  Future<void> _pullListRefresh() async {
+    final statusNotifier = ValueNotifier<String>("Inicializando...");
+    final subStatusNotifier = ValueNotifier<String>("Preparando módulo...");
+    final progressNotifier = ValueNotifier<double>(0.0);
+    final fallosPorPaciente = <Map<String, dynamic>>[];
+    final DateTime inicio = DateTime.now();
+    bool cancelado = false;
 
-    var response = await Actividades.consultar(
-      Databases.siteground_database_regpace,
-      Pacientes.pacientes['consultHospitalized'],
-    ).catchError((e, stackTrace) {
-      Navigator.of(context).pop(); // Cerrar LoadingActivity .
-      Operadores.alertActivity(
-          context: context,
-          tittle: "$e",
-          message: "$stackTrace",
-          onAcept: () {
-            Navigator.of(context).pop();
+    Operadores.showProgressDialog(
+      context: context,
+      statusNotifier: statusNotifier,
+      subStatusNotifier: subStatusNotifier,
+      progressNotifier: progressNotifier,
+      onCancel: () {
+        cancelado = true;
+        Navigator.of(context).pop();
+      },
+    );
+
+    List hospitalized = [];
+
+    try {
+      statusNotifier.value = "Consultando lista de pacientes hospitalizados...";
+      var response = await Actividades.consultar(
+        Databases.siteground_database_regpace,
+        Pacientes.pacientes['consultHospitalized'],
+      );
+
+      int total = response.length;
+
+      for (int i = 0; i < total; i++) {
+        if (cancelado) break;
+
+        final paciente = Internado(int.parse(response[i]["ID_Pace"].toString()), response[i]);
+        hospitalized.add(paciente);
+
+        final nombre = paciente.nombreCompleto;
+        final progreso = ((i + 1) / total) * 100;
+        statusNotifier.value = "Cargando a: $nombre (${i + 1}/$total)"; // (${progreso.toStringAsFixed(2)}%)
+        progressNotifier.value = (i + 1) / total;
+        final erroresPaciente = <String>[];
+
+        // Función para capturar errores por módulo
+        Future<void> runModulo(String nombreModulo, Future<void> Function() funcion) async {
+          try {
+            subStatusNotifier.value = nombreModulo;
+            await funcion();
+          } catch (e) {
+            erroresPaciente.add(nombreModulo);
+            Terminal.printAlert(message: "❌ Error en $nombreModulo del paciente $nombre");
+          }
+        }
+
+        // Módulos secuenciales obligatorios
+        await runModulo("Datos de hospitalización", () => paciente.getHospitalizationRegister());
+        await runModulo("Padecimiento actual", () => paciente.getPadecimientoActual());
+        await runModulo("Revisión hospitalaria", () => paciente.getRevisionHospitalaria());
+
+        // Módulos pesados en paralelo
+        await Future.wait([
+          runModulo("Diagnósticos", () => paciente.getDiagnosticosHistorial()),
+          runModulo("Pendientes", () => paciente.getPendientesHistorial()),
+          runModulo("Licencias", () => paciente.getLicenciasHistorial()),
+          runModulo("Signos vitales", () => paciente.getVitalesHistorial()),
+          runModulo("Balances", () => paciente.getBalancesHistorial(reload: true)),
+          runModulo("Ventilaciones", () => paciente.getVentilacionnesHistorial()),
+          runModulo("Paraclínicos", () => paciente.getParaclinicosHistorial(reload: true)),
+          runModulo("Imagenología", () => paciente.getImagenologicosHistorial()),
+          runModulo("Electrocardiogramas", () => paciente.getElectrocardiogramasHistorial()),
+          runModulo("Antecedentes crónicos", () => paciente.getCronicosHistorial()),
+        ]);
+
+        if (erroresPaciente.isNotEmpty) {
+          fallosPorPaciente.add({
+            "nombre": nombre,
+            "id": paciente.idPaciente,
+            "fallos": erroresPaciente,
           });
-    });
-    //
-    for (int i = 0; i < response.length; i++) {
-      hospitalized.insert(i,
-          Internado(int.parse(response[i]["ID_Pace"].toString()), response[i]));
-      //
-      await hospitalized[i].getHospitalizationRegister();
-      await hospitalized[i].getPadecimientoActual();
-      await hospitalized[i].getRevisionHospitalaria();
-      //
-      await hospitalized[i].getCronicosHistorial();
-      await hospitalized[i].getParaclinicosHistorial(reload: true);
-      //
-      await hospitalized[i].getVitalesHistorial();
-      await hospitalized[i].getBalancesHistorial(reload: true);
-      await hospitalized[i].getVentilacionnesHistorial();
+        }
+      }
 
-      // ⚠️ Ejecutar los métodos pesados en paralelo, pero en el mismo isolate
-      // await Future.wait(<Future>[
-      //   hospitalized[i].getDiagnosticosHistorial(),
-      //   hospitalized[i].getVitalesHistorial(),
-      //   hospitalized[i].getVentilacionnesHistorial(),
-      //   hospitalized[i].getBalancesHistorial(reload: true),
-      //   hospitalized[i].getPendientesHistorial(),
-      //   hospitalized[i].getLicenciasHistorial(),
-      //   hospitalized[i].getParaclinicosHistorial(),
-      // ]);
+      if (!cancelado) {
+        statusNotifier.value = "Guardando información local...";
+        subStatusNotifier.value = "Escritura de archivo JSON";
 
-      // await hospitalized[i].getDiagnosticosHistorial();
-      // //
-      // await hospitalized[i].getPendientesHistorial();
-      // await hospitalized[i].getLicenciasHistorial();
-      // //
-      // await hospitalized[i].getParaclinicosHistorial();
-      // await hospitalized[i].getImagenologicosHistorial();
-      // await hospitalized[i].getElectrocardiogramasHistorial();
-      Terminal.printExpected(
-          message:
-              "     :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::     ");
-      //
+        firstFounded = foundedItems = hospitalized;
+        List listado = hospitalized.map((p) => p.toJson()).toList();
+        Archivos.createJsonFromMap(listado, filePath: fileAssocieted);
+
+        if (!mounted) return;
+        Navigator.of(context).pop();
+
+        setState(() {
+          HospitalaryMethods.orderByCamas(foundedItems!);
+          Terminal.printSuccess(message: "Actualización completa.");
+        });
+
+        final duracion = DateTime.now().difference(inicio);
+        final totalExitosos = response.length - fallosPorPaciente.length;
+
+        String resumen = "✅ $totalExitosos paciente(s) cargado(s) correctamente.\n";
+        if (fallosPorPaciente.isNotEmpty) {
+          resumen += "❌ ${fallosPorPaciente.length} con errores:\n";
+          for (var entry in fallosPorPaciente) {
+            resumen += "\n• ${entry['nombre']} (ID ${entry['id']})\n  ↳ Falló en: ${entry['fallos'].join(", ")}";
+          }
+        }
+        resumen += "\n\n🕒 Duración total: ${duracion.inSeconds} segundos.";
+
+        // Guardar log detallado
+        final logFilePath = fileAssocieted.replaceAll(".json", "_log_${DateTime.now().toIso8601String().substring(0,10)}.json");
+        await Archivos.createJsonFromMap([{
+          "fecha": DateTime.now().toIso8601String(),
+          "duracion_segundos": duracion.inSeconds,
+          "pacientes_totales": response.length,
+          "exitosos": totalExitosos,
+          "con_errores": fallosPorPaciente.length,
+          "errores_detallados": fallosPorPaciente,
+        }], filePath: logFilePath);
+
+        await showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            backgroundColor: Theming.secondaryColor,
+            title: const Text("Resumen de carga",style: const TextStyle(color: Colors.white)),
+            content: Text(resumen),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text("Aceptar"),
+              )
+            ],
+          ),
+        );
+      }
+    } catch (e, stack) {
+      if (!cancelado && mounted) {
+        Navigator.of(context).pop();
+        Operadores.alertActivity(
+          context: context,
+          tittle: "Error durante la carga",
+          message: e.toString(),
+          onAcept: () => Navigator.of(context).pop(),
+        );
+      }
+    } finally {
+      statusNotifier.dispose();
+      subStatusNotifier.dispose();
+      progressNotifier.dispose();
     }
-    // ********** ************** ***********
-    firstFounded = foundedItems = hospitalized;
-    // ESCRIBIR EN JSON ***********************************************
-    List listado = [];
-    for (int i = 0; i < hospitalized.length; i++) {
-      listado.addAll([hospitalized[i]!.toJson()]);
-    }
-    Archivos.createJsonFromMap(listado, filePath: fileAssocieted);
-    //
-    //
-    setState(() {
-      // ACTUALIZAR . . .
-      Terminal.printSuccess(
-          message: "Actualizando pacientes hospitalizados . . . ");
-      // Ordenar por No Cama || ***************** foundedItems!!.sort((a, b) => a["Id_Cama"].compareTo(b["Id_Cama"]));
-      HospitalaryMethods.orderByCamas(foundedItems!);
-      // Cerrar Operaciones.loadingActivity . . .
-      Navigator.of(context).pop();
-    });
   }
 
   Future<void> _refreshActualList(int index) async {
-    String pacienteId = foundedItems![index].idPaciente.toString();
-    Map<String, dynamic> generales = foundedItems![index].generales;
-    //
-    // CONSULTA DE VALORES ****************************************
-    foundedItems!.removeAt(index);
-    // Lista de Pacientes Hospitalizados * * *
-    foundedItems!.insert(index, Internado(int.parse(pacienteId), generales));
-    // setState(() => tittle = "Actualizando registro de Hospitalización . ");
-    await foundedItems![index].getHospitalizationRegister();
-    // setState(() => tittle = "Consultando Padecimiento Actual . ");
-    await foundedItems![index].getPadecimientoActual();
-    await foundedItems![index].getRevisionHospitalaria();
-    //
-    await foundedItems![index].getCronicosHistorial();
-    await foundedItems![index].getDiagnosticosHistorial();
-    await foundedItems![index].getVitalesHistorial(reload: true);
-    // setState(() => tittle = "Consultando Historial de Ventilatorio . ");
-    await foundedItems![index].getVentilacionnesHistorial(reload: true);
-    await foundedItems![index].getBalancesHistorial(reload: true);
-    //
-    await foundedItems![index].getParaclinicosHistorial(reload: true);
-    //
-    await foundedItems![index].getPendientesHistorial();
-    //
-    // await hospitalized[i].getImagenologicosHistorial();
-    // await hospitalized[i].getElectrocardiogramasHistorial();
-    Terminal.printExpected(
-        message:
-            "     :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::     ");
-    //
+    final statusNotifier = ValueNotifier<String>("Inicializando...");
+    final subStatusNotifier = ValueNotifier<String>("Preparando módulo...");
+    final progressNotifier = ValueNotifier<double>(0.0);
+    bool cancelado = false;
+    final erroresPaciente = <String>[];
 
-    // ********** ************** ***********
-    // foundedItems!.insertAll(index, hospitalized);
-    // // ESCRIBIR EN JSON ***********************************************
-    // List listado = [];
-    // for (int i = 0; i < hospitalized.length; i++) {
-    //   listado.addAll([hospitalized[i]!.toJson()]);
-    // }
-    Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
-    //
-    setState(() {
-      // ACTUALIZAR . . .
-      Terminal.printSuccess(
-          message: "Actualizando pacientes hospitalizados . . . ");
-      // Ordenar por No Cama || ***************** foundedItems!!.sort((a, b) => a["Id_Cama"].compareTo(b["Id_Cama"]));
-      HospitalaryMethods.orderByCamas(foundedItems!);
-      // Cerrar Operaciones.loadingActivity . . .Navigator.of(context).pop();
-    });
+    final DateTime inicio = DateTime.now();
+    final pacienteAnterior = foundedItems![index];
+    final String pacienteId = pacienteAnterior.idPaciente.toString();
+    final String nombre = pacienteAnterior.nombreCompleto;
+    final Map<String, dynamic> generales = pacienteAnterior.generales;
+
+    Operadores.showProgressDialog(
+      context: context,
+      statusNotifier: statusNotifier,
+      subStatusNotifier: subStatusNotifier,
+      progressNotifier: progressNotifier,
+      onCancel: () {
+        cancelado = true;
+        Navigator.of(context).pop();
+      },
+    );
+
+    final nuevoPaciente = Internado(int.parse(pacienteId), generales);
+    foundedItems![index] = nuevoPaciente;
+
+    try {
+      statusNotifier.value = "Actualizando a: $nombre";
+
+      Future<void> runModulo(String nombreModulo, Future<void> Function() funcion) async {
+        if (cancelado) return;
+        try {
+          subStatusNotifier.value = nombreModulo;
+          await funcion();
+        } catch (e) {
+          erroresPaciente.add(nombreModulo);
+          Terminal.printAlert(message: "❌ Error en $nombreModulo del paciente $nombre");
+        }
+      }
+
+      await runModulo("Datos de hospitalización", () => nuevoPaciente.getHospitalizationRegister());
+      await runModulo("Padecimiento actual", () => nuevoPaciente.getPadecimientoActual());
+      await runModulo("Revisión hospitalaria", () => nuevoPaciente.getRevisionHospitalaria());
+
+      await Future.wait([
+        runModulo("Antecedentes crónicos", () => nuevoPaciente.getCronicosHistorial()),
+        runModulo("Diagnósticos", () => nuevoPaciente.getDiagnosticosHistorial()),
+        runModulo("Signos vitales", () => nuevoPaciente.getVitalesHistorial(reload: true)),
+        runModulo("Ventilaciones", () => nuevoPaciente.getVentilacionnesHistorial(reload: true)),
+        runModulo("Balances", () => nuevoPaciente.getBalancesHistorial(reload: true)),
+        runModulo("Paraclínicos", () => nuevoPaciente.getParaclinicosHistorial(reload: true)),
+        runModulo("Pendientes", () => nuevoPaciente.getPendientesHistorial()),
+        // runModulo("Imagenología", () => nuevoPaciente.getImagenologicosHistorial()),
+        // runModulo("Electrocardiogramas", () => nuevoPaciente.getElectrocardiogramasHistorial()),
+      ]);
+
+      progressNotifier.value = 1.0;
+
+      statusNotifier.value = "Guardando datos localmente...";
+      subStatusNotifier.value = "Archivo JSON";
+
+      Archivos.createJsonFromMap(foundedItems!, filePath: fileAssocieted);
+
+      if (!mounted) return;
+      Navigator.of(context).pop();
+
+      setState(() {
+        HospitalaryMethods.orderByCamas(foundedItems!);
+        Terminal.printSuccess(message: "✅ Registro de $nombre actualizado con éxito.");
+      });
+
+      if (erroresPaciente.isNotEmpty) {
+        final duracion = DateTime.now().difference(inicio);
+        final logFilePath = fileAssocieted.replaceAll(".json", "_refresh_log_${DateTime.now().toIso8601String().substring(0,10)}.json");
+
+        await Archivos.createJsonFromMap([{
+          "fecha": DateTime.now().toIso8601String(),
+          "id": pacienteId,
+          "nombre": nombre,
+          "duracion_segundos": duracion.inSeconds,
+          "errores": erroresPaciente,
+        }], filePath: logFilePath);
+
+        await showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            title: const Text("Actualización parcial"),
+            content: Text("🔶 El paciente $nombre fue actualizado, pero se detectaron errores en los módulos:\n\n${erroresPaciente.join("\n")}"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text("Aceptar"),
+              )
+            ],
+          ),
+        );
+      }
+
+    } catch (e, stack) {
+      if (!cancelado && mounted) {
+        Navigator.of(context).pop();
+        Operadores.alertActivity(
+          context: context,
+          tittle: "Error durante la actualización",
+          message: e.toString(),
+          onAcept: () => Navigator.of(context).pop(),
+        );
+      }
+    } finally {
+      statusNotifier.dispose();
+      subStatusNotifier.dispose();
+      progressNotifier.dispose();
+    }
   }
 
   //

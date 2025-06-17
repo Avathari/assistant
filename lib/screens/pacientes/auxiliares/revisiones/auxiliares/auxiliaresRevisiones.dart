@@ -1613,11 +1613,11 @@ class RevisionDispositivos extends StatefulWidget {
 class _RevisionDispositivosState extends State<RevisionDispositivos> {
   @override
   void initState() {
-    // TODO: implement initState
+    super.initState(); // ✅ siempre primero
     Pacientes.getDispositivosHistorial().whenComplete(() {
+      if (!mounted) return; // ✅ <- importante
       setState(() {});
     });
-    super.initState();
   }
 
   @override
@@ -2233,11 +2233,11 @@ class RevisionPrevios extends StatefulWidget {
 class _RevisionPreviosState extends State<RevisionPrevios> {
   @override
   void initState() {
-    // TODO: implement initState
+    super.initState(); // ✅ siempre primero
     Pacientes.getPreviosHistorial().whenComplete(() {
+      if (!mounted) return; // ✅ <- importante
       setState(() {});
     });
-    super.initState();
   }
 
   @override
