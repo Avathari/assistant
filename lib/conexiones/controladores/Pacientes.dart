@@ -1572,7 +1572,6 @@ class Pacientes {
 
   //
 
-
   //
   static Future<void> getValores(BuildContext context,
       {bool reload = false}) async {
@@ -5944,7 +5943,8 @@ class Vitales {
           int.tryParse(json['Pace_SV_pcb'].toString() ?? '0');
       Valores.pliegueCutaneoEscapular =
           int.tryParse(json['Pace_SV_pse'].toString());
-      Valores.pliegueCutaneoIliaco = int.tryParse(json['Pace_SV_psi'].toString());
+      Valores.pliegueCutaneoIliaco =
+          int.tryParse(json['Pace_SV_psi'].toString());
       Valores.pliegueCutaneoTricipital =
           int.tryParse(json['Pace_SV_pst'].toString());
       Valores.circunferenciaFemoralIzquierda =
@@ -7471,10 +7471,9 @@ class Auxiliares {
             return 'aGlu-';
           } else if (estudio == "Hematocrito Arterial") {
             return 'aHto';
-          }else if (estudio == "Hemoglobina Arterial") {
+          } else if (estudio == "Hemoglobina Arterial") {
             return 'aHb';
-          }
-          else if (estudio == 'Ácido Láctico' || estudio == 'Acido Láctico') {
+          } else if (estudio == 'Ácido Láctico' || estudio == 'Acido Láctico') {
             return 'aLact--';
           } else {
             return estudio;
@@ -7502,10 +7501,9 @@ class Auxiliares {
             return 'vGlu-';
           } else if (estudio == "Hematocrito Venosa") {
             return 'vHto';
-          }else if (estudio == "Hemoglobina Venosa") {
+          } else if (estudio == "Hemoglobina Venosa") {
             return 'vHb';
-          }
-          else if (estudio == 'Ácido Láctico') {
+          } else if (estudio == 'Ácido Láctico') {
             return 'vLact--';
           } else {
             return estudio;
@@ -8844,7 +8842,7 @@ class Auxiliares {
       case "THbc Sangre Arterial":
         return Categorias[9];
 
-    // GASOMETRIAS VENOSAS
+      // GASOMETRIAS VENOSAS
       case "pH Sangre Venosa":
         return Categorias[10];
       case "pCOSangre Venosa":
@@ -8855,7 +8853,7 @@ class Auxiliares {
         return Categorias[10];
       case "SOc Sangre Venosa":
         return Categorias[10];
-        //
+      //
       case "Htc Sangre Venosa":
         return Categorias[10];
       case "THbc Sangre Venosa":
@@ -9099,7 +9097,7 @@ class Auxiliares {
         return "Hematocrito Arterial";
       case "THbc Sangre Arterial":
         return "Hemoglobina Arterial";
-    //
+      //
       case "Na+ Sangre Arterial":
         return "Sodio Arterial";
       case "K+ Sangre Arterial":
@@ -9110,7 +9108,7 @@ class Auxiliares {
         return "Glucosa Arterial";
       case "Lactato Sangre Arterial":
         return "Lactato Arterial";
-    // GASOMETRIAS VENOSAS
+      // GASOMETRIAS VENOSAS
       case "pH Sangre Venosa":
         return "pH";
       case "pCOSangre Venosa":
@@ -9121,7 +9119,7 @@ class Auxiliares {
         return "Bicarbonato Sérico";
       case "SOc Sangre Venosa":
         return "Saturación de Oxígeno";
-    //
+      //
       case "Htc Sangre Venosa":
         return "Hematocrito Venoso";
       case "THbc Sangre Venosa":
@@ -10046,17 +10044,15 @@ class Pendientes {
 
   static String getIndicaciones(Map<String, dynamic> pendiente) {
     Terminal.printExpected(message: json.toString());
-    String
-        indicaciones = "";
+    String indicaciones = "";
 
-   if (pendiente['Pace_PEN'] == "Indicaciones") {
-          indicaciones =
+    if (pendiente['Pace_PEN'] == "Indicaciones") {
+      indicaciones =
           "     ${pendiente['Pace_Desc_PEN']} - ${pendiente['Feca_PEN']} : ${pendiente['Pace_Commen_PEN']}" //  - ${i['Pace_PEN_realized']}"
-              "\n";
-        }
+          "\n";
+    }
 
     return indicaciones;
-
   }
 }
 
@@ -10493,7 +10489,7 @@ class Balances {
   };
 
   // *********** *********** ********* ****
-  static  Future<void> fromJson(Map<String, dynamic> json) async {
+  static Future<void> fromJson(Map<String, dynamic> json) async {
     // Terminal.printExpected(
     //     message: "Balances seleccionados $json . : ${json.runtimeType}");
 
@@ -10501,42 +10497,41 @@ class Balances {
       return;
     }
 
-      Balances.ID_Balances = json['ID_Bala'];
-      Valores.fechaRealizacionBalances = json['Pace_bala_Fecha'];
+    Balances.ID_Balances = json['ID_Bala'];
+    Valores.fechaRealizacionBalances = json['Pace_bala_Fecha'];
 
-      Valores.viaOralBalances =
-          double.parse(json['Pace_bala_Oral'].toString() ?? '0');
-      Valores.sondaOrogastricaBalances =
-          double.parse(json['Pace_bala_Sonda'].toString() ?? '0');
-      Valores.hemoderivadosBalances =
-          double.parse(json['Pace_bala_Hemo'].toString() ?? '0');
-      Valores.nutricionParenteralBalances =
-          double.parse(json['Pace_bala_NPT'].toString() ?? '0');
-      Valores.parenteralesBalances =
-          double.parse(json['Pace_bala_Sol'].toString() ?? '0');
-      Valores.dilucionesBalances =
-          double.parse(json['Pace_bala_Dil'].toString() ?? '0');
-      Valores.otrosIngresosBalances =
-          double.parse(json['Pace_bala_ING'].toString() ?? '0');
+    Valores.viaOralBalances =
+        double.parse(json['Pace_bala_Oral'].toString() ?? '0');
+    Valores.sondaOrogastricaBalances =
+        double.parse(json['Pace_bala_Sonda'].toString() ?? '0');
+    Valores.hemoderivadosBalances =
+        double.parse(json['Pace_bala_Hemo'].toString() ?? '0');
+    Valores.nutricionParenteralBalances =
+        double.parse(json['Pace_bala_NPT'].toString() ?? '0');
+    Valores.parenteralesBalances =
+        double.parse(json['Pace_bala_Sol'].toString() ?? '0');
+    Valores.dilucionesBalances =
+        double.parse(json['Pace_bala_Dil'].toString() ?? '0');
+    Valores.otrosIngresosBalances =
+        double.parse(json['Pace_bala_ING'].toString() ?? '0');
 
-      Valores.uresisBalances =
-          double.parse(json['Pace_bala_Uresis'].toString() ?? '0');
-      Valores.evacuacionesBalances =
-          double.parse(json['Pace_bala_Evac'].toString() ?? '0');
-      Valores.sangradosBalances =
-          double.parse(json['Pace_bala_Sangrado'].toString() ?? '0');
-      Valores.succcionBalances =
-          double.parse(json['Pace_bala_Succion'].toString() ?? '0');
-      Valores.drenesBalances =
-          double.parse(json['Pace_bala_Drenes'].toString() ?? '0');
-      Valores.otrosEgresosBalances =
-          double.parse(json['Pace_bala_ENG'].toString() ?? '0');
+    Valores.uresisBalances =
+        double.parse(json['Pace_bala_Uresis'].toString() ?? '0');
+    Valores.evacuacionesBalances =
+        double.parse(json['Pace_bala_Evac'].toString() ?? '0');
+    Valores.sangradosBalances =
+        double.parse(json['Pace_bala_Sangrado'].toString() ?? '0');
+    Valores.succcionBalances =
+        double.parse(json['Pace_bala_Succion'].toString() ?? '0');
+    Valores.drenesBalances =
+        double.parse(json['Pace_bala_Drenes'].toString() ?? '0');
+    Valores.otrosEgresosBalances =
+        double.parse(json['Pace_bala_ENG'].toString() ?? '0');
 
-      Exploracion.tipoSondaVesical = json['Pace_Foley'] ?? '';
+    Exploracion.tipoSondaVesical = json['Pace_Foley'] ?? '';
 
-      Valores.horario = json['Pace_bala_HOR'];
-      Valores.uresis = double.parse(json['Pace_bala_Uresis'].toString() ?? '0');
-
+    Valores.horario = json['Pace_bala_HOR'];
+    Valores.uresis = double.parse(json['Pace_bala_Uresis'].toString() ?? '0');
 
     // Valores.balanceTotal = Valores.ingresos - Valores.egresos;
     // Valores.diuresis = (Valores.uresis / Valores.pesoCorporalTotal!) / Valores.horario;
@@ -10739,8 +10734,7 @@ class Ventilaciones {
     if (json.isNotEmpty) {
       Valores.fechaVentilaciones = json['Feca_VEN'] ?? '';
       Valores.modalidadVentilatoria = json['VM_Mod'] ?? '';
-      Valores.volumenTidal =
-          double.tryParse(json['Pace_Vt'].toString());
+      Valores.volumenTidal = double.tryParse(json['Pace_Vt'].toString());
       Valores.frecuenciaVentilatoria =
           Valores.frecuenciaRespiratoria = json['Pace_Fr'] ?? 0;
       Valores.fraccionInspiratoriaVentilatoria = json['Pace_Fio'] ?? 0;
@@ -11046,113 +11040,211 @@ class Repositorios {
   static List<String> actualDiagno = Opciones.horarios();
 
   //
-  static Future<void> registrarPadecimientoActual(BuildContext context,
-      {required List Values, required List ValuesEgreso}) async {
-    String response = "";
-    //
-    await Actividades.registrar(Databases.siteground_database_reghosp,
-        Repositorios.repositorio['registerIngresoQuery'], [
-      Pacientes.ID_Paciente,
-      Pacientes.ID_Hospitalizacion,
-      Valores.fechaPadecimientoActual ??
-          Calendarios.today(format: 'yyyy/MM/dd'),
-      Reportes.padecimientoActual,
-      // Valores.servicioTratanteInicial,
-      Valores.servicioTratante,
-      Calendarios.today(format: 'yyyy/MM/dd'),
-      //
-      Reportes.impresionesDiagnosticas,
-      //
-      Reportes.reportes['Subjetivo'],
-      Reportes.signosVitales,
-      Reportes.exploracionFisica,
-      //
-      Reportes.auxiliaresDiagnosticos,
-      Reportes.analisisComplementarios,
-      // Reportes.eventualidadesOcurridas,
-      // Reportes.terapiasPrevias,
-      Reportes.analisisMedico,
-      // Reportes.tratamientoPropuesto,
-      Reportes.pronosticoMedico,
-      // INDICACIONES MÉDICAS *******************************
-      Reportes.dieta.toString(),
-      Reportes.hidroterapia.toString(),
-      Reportes.insulinoterapia.toString(),
-      Reportes.hemoterapia.toString(),
-      Reportes.oxigenoterapia.toString(),
-      Reportes.medicamentosIndicados.toString(),
-      Reportes.medidasGenerales.toString(),
-      Reportes.pendientes.toString(),
-      //
-      Reportes.hitosHospitalarios.toString(),
-      //
+  // static Future<void> registrarPadecimientoActual(BuildContext context,
+  //     {required List Values, required List ValuesEgreso}) async {
+  //   String response = "";
+  //   //
+  //   await Actividades.registrar(Databases.siteground_database_reghosp,
+  //       Repositorios.repositorio['registerIngresoQuery'], [
+  //     Pacientes.ID_Paciente,
+  //     Pacientes.ID_Hospitalizacion,
+  //     Valores.fechaPadecimientoActual ??
+  //         Calendarios.today(format: 'yyyy/MM/dd'),
+  //     Reportes.padecimientoActual,
+  //     // Valores.servicioTratanteInicial,
+  //     Valores.servicioTratante,
+  //     Calendarios.today(format: 'yyyy/MM/dd'),
+  //     //
+  //     Reportes.impresionesDiagnosticas,
+  //     //
+  //     Reportes.reportes['Subjetivo'],
+  //     Reportes.signosVitales,
+  //     Reportes.exploracionFisica,
+  //     //
+  //     Reportes.auxiliaresDiagnosticos,
+  //     Reportes.analisisComplementarios,
+  //     // Reportes.eventualidadesOcurridas,
+  //     // Reportes.terapiasPrevias,
+  //     Reportes.analisisMedico,
+  //     // Reportes.tratamientoPropuesto,
+  //     Reportes.pronosticoMedico,
+  //     // INDICACIONES MÉDICAS *******************************
+  //     Reportes.dieta.toString(),
+  //     Reportes.hidroterapia.toString(),
+  //     Reportes.insulinoterapia.toString(),
+  //     Reportes.hemoterapia.toString(),
+  //     Reportes.oxigenoterapia.toString(),
+  //     Reportes.medicamentosIndicados.toString(),
+  //     Reportes.medidasGenerales.toString(),
+  //     Reportes.pendientes.toString(),
+  //     //
+  //     Reportes.hitosHospitalarios.toString(),
+  //     //
+  //
+  //     Repositorios.tipo_Analisis, // Items.tiposAnalisis[0] //
+  //   ]
+  //       // Values,
+  //       ).then((value) {
+  //     response = value;
+  //     //
+  //     Archivos.deleteFile(
+  //         filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
+  //     Terminal.printExpected(
+  //         message: "VALUE _REGISTER.REGISTER - $value : ${Values[6]}");
+  //     //
+  //   }).whenComplete(() async {
+  //     if (tipo_Analisis == "Análisis de Ingreso") {
+  //       await Actividades.registrar(Databases.siteground_database_reghosp,
+  //               Repositorios.repositorio['registerIngresoQuery'], [
+  //         Pacientes.ID_Paciente,
+  //         Pacientes.ID_Hospitalizacion,
+  //         Valores.fechaPadecimientoActual ??
+  //             Calendarios.today(format: 'yyyy/MM/dd'),
+  //         Reportes.padecimientoActual,
+  //         // Valores.servicioTratanteInicial,
+  //         Valores.servicioTratante,
+  //         Calendarios.today(format: 'yyyy/MM/dd'),
+  //         Reportes.impresionesDiagnosticas,
+  //         Reportes.reportes['Subjetivo'],
+  //         Reportes.signosVitales,
+  //         Reportes.exploracionFisica,
+  //         //
+  //         Reportes.auxiliaresDiagnosticos,
+  //         Reportes.analisisComplementarios,
+  //         //
+  //         Reportes.analisisMedico,
+  //         Reportes.pronosticoMedico,
+  //         // INDICACIONES MÉDICAS *******************************
+  //         Reportes.dieta.toString(),
+  //         Reportes.hidroterapia.toString(),
+  //         Reportes.insulinoterapia.toString(),
+  //         Reportes.hemoterapia.toString(),
+  //         Reportes.oxigenoterapia.toString(),
+  //         Reportes.medicamentosIndicados.toString(),
+  //         Reportes.medidasGenerales.toString(),
+  //         Reportes.pendientes.toString(),
+  //         //
+  //         Reportes.hitosHospitalarios.toString(),
+  //         //
+  //         Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
+  //       ] // ValuesEgreso,
+  //               )
+  //           .whenComplete(() => Archivos.createJsonFromMap(Pacientes.Notas!,
+  //               filePath:
+  //                   "${Pacientes.localRepositoryPath}/reportes/reportes.json"))
+  //           .whenComplete(() {
+  //         Operadores.notifyActivity(
+  //           context: context,
+  //           tittle: "Repositorio Registrado . . . ",
+  //           message: response,
+  //         );
+  //       }); // REGISTRAR el Formato de Egreso . . .
+  //     }
+  //   }).onError((error, stackTrace) {
+  //     Terminal.printAlert(message: "ERROR - $error : $stackTrace");
+  //     Operadores.alertActivity(
+  //         context: context,
+  //         tittle: "Error Al Registrar",
+  //         message: "ERROR : : $error : $stackTrace");
+  //   });
+  // }
 
-      Repositorios.tipo_Analisis, // Items.tiposAnalisis[0] //
-    ]
-        // Values,
-        ).then((value) {
-      response = value;
-      //
-      Archivos.deleteFile(
-          filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json");
-      Terminal.printExpected(
-          message: "VALUE _REGISTER.REGISTER - $value : ${Values[6]}");
-      //
-    }).whenComplete(() async {
-      if (tipo_Analisis == "Análisis de Ingreso") {
-        await Actividades.registrar(Databases.siteground_database_reghosp,
-                Repositorios.repositorio['registerIngresoQuery'], [
-          Pacientes.ID_Paciente,
-          Pacientes.ID_Hospitalizacion,
-          Valores.fechaPadecimientoActual ??
-              Calendarios.today(format: 'yyyy/MM/dd'),
-          Reportes.padecimientoActual,
-          // Valores.servicioTratanteInicial,
-          Valores.servicioTratante,
-          Calendarios.today(format: 'yyyy/MM/dd'),
-          Reportes.impresionesDiagnosticas,
-          Reportes.reportes['Subjetivo'],
-          Reportes.signosVitales,
-          Reportes.exploracionFisica,
-          //
-          Reportes.auxiliaresDiagnosticos,
-          Reportes.analisisComplementarios,
-          //
-          Reportes.analisisMedico,
-          Reportes.pronosticoMedico,
-          // INDICACIONES MÉDICAS *******************************
-          Reportes.dieta.toString(),
-          Reportes.hidroterapia.toString(),
-          Reportes.insulinoterapia.toString(),
-          Reportes.hemoterapia.toString(),
-          Reportes.oxigenoterapia.toString(),
-          Reportes.medicamentosIndicados.toString(),
-          Reportes.medidasGenerales.toString(),
-          Reportes.pendientes.toString(),
-          //
-          Reportes.hitosHospitalarios.toString(),
-          //
-          Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
-        ] // ValuesEgreso,
-                )
-            .whenComplete(() => Archivos.createJsonFromMap(Pacientes.Notas!,
-                filePath:
-                    "${Pacientes.localRepositoryPath}/reportes/reportes.json"))
-            .whenComplete(() {
-          Operadores.notifyActivity(
-            context: context,
-            tittle: "Repositorio Registrado . . . ",
-            message: response,
-          );
-        }); // REGISTRAR el Formato de Egreso . . .
+  static Future<void> registrarPadecimientoActual(
+    BuildContext context, {
+    required List Values,
+    required List ValuesEgreso,
+  }) async {
+    try {
+      // 🔍 Validación de integridad de datos
+      if (Values.contains(null)) {
+        Terminal.printAlert(message: "¡Error! Hay valores nulos en Values");
+        throw Exception("Valores incompletos en análisis de ingreso");
       }
-    }).onError((error, stackTrace) {
-      Terminal.printAlert(message: "ERROR - $error : $stackTrace");
+      if (Values.length != 24) {
+        Terminal.printAlert(
+            message:
+                "La lista Values debe tener 24 elementos. Tiene: ${Values.length}");
+        throw Exception(
+            "Cantidad incorrecta de valores para análisis de ingreso");
+      }
+
+      // 🧾 Imprimir todos los valores enviados (útil para depurar)
+      for (var i = 0; i < Values.length; i++) {
+        Terminal.printWarning(message: "Ingreso[${i + 1}]: ${Values[i]}");
+      }
+
+      // 🟢 REGISTRO DE INGRESO
+      final response = await Actividades.registrar(
+        Databases.siteground_database_reghosp,
+        Repositorios.repositorio['registerIngresoQuery'],
+        Values,
+      );
+
+      Terminal.printExpected(
+          message: "Respuesta del registro (Ingreso): $response");
+
+      // 🧹 Eliminar archivo viejo (si existe)
+      Archivos.deleteFile(
+        filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json",
+      );
+
+      // 🟡 Condicional para duplicar como egreso
+      if (tipo_Analisis == "Análisis de Ingreso") {
+        if (ValuesEgreso.contains(null)) {
+          Terminal.printAlert(
+              message: "¡Error! Hay valores nulos en ValuesEgreso");
+          throw Exception("Valores incompletos en análisis de egreso");
+        }
+        if (ValuesEgreso.length != 24) {
+          Terminal.printAlert(
+              message:
+                  "La lista ValuesEgreso debe tener 24 elementos. Tiene: ${ValuesEgreso.length}");
+          throw Exception(
+              "Cantidad incorrecta de valores para análisis de egreso");
+        }
+
+        for (var i = 0; i < ValuesEgreso.length; i++) {
+          Terminal.printWarning(
+              message: "Egreso[${i + 1}]: ${ValuesEgreso[i]}");
+        }
+
+        // 🟢 REGISTRO DE EGRESO
+        final egresoResponse = await Actividades.registrar(
+          Databases.siteground_database_reghosp,
+          Repositorios.repositorio['registerIngresoQuery'], // mismo query
+          ValuesEgreso,
+        );
+
+        Terminal.printExpected(
+            message: "Respuesta del registro (Egreso): $egresoResponse");
+
+        // 📝 Guardar en JSON local
+        await Archivos.createJsonFromMap(
+          Pacientes.Notas!,
+          filePath: "${Pacientes.localRepositoryPath}/reportes/reportes.json",
+        );
+      }
+
+      // ✅ Notificación final
+      Operadores.notifyActivity(
+        context: context,
+        tittle: "Repositorio Registrado . . . ",
+        message: "Registro exitoso",
+      );
+    } catch (error, stackTrace) {
+      // 🔥 ERROR CAPTURADO
+      Terminal.printAlert(
+          message: "ERROR al registrar PadecimientoActual:\n$error");
+      Terminal.printAlert(message: "STACK:\n$stackTrace");
+
       Operadores.alertActivity(
-          context: context,
-          tittle: "Error Al Registrar",
-          message: "ERROR : : $error : $stackTrace");
-    });
+        context: context,
+        tittle: "Error al Registrar",
+        message: "Ocurrió un error: $error",
+      );
+
+      rethrow; // Opcional: propaga error al caller
+    }
   }
 
   static void consultarAnalisis() {
@@ -11676,8 +11768,8 @@ class Repositorios {
             "WHERE Tipo_Analisis = 'Análisis de Ingreso' AND ID_Hosp = ? ORDER BY ID_Compendio ASC",
     // Operaciones con la Revisión Hospitalaria *****************************************************
     "consultRevisionQuery":
-    "SELECT FechaPadecimiento, Padecimiento_Actual, Hitos_Hospitalarios, ID_Compendio FROM pace_hosp_repo "
-        "WHERE  ID_Hosp = ? ORDER BY ID_Compendio ASC",
+        "SELECT FechaPadecimiento, Padecimiento_Actual, Hitos_Hospitalarios, ID_Compendio FROM pace_hosp_repo "
+            "WHERE  ID_Hosp = ? ORDER BY ID_Compendio ASC",
     "updatePadecimientoQuery": "UPDATE pace_hosp_repo "
         "SET FechaPadecimiento = ?, Padecimiento_Actual = ? "
         "WHERE ID_Hosp = ? AND Tipo_Analisis = ? AND ID_Pace = ?",

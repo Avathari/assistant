@@ -4,7 +4,6 @@ import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valorados/antropometrias.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/info/Hospitalizado.dart';
-import 'package:assistant/values/Strings.dart';
 
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
@@ -2766,28 +2765,31 @@ class FormatosReportes {
             "            Fr ${item.ventilaciones.last['Pace_Fr']} Vent/min\n"
             "            FiO2 ${item.ventilaciones.last['Pace_Fio']} %\n"
             "            PEEP ${item.ventilaciones.last['Pace_Peep']} cmH2O [ . . . ] "
-            // "Vt ${item.ventilaciones.last['Pace_Peep']} mL\n"
-            // "Vt ${item.ventilaciones.last['Pace_Peep']} mL\n"
             "\n";
       } else {
         ventilaciones = "";
       }
       // Balances de los Pacientes Hospitalizados ************************************* * * * * *
+      Terminal.printExpected(message: "${item.balances}");
       if (item.balances.isNotEmpty && item.vitales.isNotEmpty) {
-        int horario = item.balances.last['Pace_bala_HOR'];
-        double ingresos = item.balances.last['Pace_bala_Oral'].toDouble() +
-            item.balances.last['Pace_bala_Sonda'].toDouble() +
-            item.balances.last['Pace_bala_Hemo'].toDouble() +
-            item.balances.last['Pace_bala_NPT'].toDouble() +
-            item.balances.last['Pace_bala_Sol'] +
-            item.balances.last['Pace_bala_Dil'].toDouble();
-        double egresos = item.balances.last['Pace_bala_Uresis'] +
-            item.balances.last['Pace_bala_Evac'] +
-            item.balances.last['Pace_bala_Hemo'] +
-            item.balances.last['Pace_bala_Sangrado'] +
-            item.balances.last['Pace_bala_Succion'] +
-            item.balances.last['Pace_bala_Drenes'] +
-            item.balances.last['Pace_bala_PER'].toDouble();
+        int horario = item.balances.last['Pace_bala_HOR'] ?? 24;
+        double ingresos =
+            (item.balances.last['Pace_bala_Oral']?.toDouble() ?? 0.0) +
+                (item.balances.last['Pace_bala_Sonda']?.toDouble() ?? 0.0) +
+                (item.balances.last['Pace_bala_Hemo']?.toDouble() ?? 0.0) +
+                (item.balances.last['Pace_bala_NPT']?.toDouble() ?? 0.0) +
+                (item.balances.last['Pace_bala_Sol']?.toDouble() ?? 0.0) +
+                (item.balances.last['Pace_bala_Dil']?.toDouble() ?? 0.0);
+
+        double egresos =
+            (item.balances.last['Pace_bala_Uresis']?.toDouble() ?? 0.0) +
+                (item.balances.last['Pace_bala_Evac']?.toDouble() ?? 0.0) +
+                (item.balances.last['Pace_bala_Hemo']?.toDouble() ?? 0.0) +
+                (item.balances.last['Pace_bala_Sangrado']?.toDouble() ?? 0.0) +
+                (item.balances.last['Pace_bala_Succion']?.toDouble() ?? 0.0) +
+                (item.balances.last['Pace_bala_Drenes']?.toDouble() ?? 0.0) +
+                (item.balances.last['Pace_bala_PER']?.toDouble() ?? 0.0);
+
         int perdidasInsensibles = item.balances.last['Pace_bala_PER'];
         double diuresis = item.balances.last['Pace_bala_Uresis'] /
             item.vitales.last['Pace_SV_pct'] /
@@ -2843,29 +2845,35 @@ class FormatosReportes {
 //         situaciones = "$situaciones\nDP";
 //       }
 // **************************************
-      if (item.patologicos == []) {
+      if (item.patologicos == null || item.patologicos.isEmpty) {
         cronicos = 'Sin Antecedentes Crónicos Documentados';
       } else {
+        cronicos = ''; // importante reiniciarlo
         for (var i in item.patologicos) {
-          if (i['Pace_APP_DEG_com'] != null || i['Pace_APP_DEG_com'] != '') {
-            cronicos = "$cronicos${i['Pace_APP_DEG_com'].toUpperCase()}, "
-                // "${i['Pace_APP_DEG_dia']} años, "
-                "${i['Pace_APP_DEG_tra']} "
-                "\n";
-          } else {
-            cronicos = 'Sin Antecedentes Crónicos Documentados';
+          if (i['Pace_APP_DEG_com'] != null && i['Pace_APP_DEG_com'] != '') {
+            cronicos += "${i['Pace_APP_DEG_com'].toString().toUpperCase()}, "
+                "${i['Pace_APP_DEG_tra'] ?? ''} \n";
           }
         }
+        if (cronicos.trim().isEmpty) {
+          cronicos = 'Sin Antecedentes Crónicos Documentados';
+        }
       }
+
+
       for (var i in item.patologicos) {
         previos = "$previos"
             // "${i['Pace_APP_DEG'].toUpperCase()} -\n"
             "\t${i['Pace_APP_DEG_com']}\n";
       }
       for (var i in item.diagnosticos) {
-        diagos =
-            "$diagos${i['Pace_APP_DEG'].toUpperCase()} -\n\t${i['Pace_APP_DEG_com']}\n";
+        String deg = (i['Pace_APP_DEG'] ?? '').toString().toUpperCase();
+        String comentario = i['Pace_APP_DEG_com'] ?? '';
+        if (deg.isNotEmpty) {
+          diagos += "$deg -\n\t$comentario\n";
+        }
       }
+
       // Auxiliares Diagnósticos . ***** ****** *********** *********
       if (item.paraclinicos != [] && item.paraclinicos != null) {
         auxiliary =

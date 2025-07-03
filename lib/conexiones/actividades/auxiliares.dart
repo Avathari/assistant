@@ -1147,24 +1147,28 @@ class Operadores {
         });
   }
 
-  static void selectOptionsActivity(
-      {required BuildContext context,
-      String? tittle = "Manejo de Opciones",
-      String? message = "Seleccione una opción . . . ",
-      required List<dynamic> options,
-      Function(String)? onClose,
-      Function(String)? onLongCloss}) {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return Dialogos.selectOptionsActivity(
-            tittle: tittle,
-            msg: message,
-            options: options,
-            onCloss: onClose,
-            onLongCloss: onLongCloss,
-          );
-        });
+  static Future<String> selectOptionsActivity({
+    required BuildContext context,
+    String? tittle = "Manejo de Opciones",
+    String? message = "Seleccione una opción . . . ",
+    required List<dynamic> options,
+    Function(String)? onClose,
+    Function(String)? onLongCloss,
+  }) async {
+    final result = await showDialog<String>(
+      context: context,
+      builder: (context) {
+        return Dialogos.selectOptionsActivity(
+          context,
+          tittle: tittle,
+          msg: message,
+          options: options,
+          onCloss: onClose,
+          onLongCloss: onLongCloss,
+        );
+      },
+    );
+    return result ?? ''; // Si se cancela, regresa cadena vacía
   }
 
   static void selectWithTittleOptionsActivity(
@@ -1270,25 +1274,28 @@ class Operadores {
     required ValueNotifier<String> subStatusNotifier,
     required ValueNotifier<double> progressNotifier,
     required VoidCallback onCancel,
+    bool isLinear = true, // <== Nuevo parámetro con valor por defecto
   }) {
     return showDialog(
       barrierDismissible: false,
       context: context,
       builder: (_) => AlertDialog(
         backgroundColor: Theming.secondaryColor,
-        title:  Text(tittle!,style: const TextStyle(color: Colors.white)),
+        title: Text(tittle!, style: const TextStyle(color: Colors.white)),
         content: SizedBox(
           width: 500,
-          height: 120,
+          height: isLinear ? 120 : 250,
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const SizedBox(height: 20),
               ValueListenableBuilder<String>(
                 valueListenable: statusNotifier,
-                builder: (_, value, __) => Text(value, style: const TextStyle(color: Colors.white),),
+                builder: (_, value, __) => Text(
+                  value,
+                  style: const TextStyle(color: Colors.white),
+                ),
               ),
               const SizedBox(height: 4),
               ValueListenableBuilder<String>(
@@ -1298,17 +1305,46 @@ class Operadores {
                   style: const TextStyle(fontSize: 12, color: Colors.grey),
                 ),
               ),
-              const SizedBox(height: 12),
+              SizedBox(height:  isLinear ? 12 : 22),
               ValueListenableBuilder<double>(
                 valueListenable: progressNotifier,
-                builder: (_, value, __) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    LinearProgressIndicator(value: value),
-                    const SizedBox(height: 4),
-                    Text("${(value * 100).toStringAsFixed(2)} %",style: const TextStyle(color: Colors.white)),
-                  ],
-                ),
+                builder: (_, value, __) {
+                  if (isLinear) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        LinearProgressIndicator(value: value),
+                        const SizedBox(height: 4),
+                        Text(
+                          "${(value * 100).toStringAsFixed(2)} %",
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    );
+                  } else {
+                    return Center(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 100,
+                            width: 100,
+                            child: CircularProgressIndicator(
+                              value: value,
+                              strokeWidth: 5,
+                              backgroundColor: Colors.white24,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            "${(value * 100).toStringAsFixed(1)} %",
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                },
               ),
             ],
           ),
@@ -1322,7 +1358,6 @@ class Operadores {
       ),
     );
   }
-
 
 
 }
@@ -1644,7 +1679,7 @@ class Dialogos {
     );
   }
 
-  static AlertDialog selectOptionsActivity({
+  static AlertDialog selectOptionsActivity(BuildContext context, {
     String? tittle,
     String? msg,
     ValueChanged<String>? onCloss,
@@ -1659,7 +1694,8 @@ class Dialogos {
         children: [
           ListTile(
             onTap: () {
-              onCloss!(element);
+              Navigator.of(context).pop(element); // Devuelve el valor seleccionado
+              if (onCloss != null) onCloss(element);
             },
             title: Text(
               "$element",
@@ -1684,11 +1720,13 @@ class Dialogos {
           )),
       actions: [
         ElevatedButton(
-            onLongPress: () {
-              onLongCloss!(selected);
-            },
             onPressed: () {
-              onCloss!(selected);
+              Navigator.of(context).pop(""); // Devuelve cadena vacía
+              if (onCloss != null) onCloss("");
+            },
+            onLongPress: () {
+              Navigator.of(context).pop("long"); // Puedes personalizar
+              if (onLongCloss != null) onLongCloss("long");
             },
             child:
                 const Text("Cancelar", style: TextStyle(color: Colors.white))),

@@ -832,24 +832,6 @@ class _GestionPacientesState extends State<GestionPacientes> {
         ),
       );
     }).onError((error, stackTrace) async {
-      // Operadores.loadingActivity(
-      //   context: context,
-      //   tittle: "Iniciando interfaz . . . ",
-      //   message: "Iniciando Interfaz",
-      // );
-      // Terminal.printAlert(
-      //     message: 'Archivo ${Pacientes.localPath} No Encontrado');
-      // Terminal.printWarning(message: 'Iniciando búsqueda en Valores . . . ');
-      // var response = await Valores().load(context).onError((error, stackTrace) {
-      //   Operadores.alertActivity(
-      //       context: context,
-      //       tittle: "Error al Cargar Valores . . . ",
-      //       message: "ERROR : : $error : $stackTrace",
-      //       onAcept: () {
-      //         Navigator.of(context).pop();
-      //       });
-      //   return false;
-      // }); // print("response $response");
       CargadoresPacientes.loadingActivity(context: context).then((value) {
         if (value == true) {
           Terminal.printAlert(
@@ -870,14 +852,6 @@ class _GestionPacientesState extends State<GestionPacientes> {
             context: context,
             tittle: 'Error al Inicial Visual');
       }).whenComplete(() => setState(() {}));
-      //
-      // if (response == true) {
-      //   Navigator.of(context).push(
-      //     MaterialPageRoute(
-      //       builder: (BuildContext context) => VisualPacientes(actualPage: 0),
-      //     ),
-      //   );
-      // }
     });
   }
 

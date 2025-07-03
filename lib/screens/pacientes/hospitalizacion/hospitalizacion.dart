@@ -562,7 +562,7 @@ class _OperacionesHospitalizacionesState
     ];
   }
 
-  void operationMethod(BuildContext context) {
+  Future<void> operationMethod(BuildContext context) async {
     try {
       listOfValues = [
         idOperation,
@@ -575,331 +575,50 @@ class _OperacionesHospitalizacionesState
         servicioTratanteInicialValue.trim(),
         fechaEgresoTextController.text,
         motivoEgresoValue,
-        //
-        idOperation
+        idOperation,
       ];
 
-      //
-      Valores.fechaPadecimientoActual =fechaIngresoTextController.text;
+      Valores.fechaPadecimientoActual = fechaIngresoTextController.text;
       Terminal.printWarning(message: "Actividad ${widget.operationActivity}");
-      //
+
+      // Validación de egreso
       if (motivoEgresoValue != Escalas.motivosEgresos[0]) {
-        Operadores.selectOptionsActivity(
-            context: context,
-            tittle: "Paciente Egresado . . . ",
-            message: "Seleccione modo de atención",
-            options: Pacientes.Atencion,
-            onClose: (value) {
-              Pacientes.modoAtencion = value;
-              Terminal.printWarning(message: "Modo de atención: $value : : ${Pacientes.modoAtencion}");
-
-              // DICOTOMIA ******************************************
-              if (value != "") {
-                // Continuar con el Método
-                switch (widget.operationActivity) {
-                  case Constantes.Nulo:
-                    // ******************************************** *** *
-                    listOfValues!.removeAt(0);
-                    listOfValues!.removeLast();
-                    // ******************************************** *** *
-                    Actividades.registrar(Databases.siteground_database_reghosp,
-                        registerQuery!, listOfValues!.removeLast());
-                    break;
-                  case Constantes.Consult:
-                    break;
-                  case Constantes.Register:
-                    // ******************************************** *** *
-                    listOfValues!.removeAt(0);
-                    listOfValues!.removeLast();
-                    // ******************************************** *** *
-                    Actividades.registrar(Databases.siteground_database_reghosp,
-                            registerQuery!, listOfValues!)
-                        .then((value) => Actividades.consultarAllById(
-                                    Databases.siteground_database_reghosp,
-                                    consultIdQuery!,
-                                    Pacientes.ID_Paciente) // idOperation)
-                                .then((value) {
-                              // ******************************************** *** *
-                              Pacientes.Hospitalizaciones = value;
-                              Pacientes.ID_Hospitalizacion =
-                                  value.last['ID_Hosp'];
-                              Valores.servicioTratante =
-                                  value.last['Serve_Trat'];
-                              Constantes.reinit(value: value);
-                              // ******************************************** *** *
-                            }).whenComplete(() {
-                      Repositorios.registrarPadecimientoActual(context, Values: [
-                        Pacientes.ID_Paciente,
-                        Pacientes.ID_Hospitalizacion,
-                        Valores.fechaPadecimientoActual ??
-                            Calendarios.today(format: 'yyyy/MM/dd'),
-                        Reportes.padecimientoActual,
-                        // Valores.servicioTratanteInicial,
-                        Valores.servicioTratante,
-                        Calendarios.today(format: 'yyyy/MM/dd'),
-                        //
-                        Reportes.impresionesDiagnosticas,
-                        //
-                        Reportes.reportes['Subjetivo'],
-                        Reportes.signosVitales,
-                        Reportes.exploracionFisica,
-                        //
-                        Reportes.auxiliaresDiagnosticos,
-                        Reportes.analisisComplementarios,
-                        // Reportes.eventualidadesOcurridas,
-                        // Reportes.terapiasPrevias,
-                        Reportes.analisisMedico,
-                        // Reportes.tratamientoPropuesto,
-                        Reportes.pronosticoMedico,
-                        // INDICACIONES MÉDICAS *******************************
-                        Reportes.dieta.toString(),
-                        Reportes.hidroterapia.toString(),
-                        Reportes.insulinoterapia.toString(),
-                        Reportes.hemoterapia.toString(),
-                        Reportes.oxigenoterapia.toString(),
-                        Reportes.medicamentosIndicados.toString(),
-                        Reportes.medidasGenerales.toString(),
-                        Reportes.pendientes.toString(),
-                        //
-                        Reportes.hitosHospitalarios.toString(),
-                        Repositorios.tipo_Analisis, // Items.tiposAnalisis[0] //
-                      ], ValuesEgreso: [
-                        Pacientes.ID_Paciente,
-                        Pacientes.ID_Hospitalizacion,
-                        Valores.fechaPadecimientoActual ??
-                            Calendarios.today(format: 'yyyy/MM/dd'),
-                        Reportes.padecimientoActual,
-                        // Valores.servicioTratanteInicial,
-                        Valores.servicioTratante,
-                        Calendarios.today(format: 'yyyy/MM/dd'),
-                        Reportes.impresionesDiagnosticas,
-                        Reportes.reportes['Subjetivo'],
-                        Reportes.signosVitales,
-                        Reportes.exploracionFisica,
-                        //
-                        Reportes.auxiliaresDiagnosticos,
-                        Reportes.analisisComplementarios,
-                        //
-                        Reportes.analisisMedico,
-                        Reportes.pronosticoMedico,
-                        // INDICACIONES MÉDICAS *******************************
-                        Reportes.dieta.toString(),
-                        Reportes.hidroterapia.toString(),
-                        Reportes.insulinoterapia.toString(),
-                        Reportes.hemoterapia.toString(),
-                        Reportes.oxigenoterapia.toString(),
-                        Reportes.medicamentosIndicados.toString(),
-                        Reportes.medidasGenerales.toString(),
-                        Reportes.pendientes.toString(),
-                        //
-                        Reportes.hitosHospitalarios.toString(),
-                        Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
-                      ]);
-                              // Situaciones.registrarRegistro();
-                              Expedientes.registrarRegistro();
-                            }).whenComplete(() => onClose(context)));
-                    break;
-                  case Constantes.Update:
-                    Actividades.actualizar(
-                            Databases.siteground_database_reghosp,
-                            updateQuery!,
-                            listOfValues!,
-                            idOperation)
-                        .then((value) => Actividades.consultarAllById(
-                                    Databases.siteground_database_reghosp,
-                                    consultIdQuery!,
-                                    Pacientes.ID_Paciente) // idOperation)
-                                .then((value) {
-                              // ******************************************** *** *
-                              Pacientes.Hospitalizaciones = value;
-                              //
-                              Valores.fechaIngresoHospitalario =
-                                  fechaIngresoTextController.text;
-                              Valores.numeroCama = (isNumCama);
-                              // Valores.diasEstancia = int.parse(diasEstanciaTextController.text);
-                              Valores.medicoTratante =
-                                  medicoTratanteTextController.text;
-                              Valores.servicioTratante = servicioTratanteValue;
-                              Valores.servicioTratanteInicial =
-                                  servicioTratanteInicialValue;
-                              Valores.fechaEgresoHospitalario =
-                                  fechaEgresoTextController.text;
-                              Valores.motivoEgreso = motivoEgresoValue;
-                              //
-                              Constantes.reinit(value: value);
-                              // ******************************************** *** *
-                            }).then((value) => onClose(context)))
-                    //     .whenComplete(()
-                    // => Pacientes.hospitalizar(
-                    //             modus: Pacientes.modoAtencion!)
-                            .whenComplete(() =>
-                                Pacientes.Paciente['Pace_Hosp'] =
-                                    Pacientes.modoAtencion!)
-                            .whenComplete(() => Cambios.toNextPage(
-                                context,
-                                VisualPacientes(
-                                  actualPage: 0,
-                                )))
-                //)
-                ;
-                    break;
-                  default:
-                }
-              }
-            });
-      } else {
-        // Continuar con el Método
-        switch (widget.operationActivity) {
-          case Constantes.Nulo:
-            // ******************************************** *** *
-            listOfValues!.removeAt(0);
-            listOfValues!.removeLast();
-            // ******************************************** *** *
-            Actividades.registrar(Databases.siteground_database_reghosp,
-                registerQuery!, listOfValues!.removeLast());
-            break;
-          case Constantes.Consult:
-            break;
-          case Constantes.Register:
-            // ******************************************** *** *
-            listOfValues!.removeAt(0);
-            listOfValues!.removeLast();
-            // ******************************************** *** *
-            Actividades.registrar(Databases.siteground_database_reghosp,
-                    registerQuery!, listOfValues!)
-                .then((value) => Actividades.consultarAllById(
-                            Databases.siteground_database_reghosp,
-                            consultIdQuery!,
-                            Pacientes.ID_Paciente) // idOperation)
-                        .then((value) {
-                      // ******************************************** *** *
-                      Pacientes.Hospitalizaciones = value;
-                      Pacientes.ID_Hospitalizacion = value.last['ID_Hosp'];
-                      Valores.servicioTratante = value.last['Serve_Trat'];
-                      Constantes.reinit(value: value);
-                      // ******************************************** *** *
-                    }).whenComplete(() {
-                      Repositorios.tipo_Analisis = Items.tiposAnalisis[0];
-                      //
-                      Repositorios.registrarPadecimientoActual(context, Values: [
-                        Pacientes.ID_Paciente,
-                        Pacientes.ID_Hospitalizacion,
-                        Valores.fechaPadecimientoActual ??
-                            Calendarios.today(format: 'yyyy/MM/dd'),
-                        Reportes.padecimientoActual,
-                        // Valores.servicioTratanteInicial,
-                        Valores.servicioTratante,
-                        Calendarios.today(format: 'yyyy/MM/dd'),
-                        //
-                        Reportes.impresionesDiagnosticas,
-                        //
-                        Reportes.reportes['Subjetivo'],
-                        Reportes.signosVitales,
-                        Reportes.exploracionFisica,
-                        //
-                        Reportes.auxiliaresDiagnosticos,
-                        Reportes.analisisComplementarios,
-                        // Reportes.eventualidadesOcurridas,
-                        // Reportes.terapiasPrevias,
-                        Reportes.analisisMedico,
-                        // Reportes.tratamientoPropuesto,
-                        Reportes.pronosticoMedico,
-                        // INDICACIONES MÉDICAS *******************************
-                        Reportes.dieta.toString(),
-                        Reportes.hidroterapia.toString(),
-                        Reportes.insulinoterapia.toString(),
-                        Reportes.hemoterapia.toString(),
-                        Reportes.oxigenoterapia.toString(),
-                        Reportes.medicamentosIndicados.toString(),
-                        Reportes.medidasGenerales.toString(),
-                        Reportes.pendientes.toString(),
-                        //
-                        Reportes.hitosHospitalarios.toString(),
-                        Repositorios.tipo_Analisis, // Items.tiposAnalisis[0] //
-                      ], ValuesEgreso: [
-                        Pacientes.ID_Paciente,
-                        Pacientes.ID_Hospitalizacion,
-                        Valores.fechaPadecimientoActual ??
-                            Calendarios.today(format: 'yyyy/MM/dd'),
-                        Reportes.padecimientoActual,
-                        // Valores.servicioTratanteInicial,
-                        Valores.servicioTratante,
-                        Calendarios.today(format: 'yyyy/MM/dd'),
-                        Reportes.impresionesDiagnosticas,
-                        Reportes.reportes['Subjetivo'],
-                        Reportes.signosVitales,
-                        Reportes.exploracionFisica,
-                        //
-                        Reportes.auxiliaresDiagnosticos,
-                        Reportes.analisisComplementarios,
-                        //
-                        Reportes.analisisMedico,
-                        Reportes.pronosticoMedico,
-                        // INDICACIONES MÉDICAS *******************************
-                        Reportes.dieta.toString(),
-                        Reportes.hidroterapia.toString(),
-                        Reportes.insulinoterapia.toString(),
-                        Reportes.hemoterapia.toString(),
-                        Reportes.oxigenoterapia.toString(),
-                        Reportes.medicamentosIndicados.toString(),
-                        Reportes.medidasGenerales.toString(),
-                        Reportes.pendientes.toString(),
-                        //
-                        Reportes.hitosHospitalarios.toString(),
-                        Items.tiposAnalisis[3], // Repositorios.tipoAnalisis()
-                      ]); // registrarPadecimientoActual
-                      //
-
-                      Pendientes.registrarEventos(context);
-                      // Pendientes.registrarPrevios(context);
-                      // Pendientes.registrarInfusiones(context);
-                      // Pendientes.registrarDispositivos(context);
-                      //
-                      Expedientes.registrarRegistro();
-                    }).whenComplete(() => onClose(context)));
-            break;
-          case Constantes.Update:
-            Actividades.actualizar(Databases.siteground_database_reghosp,
-                    updateQuery!, listOfValues!, idOperation)
-                .then((value) => Actividades.consultarAllById(
-                            Databases.siteground_database_reghosp,
-                            consultIdQuery!,
-                            Pacientes.ID_Paciente) // idOperation)
-                        .then((value) {
-                      // ******************************************** *** *
-                      Pacientes.Hospitalizaciones = value;
-                      //
-                      Valores.fechaIngresoHospitalario =
-                          fechaIngresoTextController.text;
-                      Valores.numeroCama = (isNumCama);
-                      // Valores.diasEstancia = int.parse(diasEstanciaTextController.text);
-                      Valores.medicoTratante =
-                          medicoTratanteTextController.text;
-                      Valores.servicioTratante = servicioTratanteValue;
-                      Valores.servicioTratanteInicial =
-                          servicioTratanteInicialValue;
-                      Valores.fechaEgresoHospitalario =
-                          fechaEgresoTextController.text;
-                      Valores.motivoEgreso = motivoEgresoValue;
-                      //
-                      Constantes.reinit(value: value);
-                      // ******************************************** *** *
-                    }).then((value) => onClose(context)));
-            break;
-          default:
-        }
-      }
-      // print("${widget.operationActivity} listOfValues $listOfValues ${listOfValues!.length}");
-    } catch (ex) {
-      showDialog(
+        final modo = await Operadores.selectOptionsActivity(
           context: context,
-          builder: (context) {
-            return alertDialog("Error al operar con los valores", "$ex", () {
-              Navigator.of(context).pop();
-            }, () {});
-          });
+          tittle: "Paciente Egresado . . . ",
+          message: "Seleccione modo de atención",
+          options: Pacientes.Atencion,
+        );
+
+        if (modo.isEmpty) return;
+
+        Pacientes.modoAtencion = modo;
+        Terminal.printWarning(message: "Modo de atención: $modo");
+
+        // Continuar según operación
+        await _realizarOperacion(context);
+      } else {
+        // No egresado → continuar sin seleccionar atención
+        await _realizarOperacion(context);
+      }
+
+      // Cierre final tras operación
+      onClose(context);
+    } catch (ex, stack) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return alertDialog(
+            "Error al operar con los valores",
+            "$ex",
+                () => Navigator.of(context).pop(),
+                () {},
+          );
+        },
+      );
     }
   }
+
 
   void onClose(BuildContext context) {
     if (widget.retornar == true) {
@@ -927,6 +646,135 @@ class _OperacionesHospitalizacionesState
       }
     }
   }
+
+  //
+  Future<void> _realizarOperacion(BuildContext context) async {
+    final isRegister = widget.operationActivity == Constantes.Register;
+    final isUpdate = widget.operationActivity == Constantes.Update;
+
+    // Quitar ID inicial y final si es registro o nulo
+    if (widget.operationActivity == Constantes.Nulo ||
+        widget.operationActivity == Constantes.Register) {
+      listOfValues!.removeAt(0); // quitar ID inicial
+      listOfValues!.removeLast(); // quitar ID final
+    }
+
+    if (isRegister || widget.operationActivity == Constantes.Nulo) {
+      await Actividades.registrar(
+        Databases.siteground_database_reghosp,
+        registerQuery!,
+        listOfValues!,
+      );
+
+      final resultado = await Actividades.consultarAllById(
+        Databases.siteground_database_reghosp,
+        consultIdQuery!,
+        Pacientes.ID_Paciente,
+      );
+
+      Pacientes.Hospitalizaciones = resultado;
+      Pacientes.ID_Hospitalizacion = resultado.first['ID_Hosp']; // ✅ ID actualizado
+      Valores.servicioTratante = resultado.first['Serve_Trat'];
+      Constantes.reinit(value: resultado);
+
+      // Y AHORA SÍ:
+      await Repositorios.registrarPadecimientoActual(
+        context,
+        Values: _buildValuesIngreso(),
+        ValuesEgreso: _buildValuesEgreso(),
+      );
+
+      // Eventos y registro
+      if (motivoEgresoValue == Escalas.motivosEgresos[0]) Pendientes.registrarEventos(context);
+
+      Expedientes.registrarRegistro();
+    }
+
+    if (isUpdate) {
+      await Actividades.actualizar(
+        Databases.siteground_database_reghosp,
+        updateQuery!,
+        listOfValues!,
+        idOperation,
+      );
+
+      final resultado = await Actividades.consultarAllById(
+        Databases.siteground_database_reghosp,
+        consultIdQuery!,
+        Pacientes.ID_Paciente,
+      );
+
+      Pacientes.Hospitalizaciones = resultado;
+
+      Valores.fechaIngresoHospitalario = fechaIngresoTextController.text;
+      Valores.numeroCama = isNumCama;
+      Valores.medicoTratante = medicoTratanteTextController.text;
+      Valores.servicioTratante = servicioTratanteValue;
+      Valores.servicioTratanteInicial = servicioTratanteInicialValue;
+      Valores.fechaEgresoHospitalario = fechaEgresoTextController.text;
+      Valores.motivoEgreso = motivoEgresoValue;
+
+      Constantes.reinit(value: resultado);
+
+      Pacientes.Paciente['Pace_Hosp'] = Pacientes.modoAtencion ?? "";
+      Cambios.toNextPage(context, VisualPacientes(actualPage: 0));
+    }
+  }
+
+  List _buildValuesIngreso() => [
+    Pacientes.ID_Paciente,
+    Pacientes.ID_Hospitalizacion,
+    Valores.fechaPadecimientoActual ?? Calendarios.today(format: 'yyyy/MM/dd'),
+    Reportes.padecimientoActual ?? "Sin especificar",
+    Valores.servicioTratante ?? "No asignado",
+    Calendarios.today(format: 'yyyy/MM/dd'),
+    Reportes.impresionesDiagnosticas ?? "Sin diagnóstico",
+    Reportes.reportes['Subjetivo'] ?? "Sin datos subjetivos",
+    Reportes.signosVitales ?? "No registrados",
+    Reportes.exploracionFisica ?? "Sin exploración física",
+    Reportes.auxiliaresDiagnosticos ?? "No hay auxiliares diagnósticos",
+    Reportes.analisisComplementarios ?? "No hay análisis complementarios",
+    Reportes.analisisMedico ?? "Análisis no disponible",
+    Reportes.pronosticoMedico ?? "Sin pronóstico médico",
+    Reportes.dieta?.toString() ?? "-",
+    Reportes.hidroterapia?.toString() ?? "-",
+    Reportes.insulinoterapia?.toString() ?? "-",
+    Reportes.hemoterapia?.toString() ?? "-",
+    Reportes.oxigenoterapia?.toString() ?? "-",
+    Reportes.medicamentosIndicados?.toString() ?? "-",
+    Reportes.medidasGenerales?.toString() ?? "-",
+    Reportes.pendientes?.toString() ?? "-",
+    Reportes.hitosHospitalarios?.toString() ?? "-",
+    Repositorios.tipo_Analisis ?? "Análisis sin tipo",
+  ];
+  List _buildValuesEgreso() => [
+    Pacientes.ID_Paciente,
+    Pacientes.ID_Hospitalizacion,
+    Valores.fechaPadecimientoActual ?? Calendarios.today(format: 'yyyy/MM/dd'),
+    Reportes.padecimientoActual ?? "Sin especificar",
+    Valores.servicioTratante ?? "No asignado",
+    Calendarios.today(format: 'yyyy/MM/dd'),
+    Reportes.impresionesDiagnosticas ?? "Sin diagnóstico",
+    Reportes.reportes['Subjetivo'] ?? "Sin datos subjetivos",
+    Reportes.signosVitales ?? "No registrados",
+    Reportes.exploracionFisica ?? "Sin exploración física",
+    Reportes.auxiliaresDiagnosticos ?? "No hay auxiliares diagnósticos",
+    Reportes.analisisComplementarios ?? "No hay análisis complementarios",
+    Reportes.analisisMedico ?? "Análisis no disponible",
+    Reportes.pronosticoMedico ?? "Sin pronóstico médico",
+    Reportes.dieta?.toString() ?? "-",
+    Reportes.hidroterapia?.toString() ?? "-",
+    Reportes.insulinoterapia?.toString() ?? "-",
+    Reportes.hemoterapia?.toString() ?? "-",
+    Reportes.oxigenoterapia?.toString() ?? "-",
+    Reportes.medicamentosIndicados?.toString() ?? "-",
+    Reportes.medidasGenerales?.toString() ?? "-",
+    Reportes.pendientes?.toString() ?? "-",
+    Reportes.hitosHospitalarios?.toString() ?? "-",
+    Items.tiposAnalisis[3],
+  ];
+
+
 }
 
 class GestionHospitalizaciones extends StatefulWidget {

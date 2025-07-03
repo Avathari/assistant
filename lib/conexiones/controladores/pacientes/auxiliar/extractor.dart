@@ -449,7 +449,7 @@ class AuxiliarExtractor {
     try {
       result = textLine.firstWhere((o) => o.text.contains('NSS')).text;
       fechaResultado =
-          textLine.firstWhere((o) => o.text.contains('FECHA DE LA ORDEN')).text;
+          textLine.firstWhere((o) => o.text.contains('FECHA DE RESULTADO')).text; // o.text.contains('FECHA DE LA ORDEN')).text;
       Terminal.printExpected(message: "NSS : $result");
     } catch (e) {
       // En caso de no encontrarlo, asignamos "No Encontrado"

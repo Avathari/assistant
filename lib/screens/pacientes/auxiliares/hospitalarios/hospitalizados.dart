@@ -419,19 +419,17 @@ class _HospitalizadosState extends State<Hospitalizados> {
     Directrices.coordenada =
         true; // Variable Global para VisualPacientes devuelva a Hospitalizados.dart
     //
-    CargadoresPacientes.loadingActivity(context: context)
-        .then((value) async {
+    CargadoresPacientes.loadingActivity(context: context).then((value) async {
       if (value == true) {
         Terminal.printAlert(
-            message:
-            'Archivo ${Pacientes.localPath} Re-Creado $value');
+            message: 'Archivo ${Pacientes.localPath} Re-Creado $value');
 
         try {
-          final dataVitales = await Archivos.readJsonToMap(
-              filePath: Vitales.fileAssocieted)
-              .onError((onError, stackTrace) {});
+          final dataVitales =
+              await Archivos.readJsonToMap(filePath: Vitales.fileAssocieted)
+                  .onError((onError, stackTrace) {});
           final dataHosp = await Archivos.readJsonToMap(
-              filePath: Hospitalizaciones.fileAssocieted)
+                  filePath: Hospitalizaciones.fileAssocieted)
               .onError((onError, stackTrace) {});
 
           if (dataVitales != null && dataVitales.isNotEmpty) {
@@ -443,11 +441,11 @@ class _HospitalizadosState extends State<Hospitalizados> {
           }
 
           setState(() {});
-          if (context.mounted) Cambios.toNextPage(context, VisualPacientes(actualPage: 0));
+          if (context.mounted)
+            Cambios.toNextPage(context, VisualPacientes(actualPage: 0));
         } catch (e, stack) {
           Terminal.printAlert(
-              message:
-              "❌ Error al leer archivos JSON: $e\n$stack");
+              message: "❌ Error al leer archivos JSON: $e\n$stack");
           Operadores.alertActivity(
             message: "Error al leer archivos: $e",
             context: context,
@@ -458,8 +456,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
       }
     }).onError((error, stackTrace) {
       Terminal.printAlert(
-          message:
-          "ERROR - toVisual : : $error : : Descripción : $stackTrace");
+          message: "ERROR - toVisual : : $error : : Descripción : $stackTrace");
       Operadores.alertActivity(
         message: "ERROR - toVisual : : $error",
         context: context,
@@ -647,42 +644,91 @@ class _HospitalizadosState extends State<Hospitalizados> {
                   Expanded(
                     flex: 1,
                     child: CircleIcon(
-                      tittle: 'Recargar laboratorios . . . ',
-                      iconed: Icons.receipt_long,
-                      difRadios: 5,
-                      onLongChangeValue: () => Datos.portapapeles(
-                          context: context,
-                          text:
-                              "${Internado.getUltimo(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}"
-                              "${Internado.getGasometrico(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}"
-                              "${Internado.getEspeciales(listadoFrom: foundedItems![index].paraclinicos) != "" ? "RELAVANTES\n" : ""}"
-                              "${Internado.getEspeciales(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}\n"
-                              "${Auxiliares.getCoagulacion()}\n"
-                              "${Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos) != "" ? "MICROBIOLOGICOS\n" : ""}"
-                              "${Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos)}"),
-                      onChangeValue: () async {
-                        Operadores.loadingActivity(
-                            dismisable: false,
+                        tittle: 'Recargar laboratorios . . . ',
+                        iconed: Icons.receipt_long,
+                        difRadios: 5,
+                        onLongChangeValue: () => Datos.portapapeles(
                             context: context,
-                            tittle: "Historial de Paraclinicos . . . ",
-                            message:
-                                "Buscando Historial de Paraclinicos . . . ",
-                            onCloss: () => Navigator.of(context).pop());
-                        //
-                        await snapshot.data![index]
-                            .getParaclinicosHistorial()
-                            .then((response) async => setState(() {
-                                  // Terminal.printNotice(message: response.toString());
-                                  Pacientes.Paraclinicos = snapshot
-                                      .data![index].paraclinicos = response;
-                                  //
-                                  Archivos.createJsonFromMap(response,
-                                      filePath: snapshot.data![index]
-                                          .paraclinicosRepositoryPath);
-                                }))
-                            .whenComplete(() => Navigator.of(context).pop());
-                      },
-                    ),
+                            text:
+                                "${Internado.getUltimo(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}"
+                                "${Internado.getGasometrico(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}"
+                                "${Internado.getEspeciales(listadoFrom: foundedItems![index].paraclinicos) != "" ? "RELAVANTES\n" : ""}"
+                                "${Internado.getEspeciales(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}\n"
+                                "${Auxiliares.getCoagulacion()}\n"
+                                "${Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos) != "" ? "MICROBIOLOGICOS\n" : ""}"
+                                "${Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos)}"),
+                        onChangeValue: () async {
+                          final statusNotifier =
+                              ValueNotifier<String>("Iniciando...");
+                          final subStatusNotifier =
+                              ValueNotifier<String>("Preparando módulo...");
+                          final progressNotifier = ValueNotifier<double>(0.0);
+                          bool cancelado = false;
+                          final paciente = snapshot.data![index];
+
+                          Operadores.showProgressDialog(
+                            context: context,
+                            tittle: "Historial de Paraclínicos",
+                            statusNotifier: statusNotifier,
+                            subStatusNotifier: subStatusNotifier,
+                            progressNotifier: progressNotifier,
+                            onCancel: () {
+                              cancelado = true;
+                              Navigator.of(context).pop();
+                            },
+                          );
+
+                          try {
+                            statusNotifier.value =
+                                "Cargando historial de paraclínicos...";
+                            subStatusNotifier.value =
+                                "Solicitando información remota...";
+
+                            final response =
+                                await paciente.getParaclinicosHistorial();
+
+                            if (cancelado) return;
+
+                            statusNotifier.value =
+                                "Procesando datos obtenidos...";
+                            subStatusNotifier.value =
+                                "Almacenando en memoria y disco";
+
+                            // Guardar en memoria
+                            Pacientes.Paraclinicos =
+                                paciente.paraclinicos = response;
+
+                            // Guardar en archivo
+                            await Archivos.createJsonFromMap(
+                              response,
+                              filePath: paciente.paraclinicosRepositoryPath,
+                            );
+
+                            progressNotifier.value = 1.0;
+
+                            await Future.delayed(const Duration(
+                                milliseconds: 300)); // Suavizar cierre
+                            if (context.mounted) Navigator.of(context).pop();
+
+                            setState(() {});
+                          } catch (e, stack) {
+                            if (context.mounted) {
+                              Navigator.of(context).pop();
+                              Operadores.alertActivity(
+                                context: context,
+                                tittle: "Error durante la carga",
+                                message:
+                                    "No se pudo obtener el historial de paraclínicos:\n$e",
+                                onAcept: () => Navigator.of(context).pop(),
+                              );
+                            }
+                            Terminal.printAlert(message: "❌ Error: $e\n$stack");
+                          } finally {
+                            statusNotifier.dispose();
+                            subStatusNotifier.dispose();
+                            progressNotifier.dispose();
+                          }
+                        }),
                   ),
                   CrossLine(thickness: 3, color: Colors.grey),
                   ValuePanel(
@@ -1293,29 +1339,69 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                   "${Auxiliares.getCoagulacion()}\n"
                                   "${Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos) != "" ? "MICROBIOLOGICOS\n" : ""}"
                                   "${Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos)}"),
-                          onChangeValue: () async {
-                            Operadores.loadingActivity(
-                                dismisable: false,
+                            onChangeValue: () async {
+                              final statusNotifier = ValueNotifier<String>("Iniciando...");
+                              final subStatusNotifier = ValueNotifier<String>("Preparando módulo...");
+                              final progressNotifier = ValueNotifier<double>(0.0);
+                              bool cancelado = false;
+                              final paciente = snapshot.data![index];
+
+                              Operadores.showProgressDialog(
                                 context: context,
-                                tittle: "Historial de Paraclinicos . . . ",
-                                message:
-                                    "Buscando Historial de Paraclinicos . . . ",
-                                onCloss: () => Navigator.of(context).pop());
-                            //
-                            await snapshot.data![index]
-                                .getParaclinicosHistorial()
-                                .then((response) async => setState(() {
-                                      // Terminal.printNotice(message: response.toString());
-                                      Pacientes.Paraclinicos = snapshot
-                                          .data![index].paraclinicos = response;
-                                      //
-                                      Archivos.createJsonFromMap(response,
-                                          filePath: snapshot.data![index]
-                                              .paraclinicosRepositoryPath);
-                                    }))
-                                .whenComplete(
-                                    () => Navigator.of(context).pop());
-                          },
+                                tittle: "Historial de Paraclínicos",
+                                statusNotifier: statusNotifier,
+                                subStatusNotifier: subStatusNotifier,
+                                progressNotifier: progressNotifier,
+                                onCancel: () {
+                                  cancelado = true;
+                                  Navigator.of(context).pop();
+                                },
+                              );
+
+                              try {
+                                statusNotifier.value = "Cargando historial de paraclínicos...";
+                                subStatusNotifier.value = "Solicitando información remota...";
+
+                                final response = await paciente.getParaclinicosHistorial();
+
+                                if (cancelado) return;
+
+                                statusNotifier.value = "Procesando datos obtenidos...";
+                                subStatusNotifier.value = "Almacenando en memoria y disco";
+
+                                // Guardar en memoria
+                                Pacientes.Paraclinicos = paciente.paraclinicos = response;
+
+                                // Guardar en archivo
+                                await Archivos.createJsonFromMap(
+                                  response,
+                                  filePath: paciente.paraclinicosRepositoryPath,
+                                );
+
+                                progressNotifier.value = 1.0;
+
+                                await Future.delayed(const Duration(milliseconds: 300)); // Suavizar cierre
+                                if (context.mounted) Navigator.of(context).pop();
+
+                                setState(() {});
+                              } catch (e, stack) {
+                                if (context.mounted) {
+                                  Navigator.of(context).pop();
+                                  Operadores.alertActivity(
+                                    context: context,
+                                    tittle: "Error durante la carga",
+                                    message: "No se pudo obtener el historial de paraclínicos:\n$e",
+                                    onAcept: () => Navigator.of(context).pop(),
+                                  );
+                                }
+                                Terminal.printAlert(message: "❌ Error: $e\n$stack");
+                              } finally {
+                                statusNotifier.dispose();
+                                subStatusNotifier.dispose();
+                                progressNotifier.dispose();
+                              }
+                            }
+
                         ),
                       ),
                     ])),
@@ -1899,6 +1985,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
       statusNotifier: statusNotifier,
       subStatusNotifier: subStatusNotifier,
       progressNotifier: progressNotifier,
+      isLinear: false,
       onCancel: () {
         cancelado = true;
         Navigator.of(context).pop();
@@ -2076,6 +2163,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
       statusNotifier: statusNotifier,
       subStatusNotifier: subStatusNotifier,
       progressNotifier: progressNotifier,
+      isLinear: false,
       onCancel: () {
         cancelado = true;
         Navigator.of(context).pop();
