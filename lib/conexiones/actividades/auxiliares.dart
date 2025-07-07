@@ -71,7 +71,8 @@ class Calendarios {
         });
   }
 
-  static fromTextoLlano(String? fechaResultado) {
+  /// La variable programados, si es TRUE, agrega un dia más .
+  static fromTextoLlano(String? fechaResultado, {bool programados = false}) {
     // Mapa de meses en español
     Map<String, int> meses = {
       'enero': 1,
@@ -92,7 +93,13 @@ class Calendarios {
     List<String> partesFecha = fechaResultado!.toLowerCase().split(' ');
     // Terminal.printSuccess(message: partesFecha.toString());
 
-    int dia = int.parse(partesFecha[0]); // Obtenemos el día
+    int dia = 0;
+    if (programados) {
+      dia = int.parse(partesFecha[0]) + 1;
+    } else {
+      dia = int.parse(partesFecha[0]);
+    }
+// Obtenemos el día
     int mes = meses[partesFecha[2]] ??
         1; // Obtenemos el mes y lo convertimos a su representación numérica
     int anio = int.parse(partesFecha[4]); // Obtenemos el año
@@ -295,7 +302,8 @@ class Archivos {
   }
 
   static createJsonFromMap(List<dynamic> map, {String filePath = ''}) async {
-    Terminal.printWarning(message: 'Creando archivo JSON en $filePath : : OBTENIDO : $map');
+    Terminal.printWarning(
+        message: 'Creando archivo JSON en $filePath : : OBTENIDO : $map');
     //
     if (Platform.isAndroid) {
       final directory = await getTemporaryDirectory();
@@ -1242,7 +1250,8 @@ class Operadores {
     showDialog(
         context: context,
         builder: (context) {
-          return Dialogos.editDialog(context, keyBoardType, tittle, message, () {
+          return Dialogos.editDialog(context, keyBoardType, tittle, message,
+              () {
             Navigator.of(context).pop();
           }, onAcept, numOfLines: numOfLines);
         });
@@ -1305,7 +1314,7 @@ class Operadores {
                   style: const TextStyle(fontSize: 12, color: Colors.grey),
                 ),
               ),
-              SizedBox(height:  isLinear ? 12 : 22),
+              SizedBox(height: isLinear ? 12 : 22),
               ValueListenableBuilder<double>(
                 valueListenable: progressNotifier,
                 builder: (_, value, __) {
@@ -1332,7 +1341,8 @@ class Operadores {
                               value: value,
                               strokeWidth: 5,
                               backgroundColor: Colors.white24,
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -1358,8 +1368,6 @@ class Operadores {
       ),
     );
   }
-
-
 }
 
 class Dialogos {
@@ -1436,15 +1444,20 @@ class Dialogos {
     );
   }
 
-  static AlertDialog editDialog(BuildContext context, TextInputType keyBoardType, String? tittle,
-      String? msg, onCloss, ValueChanged<String>? onAcept,
+  static AlertDialog editDialog(
+      BuildContext context,
+      TextInputType keyBoardType,
+      String? tittle,
+      String? msg,
+      onCloss,
+      ValueChanged<String>? onAcept,
       {int numOfLines = 1}) {
     var textEditController = TextEditingController();
 
     return AlertDialog(
       backgroundColor: Theming.secondaryColor,
       title: Text(
-          tittle ?? '',
+        tittle ?? '',
         style: const TextStyle(color: Colors.grey),
       ),
       content: SingleChildScrollView(
@@ -1457,7 +1470,7 @@ class Dialogos {
                 msg,
                 style: const TextStyle(color: Colors.grey),
               ),
-            CrossLine(thickness: 3,height: 16),
+            CrossLine(thickness: 3, height: 16),
             EditTextArea(
               labelEditText: msg ?? '',
               numOfLines: numOfLines,
@@ -1679,7 +1692,8 @@ class Dialogos {
     );
   }
 
-  static AlertDialog selectOptionsActivity(BuildContext context, {
+  static AlertDialog selectOptionsActivity(
+    BuildContext context, {
     String? tittle,
     String? msg,
     ValueChanged<String>? onCloss,
@@ -1694,7 +1708,8 @@ class Dialogos {
         children: [
           ListTile(
             onTap: () {
-              Navigator.of(context).pop(element); // Devuelve el valor seleccionado
+              Navigator.of(context)
+                  .pop(element); // Devuelve el valor seleccionado
               if (onCloss != null) onCloss(element);
             },
             title: Text(

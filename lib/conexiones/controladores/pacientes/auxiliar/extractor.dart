@@ -300,6 +300,8 @@ class AuxiliarExtractor {
                       if (partes.length > 2) {
                         // Terminal.printSuccess(message: "${partes[0]}");
                         if (partes[0].trim() == value || partes[0] == value) {
+                          Terminal.printSuccess(message: "fechaResultado! : ${fechaResultado!}");
+
                           // Terminal.printSuccess(
                           //     message: // "ITEM ENCONTRADO "
                           //     "${partes[0]} . "
@@ -312,7 +314,7 @@ class AuxiliarExtractor {
                             Calendarios.fromTextoLlano(fechaResultado!
                                     .trim()
                                     .split("N: ")[1]
-                                    .trim())
+                                    .trim(), programados: true)
                                 .toString(),
                             Auxiliares.queCategoriaPertenece(partes[0]
                                 .trim()
@@ -449,7 +451,7 @@ class AuxiliarExtractor {
     try {
       result = textLine.firstWhere((o) => o.text.contains('NSS')).text;
       fechaResultado =
-          textLine.firstWhere((o) => o.text.contains('FECHA DE RESULTADO')).text; // o.text.contains('FECHA DE LA ORDEN')).text;
+          textLine.firstWhere((o) =>  o.text.contains('FECHA DE LA ORDEN')).text; // o.text.contains('FECHA DE RESULTADO')).text;
       Terminal.printExpected(message: "NSS : $result");
     } catch (e) {
       // En caso de no encontrarlo, asignamos "No Encontrado"
