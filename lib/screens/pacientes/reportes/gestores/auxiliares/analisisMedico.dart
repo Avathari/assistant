@@ -60,29 +60,29 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
 
       // Se reinicia Reportes.pendientes porque resulta acumulativo * * * * * * * * * * * * * * *
       Reportes.pendientes.clear();
-      if (Pacientes.Pendiente!.isNotEmpty) {
+      if (Pacientes.Pendiente != null && Pacientes.Pendiente!.isNotEmpty) {
         String pendientes = "";
         for (var element in Pacientes.Pendiente!) {
-          //Pace_PEN
-          if (pendientes == "") {
-            pendientes =
-                "          ${element['Pace_Desc_PEN'].replaceAll("\n", "")}. \n";
-            // Añadir a Reportes.pendientes para Anexión a Indicaciones : Pendientes * * * * * * * *
-            Reportes.pendientes.add(
-                "          ${element['Pace_PEN']} - ${element['Pace_Desc_PEN'].replaceAll("\n", "")}. "); // Sin salto de linea, ya ...
-          } else {
-            pendientes = "$pendientes"
-                "          ${element['Pace_Desc_PEN'].replaceAll("\n", "")}. \n";
-            // Añadir a Reportes.pendientes para Anexión a Indicaciones : Pendientes * * * * * * * *
-            Reportes.pendientes.add(
-                "          ${element['Pace_PEN']} - ${element['Pace_Desc_PEN'].replaceAll("\n", "")}. ");
+          final desc = element['Pace_Desc_PEN'];
+          final pen = element['Pace_PEN'] ?? "";
+
+          if (desc != null) {
+            final cleanDesc = desc.replaceAll("\n", "");
+            if (pendientes.isEmpty) {
+              pendientes = "          $cleanDesc. \n";
+            } else {
+              pendientes += "          $cleanDesc. \n";
+            }
+            Reportes.pendientes.add("          $pen - $cleanDesc. ");
           }
         }
 
-        tratamientoTextController.text =
-            "${tratamientoTextController.text}. \nPLAN: \n"
-            "$pendientes";
+        if (pendientes.isNotEmpty) {
+          tratamientoTextController.text =
+          "${tratamientoTextController.text}. \nPLAN: \n$pendientes";
+        }
       }
+
     }
 
     // Añadir un Listener a analisisTextController
@@ -323,8 +323,7 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
     super.dispose();
   }
 
-  // FUNCIONES ******************************
-  // Función para guardar el texto en un archivo
+  // FUNCIONES *** ** * ********  Función para guardar el texto en un archivo
   Future<void> _saveToFile(String text) async {
     // final path = await _getFilePath();
     if (text.isNotEmpty) {

@@ -314,7 +314,7 @@ class AuxiliarExtractor {
                             Calendarios.fromTextoLlano(fechaResultado!
                                     .trim()
                                     .split("N: ")[1]
-                                    .trim(), programados: true)
+                                    .trim(), programados: false)
                                 .toString(),
                             Auxiliares.queCategoriaPertenece(partes[0]
                                 .trim()

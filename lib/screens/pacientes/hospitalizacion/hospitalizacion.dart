@@ -320,8 +320,7 @@ class _OperacionesHospitalizacionesState
             fechaEgresoTextController.text =
                 DateFormat("yyyy-MM-dd").format(picked!);
             setState(() {
-              Valores.fechaEgresoHospitalario =
-                  fechaEgresoTextController.text;
+              Valores.fechaEgresoHospitalario = fechaEgresoTextController.text;
               diasEstanciaTextController.text = Valores.diasEstancia.toString();
             });
           },
@@ -368,7 +367,8 @@ class _OperacionesHospitalizacionesState
                   setState(() {
                     Valores.fechaIngresoHospitalario =
                         fechaIngresoTextController.text;
-                    diasEstanciaTextController.text = Valores.diasEstancia.toString();
+                    diasEstanciaTextController.text =
+                        Valores.diasEstancia.toString();
                   });
                 },
                 numOfLines: 1,
@@ -406,7 +406,8 @@ class _OperacionesHospitalizacionesState
                   setState(() {
                     Valores.fechaEgresoHospitalario =
                         fechaEgresoTextController.text;
-                    diasEstanciaTextController.text = Valores.diasEstancia.toString();
+                    diasEstanciaTextController.text =
+                        Valores.diasEstancia.toString();
                   });
                 },
               ),
@@ -502,19 +503,21 @@ class _OperacionesHospitalizacionesState
           Expanded(
             flex: 5,
             child: Spinner(
-                tittle: "Servicio Tratante",
-                onChangeValue: (String value) {
-                  setState(() {
-                    servicioTratanteValue = value;
-                  });
-                },
-                items: auxiliarServicios,
-                width: isTablet(context)
-                    ? 200
-                    : isMobile(context)
-                        ? 190
-                        : 200,
-                initialValue:  servicioTratanteValue ?? servicioTratanteValue.trim()),
+              tittle: "Servicio Tratante",
+              onChangeValue: (String value) {
+                setState(() {
+                  servicioTratanteValue = value;
+                });
+              },
+              items: auxiliarServicios = auxiliarServicios.toSet().toList(),
+              width: isTablet(context)
+                  ? 200
+                  : isMobile(context)
+                      ? 190
+                      : 200,
+              initialValue:
+                  servicioTratanteValue?.trim() ?? auxiliarServicios[0],
+            ),
           ),
           Expanded(
             flex: 1,
@@ -531,19 +534,21 @@ class _OperacionesHospitalizacionesState
         ],
       ),
       Spinner(
-          tittle: "Servicio Que Inicia Tratamiento",
-          onChangeValue: (String value) {
-            setState(() {
-              servicioTratanteInicialValue = value;
-            });
-          },
-          items: auxiliarServicios,
-          width: isTablet(context)
-              ? 200
-              : isMobile(context)
-                  ? 240
-                  : 200,
-          initialValue: servicioTratanteInicialValue.trim()),
+        tittle: "Servicio Que Inicia Tratamiento",
+        onChangeValue: (String value) {
+          setState(() {
+            servicioTratanteInicialValue = value;
+          });
+        },
+        items: auxiliarServicios = auxiliarServicios.toSet().toList(),
+        width: isTablet(context)
+            ? 200
+            : isMobile(context)
+                ? 240
+                : 200,
+        initialValue:
+            servicioTratanteInicialValue?.trim() ?? auxiliarServicios[0],
+      ),
       Spinner(
           tittle: "Motivo del Egreso",
           onChangeValue: (String value) {
@@ -611,14 +616,13 @@ class _OperacionesHospitalizacionesState
           return alertDialog(
             "Error al operar con los valores",
             "$ex",
-                () => Navigator.of(context).pop(),
-                () {},
+            () => Navigator.of(context).pop(),
+            () {},
           );
         },
       );
     }
   }
-
 
   void onClose(BuildContext context) {
     if (widget.retornar == true) {
@@ -673,7 +677,8 @@ class _OperacionesHospitalizacionesState
       );
 
       Pacientes.Hospitalizaciones = resultado;
-      Pacientes.ID_Hospitalizacion = resultado.first['ID_Hosp']; // ✅ ID actualizado
+      Pacientes.ID_Hospitalizacion =
+          resultado.first['ID_Hosp']; // ✅ ID actualizado
       Valores.servicioTratante = resultado.first['Serve_Trat'];
       Constantes.reinit(value: resultado);
 
@@ -685,7 +690,8 @@ class _OperacionesHospitalizacionesState
       );
 
       // Eventos y registro
-      if (motivoEgresoValue == Escalas.motivosEgresos[0]) Pendientes.registrarEventos(context);
+      if (motivoEgresoValue == Escalas.motivosEgresos[0])
+        Pendientes.registrarEventos(context);
 
       Expedientes.registrarRegistro();
     }
@@ -722,59 +728,59 @@ class _OperacionesHospitalizacionesState
   }
 
   List _buildValuesIngreso() => [
-    Pacientes.ID_Paciente,
-    Pacientes.ID_Hospitalizacion,
-    Valores.fechaPadecimientoActual ?? Calendarios.today(format: 'yyyy/MM/dd'),
-    Reportes.padecimientoActual ?? "Sin especificar",
-    Valores.servicioTratante ?? "No asignado",
-    Calendarios.today(format: 'yyyy/MM/dd'),
-    Reportes.impresionesDiagnosticas ?? "Sin diagnóstico",
-    Reportes.reportes['Subjetivo'] ?? "Sin datos subjetivos",
-    Reportes.signosVitales ?? "No registrados",
-    Reportes.exploracionFisica ?? "Sin exploración física",
-    Reportes.auxiliaresDiagnosticos ?? "No hay auxiliares diagnósticos",
-    Reportes.analisisComplementarios ?? "No hay análisis complementarios",
-    Reportes.analisisMedico ?? "Análisis no disponible",
-    Reportes.pronosticoMedico ?? "Sin pronóstico médico",
-    Reportes.dieta?.toString() ?? "-",
-    Reportes.hidroterapia?.toString() ?? "-",
-    Reportes.insulinoterapia?.toString() ?? "-",
-    Reportes.hemoterapia?.toString() ?? "-",
-    Reportes.oxigenoterapia?.toString() ?? "-",
-    Reportes.medicamentosIndicados?.toString() ?? "-",
-    Reportes.medidasGenerales?.toString() ?? "-",
-    Reportes.pendientes?.toString() ?? "-",
-    Reportes.hitosHospitalarios?.toString() ?? "-",
-    Repositorios.tipo_Analisis ?? "Análisis sin tipo",
-  ];
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores.fechaPadecimientoActual ??
+            Calendarios.today(format: 'yyyy/MM/dd'),
+        Reportes.padecimientoActual ?? "Sin especificar",
+        Valores.servicioTratante ?? "No asignado",
+        Calendarios.today(format: 'yyyy/MM/dd'),
+        Reportes.impresionesDiagnosticas ?? "Sin diagnóstico",
+        Reportes.reportes['Subjetivo'] ?? "Sin datos subjetivos",
+        Reportes.signosVitales ?? "No registrados",
+        Reportes.exploracionFisica ?? "Sin exploración física",
+        Reportes.auxiliaresDiagnosticos ?? "No hay auxiliares diagnósticos",
+        Reportes.analisisComplementarios ?? "No hay análisis complementarios",
+        Reportes.analisisMedico ?? "Análisis no disponible",
+        Reportes.pronosticoMedico ?? "Sin pronóstico médico",
+        Reportes.dieta?.toString() ?? "-",
+        Reportes.hidroterapia?.toString() ?? "-",
+        Reportes.insulinoterapia?.toString() ?? "-",
+        Reportes.hemoterapia?.toString() ?? "-",
+        Reportes.oxigenoterapia?.toString() ?? "-",
+        Reportes.medicamentosIndicados?.toString() ?? "-",
+        Reportes.medidasGenerales?.toString() ?? "-",
+        Reportes.pendientes?.toString() ?? "-",
+        Reportes.hitosHospitalarios?.toString() ?? "-",
+        Repositorios.tipo_Analisis ?? "Análisis sin tipo",
+      ];
   List _buildValuesEgreso() => [
-    Pacientes.ID_Paciente,
-    Pacientes.ID_Hospitalizacion,
-    Valores.fechaPadecimientoActual ?? Calendarios.today(format: 'yyyy/MM/dd'),
-    Reportes.padecimientoActual ?? "Sin especificar",
-    Valores.servicioTratante ?? "No asignado",
-    Calendarios.today(format: 'yyyy/MM/dd'),
-    Reportes.impresionesDiagnosticas ?? "Sin diagnóstico",
-    Reportes.reportes['Subjetivo'] ?? "Sin datos subjetivos",
-    Reportes.signosVitales ?? "No registrados",
-    Reportes.exploracionFisica ?? "Sin exploración física",
-    Reportes.auxiliaresDiagnosticos ?? "No hay auxiliares diagnósticos",
-    Reportes.analisisComplementarios ?? "No hay análisis complementarios",
-    Reportes.analisisMedico ?? "Análisis no disponible",
-    Reportes.pronosticoMedico ?? "Sin pronóstico médico",
-    Reportes.dieta?.toString() ?? "-",
-    Reportes.hidroterapia?.toString() ?? "-",
-    Reportes.insulinoterapia?.toString() ?? "-",
-    Reportes.hemoterapia?.toString() ?? "-",
-    Reportes.oxigenoterapia?.toString() ?? "-",
-    Reportes.medicamentosIndicados?.toString() ?? "-",
-    Reportes.medidasGenerales?.toString() ?? "-",
-    Reportes.pendientes?.toString() ?? "-",
-    Reportes.hitosHospitalarios?.toString() ?? "-",
-    Items.tiposAnalisis[3],
-  ];
-
-
+        Pacientes.ID_Paciente,
+        Pacientes.ID_Hospitalizacion,
+        Valores.fechaPadecimientoActual ??
+            Calendarios.today(format: 'yyyy/MM/dd'),
+        Reportes.padecimientoActual ?? "Sin especificar",
+        Valores.servicioTratante ?? "No asignado",
+        Calendarios.today(format: 'yyyy/MM/dd'),
+        Reportes.impresionesDiagnosticas ?? "Sin diagnóstico",
+        Reportes.reportes['Subjetivo'] ?? "Sin datos subjetivos",
+        Reportes.signosVitales ?? "No registrados",
+        Reportes.exploracionFisica ?? "Sin exploración física",
+        Reportes.auxiliaresDiagnosticos ?? "No hay auxiliares diagnósticos",
+        Reportes.analisisComplementarios ?? "No hay análisis complementarios",
+        Reportes.analisisMedico ?? "Análisis no disponible",
+        Reportes.pronosticoMedico ?? "Sin pronóstico médico",
+        Reportes.dieta?.toString() ?? "-",
+        Reportes.hidroterapia?.toString() ?? "-",
+        Reportes.insulinoterapia?.toString() ?? "-",
+        Reportes.hemoterapia?.toString() ?? "-",
+        Reportes.oxigenoterapia?.toString() ?? "-",
+        Reportes.medicamentosIndicados?.toString() ?? "-",
+        Reportes.medidasGenerales?.toString() ?? "-",
+        Reportes.pendientes?.toString() ?? "-",
+        Reportes.hitosHospitalarios?.toString() ?? "-",
+        Items.tiposAnalisis[3],
+      ];
 }
 
 class GestionHospitalizaciones extends StatefulWidget {
@@ -798,37 +804,42 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
   String searchCriteria = "Buscar por Fecha";
   String? consultQuery = Hospitalizaciones.hospitalizacion['consultIdQuery'];
 
-  late List? foundedItems = [];
+  late List? foundedItems = [{Error: "No se encontraron datos"}];
   var gestionScrollController = ScrollController();
   var searchTextController = TextEditingController();
 
   @override
   void initState() {
-    print(" . . . Iniciando array ");
-    if (Constantes.dummyArray!.isNotEmpty) {
-      if (Constantes.dummyArray![0] == "Vacio") {
-        Actividades.consultarAllById(Databases.siteground_database_reghosp,
-                consultQuery!, Pacientes.ID_Paciente)
-            .then((value) {
-          setState(() {
-            foundedItems = value;
-            // Operadores.notifyActivity(context: context, message: "$value");
-          });
-        }).onError((error, stackTrace) {
-          Operadores.alertActivity(
-              context: context,
-              tittle: "Error al Consultar los registros",
-              message: "ERROR - $error : : $stackTrace",
-              onAcept: () {
-                Navigator.of(context).pop();
-              });
-        });
-      } else {
-        // print(" . . . Hospitalizaciones array iniciado");
-        foundedItems = Constantes.dummyArray;
-      }
+    super.initState(); // ✅ Llamar primero a super.initState()
+
+    print("Iniciando array de hospitalizaciones...");
+    final dummy = Constantes.dummyArray;
+    if (dummy == null || dummy.isEmpty) {
+      return;
     }
-    super.initState();
+
+    if (dummy.first == "Vacio") {
+      Actividades.consultarAllById(
+        Databases.siteground_database_reghosp,
+        consultQuery!,
+        Pacientes.ID_Paciente,
+      ).then((value) {
+        if (!mounted) return; // ✅ Evita setState si el widget ya fue destruido
+        setState(() {
+          foundedItems = value;
+        });
+      }).onError((error, stackTrace) {
+        if (!mounted) return;
+        Operadores.alertActivity(
+          context: context,
+          tittle: "Error al consultar los registros",
+          message: "ERROR - $error\n\n$stackTrace",
+          onAcept: () => Navigator.of(context).pop(),
+        );
+      });
+    } else {
+      foundedItems = dummy;
+    }
   }
 
   @override
@@ -929,43 +940,45 @@ class _GestionHospitalizacionesState extends State<GestionHospitalizaciones> {
                   backgroundColor: Colors.black,
                   onRefresh: _pullListRefresh,
                   child: FutureBuilder<List>(
-                    initialData: foundedItems!,
-                    future: Future.value(foundedItems!),
+                    initialData: foundedItems,
+                    future: Future.value(foundedItems),
                     builder: (context, AsyncSnapshot snapshot) {
                       if (snapshot.hasError) print(snapshot.error);
-                      return snapshot.hasData
-                          ? GridView.builder(
-                              padding: const EdgeInsets.all(10.0),
-                              gridDelegate: GridViewTools.gridDelegate(
-                                  crossAxisCount: isMobile(context) ? 1 : 3,
-                                  mainAxisExtent:
-                                      isMobile(context) ? 200 : 250),
-                              controller: gestionScrollController,
-                              shrinkWrap: false,
-                              itemCount: snapshot.data == null
-                                  ? 0
-                                  : snapshot.data.length,
-                              itemBuilder: (context, posicion) {
-                                return itemListView(
-                                    snapshot, posicion, context);
-                              },
-                            )
-                          : Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const CircularProgressIndicator(),
-                                  const SizedBox(height: 50),
-                                  Text(
-                                    snapshot.hasError
-                                        ? snapshot.error.toString()
-                                        : snapshot.error.toString(),
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 10),
-                                  ),
-                                ],
-                              ),
-                            );
+
+                      if (!snapshot.hasData ||
+                          snapshot.data == null ||
+                          snapshot.data[0]['Error'] ==
+                              "No se encontraron datos") {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CircularProgressIndicator(),
+                              Text("Sin registros",
+                                  style: TextStyle(color: Colors.white)),
+                            ],
+                          ),
+                        );
+                      } else {
+                        return GridView.builder(
+                          padding: const EdgeInsets.all(10.0),
+                          gridDelegate: GridViewTools.gridDelegate(
+                            crossAxisCount: isMobile(context) ? 1 : 3,
+                            mainAxisExtent: isMobile(context) ? 200 : 250,
+                          ),
+                          controller: gestionScrollController,
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (context, posicion) {
+                            if ((snapshot.data as List).isEmpty) {
+                            } else {
+                              return itemListView(snapshot, posicion, context);
+                            }
+                          },
+                        );
+                      }
+
+
                     },
                   ),
                 ),

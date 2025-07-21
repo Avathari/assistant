@@ -139,6 +139,7 @@ class ReportsMethods {
       required TypeReportes getTypeReport,
       required int actualPage,
       required String? fechaRealizacion,
+      required int? idHospitalizacion,
       required List values,
       required List valuesEgreso}) async {
     Terminal.printWarning(
@@ -148,6 +149,8 @@ class ReportsMethods {
             ": : $getTypeReport . . . "
             // ". . . Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}"
             "\n\n");
+    Pacientes.ID_Hospitalizacion = idHospitalizacion!
+    ;
     //
     await ReportsMethods.imprimirDocumento(
       context: context,
@@ -159,8 +162,13 @@ class ReportsMethods {
             tittle: 'Petición de Registro de Análisis',
             message: "Desea registrar el análisis en la base de datos?\n\n"
                 "     Fecha de Realización : : $fechaRealizacion \n"
-                "          : ${fechaRealizacion! == Calendarios.today(format: "yyyy-MM-dd")}\n "
-                "     Tipo de Reporte . . $getTypeReport\n ",
+                "     ID de Hospitalización : : ${idHospitalizacion} : : ${Pacientes.ID_Hospitalizacion} \n"
+                "          Nota de hoy : ${fechaRealizacion! == Calendarios.today(format: "yyyy-MM-dd")}\n "
+                "     Tipo de Reporte . . $getTypeReport\n "
+                "_______________________________________\n"
+                "Datos: \n"
+                "${Reportes.impresionesDiagnosticas.toString()}"
+                "\n\n",
             textOptionB: "Cerrar . . . ",
             onClose: () => Navigator.of(context).pop(),
             textOptionA: "Registrar análisis en base de datos . . . ",

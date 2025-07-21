@@ -47,7 +47,7 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
       expoTextController.text = Reportes.reportes['Exploracion_Fisica'] != ""
           ? expoTextController.text = Reportes.reportes['Exploracion_Fisica']
           : expoTextController.text = Reportes.exploracionFisica;
-      // 
+      //
       vitalTextController.text = Reportes.signosVitales = Reportes
           .reportes['Signos_Vitales'] = Pacientes.signosVitales(indice: 6);
     });
@@ -156,9 +156,10 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                               : isMobile(context)
                                   ? 80
                                   : 20,
-                      onChange: ((value) => setState(() => Reportes
-                              .exploracionFisica =
-                          Reportes.reportes['Exploracion_Fisica'] = value)), //
+                      onChange: (value) => setState(() {
+                            Reportes.exploracionFisica = value;
+                            Reportes.reportes['Exploracion_Fisica'] = value;
+                          }),
                       inputFormat: MaskTextInputFormatter()),
                 ),
                 widget.isTerapia!
@@ -762,11 +763,18 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
   }
 
   void asignarExploracion({required int indice}) {
+    final nuevoTexto = Pacientes.exploracionFisica(indice: indice);
+
     setState(() {
-      expoTextController.text = Pacientes.exploracionFisica(indice: indice);
-      Reportes.reportes['Exploracion_Fisica'] = "${expoTextController.text}.";
-      Reportes.exploracionFisica = expoTextController.text;
+      expoTextController.text = nuevoTexto;
+
+      // También actualiza los valores en Reportes
+      Reportes.exploracionFisica = nuevoTexto;
+      Reportes.reportes['Exploracion_Fisica'] = nuevoTexto;
     });
+
+    // Guardado inmediato si se desea persistencia
+    _saveToFile(nuevoTexto);
   }
 }
 

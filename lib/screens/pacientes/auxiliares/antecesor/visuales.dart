@@ -90,7 +90,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
     super.initState();
   }
 
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
+  final GlobalKey<ScaffoldState> _keyVisual = GlobalKey();
   @override
   Widget build(BuildContext context) {
     /// ENFORCE DEVICE ORIENTATION PORTRAIT ONLY
@@ -100,7 +100,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
     }
 
     return Scaffold(
-      key: _key,
+      key: _keyVisual,
       resizeToAvoidBottomInset: true,
       drawer:
           isMobile(context) || isTablet(context) ? drawerHome(context) : null,
@@ -128,7 +128,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
           actions: <Widget>[
             GrandIcon(
                 iconData: Icons.menu_open_outlined,
-                onPress: () => _key.currentState!.openEndDrawer()),
+                onPress: () => _keyVisual.currentState!.openEndDrawer()),
             CrossLine(
               height: 15,
               thickness: 1,
@@ -150,14 +150,14 @@ class _VisualPacientesState extends State<VisualPacientes> {
                   backgroundColor: Theming.terciaryColor,
                   child:
                       const Icon(Icons.menu_open_outlined, color: Colors.grey),
-                  onPressed: () => _key.currentState!.openEndDrawer(),
+                  onPressed: () => _keyVisual.currentState!.openEndDrawer(),
                 ),
                 const SizedBox(height: 10),
                 FloatingActionButton(
                   heroTag: UniqueKey(),
                   backgroundColor: Theming.terciaryColor,
                   child: const Icon(Icons.list_alt_sharp, color: Colors.grey),
-                  onPressed: () => _key.currentState!.openDrawer(),
+                  onPressed: () => _keyVisual.currentState!.openDrawer(),
                 ),
                 const SizedBox(height: 10),
                 FloatingActionButton(
@@ -184,6 +184,8 @@ class _VisualPacientesState extends State<VisualPacientes> {
 
   @override
   void dispose() {
+    super.dispose();
+
     scrollController.dispose();
     scrollListController.dispose();
 
@@ -194,7 +196,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
-    super.dispose();
+    // cerrarCasoPaciente();
   }
 
   // ****************************************************
@@ -229,7 +231,8 @@ class _VisualPacientesState extends State<VisualPacientes> {
   //
   void toNextScreen({context, int? index, screen}) {
     if (isMobile(context) || isTablet(context)) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => screen));
     } else {
       setState(() {
         widget.actualPage = index!;
@@ -506,14 +509,13 @@ class _VisualPacientesState extends State<VisualPacientes> {
         title: const Text('Reportes y Notas Médicas',
             style: TextStyle(fontSize: Font.fontTileSize, color: Colors.grey)),
         onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ReportesMedicos()));
-          // Pacientes.loadingActivity(context: context).then((value) {
-          //   if (value == true) {
-          //     Navigator.push(context,
-          //         MaterialPageRoute(builder: (context) => ReportesMedicos()));
-          //   }
-          // });
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ReportesMedicos(),
+            ),
+          );
+          //
         },
       ),
       ListTile(
@@ -1032,65 +1034,67 @@ class _VisualPacientesState extends State<VisualPacientes> {
                 },
               ),
               IconButton(
-                  icon: const Icon(
-                    Icons.system_update_alt,
-                    color: Colors.white,
-                  ),
-                  tooltip: 'Cargando . . . ',
-                  onPressed: () {
-                    CargadoresPacientes.loadingActivity(context: context)
-                        .then((value) async {
-                      if (value == true) {
-                        Terminal.printAlert(
-                            message:
-                                'Archivo ${Pacientes.localPath} Re-Creado $value');
-
-                        try {
-                          final dataVitales = await Archivos.readJsonToMap(
-                                  filePath: Vitales.fileAssocieted)
-                              .onError((onError, stackTrace) {});
-                          final dataHosp = await Archivos.readJsonToMap(
-                                  filePath: Hospitalizaciones.fileAssocieted)
-                              .onError((onError, stackTrace) {});
-
-                          if (dataVitales != null && dataVitales.isNotEmpty) {
-                            Vitales.fromJson(dataVitales.last);
-                          }
-
-                          if (dataHosp != null && dataHosp.isNotEmpty) {
-                            Hospitalizaciones.fromJson(dataHosp.first);
-                          }
-
-                          setState(() {});
-                          if (context.mounted) {
-                            Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) => VisualPacientes(actualPage: 0)),
-                          );
-                          }
-                        } catch (e, stack) {
-                          Terminal.printAlert(
-                              message:
-                                  "❌ Error al leer archivos JSON: $e\n$stack");
-                          Operadores.alertActivity(
-                            message: "Error al leer archivos: $e",
-                            context: context,
-                            tittle: "Error al Inicializar Visual",
-                            onAcept: () => Navigator.of(context).pop(),
-                          );
-                        }
-                      }
-                    }).onError((error, stackTrace) {
+                icon: const Icon(
+                  Icons.system_update_alt,
+                  color: Colors.white,
+                ),
+                tooltip: 'Cargando . . . ',
+                onPressed: () {
+                  CargadoresPacientes.loadingActivity(context: context)
+                      .then((value) async {
+                    if (value == true) {
                       Terminal.printAlert(
                           message:
-                              "ERROR - toVisual : : $error : : Descripción : $stackTrace");
-                      Operadores.alertActivity(
-                        message: "ERROR - toVisual : : $error",
-                        context: context,
-                        tittle: 'Error al Inicial Visual',
-                        onAcept: () => Navigator.of(context).pop(),
-                      );
-                    });
-                  },
+                              'Archivo ${Pacientes.localPath} Re-Creado $value');
+
+                      try {
+                        final dataVitales = await Archivos.readJsonToMap(
+                                filePath: Vitales.fileAssocieted)
+                            .onError((onError, stackTrace) {});
+                        final dataHosp = await Archivos.readJsonToMap(
+                                filePath: Hospitalizaciones.fileAssocieted)
+                            .onError((onError, stackTrace) {});
+
+                        if (dataVitales != null && dataVitales.isNotEmpty) {
+                          Vitales.fromJson(dataVitales.last);
+                        }
+
+                        if (dataHosp != null && dataHosp.isNotEmpty) {
+                          Hospitalizaciones.fromJson(dataHosp.first);
+                        }
+
+                        setState(() {});
+                        if (context.mounted) {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    VisualPacientes(actualPage: 0)),
+                          );
+                        }
+                      } catch (e, stack) {
+                        Terminal.printAlert(
+                            message:
+                                "❌ Error al leer archivos JSON: $e\n$stack");
+                        Operadores.alertActivity(
+                          message: "Error al leer archivos: $e",
+                          context: context,
+                          tittle: "Error al Inicializar Visual",
+                          onAcept: () => Navigator.of(context).pop(),
+                        );
+                      }
+                    }
+                  }).onError((error, stackTrace) {
+                    Terminal.printAlert(
+                        message:
+                            "ERROR - toVisual : : $error : : Descripción : $stackTrace");
+                    Operadores.alertActivity(
+                      message: "ERROR - toVisual : : $error",
+                      context: context,
+                      tittle: 'Error al Inicial Visual',
+                      onAcept: () => Navigator.of(context).pop(),
+                    );
+                  });
+                },
               ),
             ],
           ),
@@ -1164,7 +1168,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                       difRadios: 15,
                       iconed: Icons.line_weight_sharp,
                       onChangeValue: () {
-                        _key.currentState!.closeEndDrawer();
+                        _keyVisual.currentState!.closeEndDrawer();
                         ScaffoldMessenger.of(context)
                             .showMaterialBanner(_presentacionPaciente(context));
                       }),
@@ -1183,7 +1187,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                           ),
                           tooltip: 'Mensajería',
                           onPressed: () {
-                            _key.currentState!.closeEndDrawer();
+                            _keyVisual.currentState!.closeEndDrawer();
                             showDialog(
                                 context: context,
                                 builder: (context) {
@@ -1201,7 +1205,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                             ),
                             tooltip: '',
                             onPressed: () {
-                              _key.currentState!.closeEndDrawer();
+                              _keyVisual.currentState!.closeEndDrawer();
                               showDialog(
                                   context: context,
                                   builder: ((context) {
@@ -1223,7 +1227,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                   difRadios: 5,
                   tittle: "Extractor de Paraclínicos . . . ",
                   onChangeValue: () {
-                    _key.currentState!.closeEndDrawer();
+                    _keyVisual.currentState!.closeEndDrawer();
                     AuxiliarExtractor(context);
                   },
                 ),
@@ -1237,7 +1241,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                   difRadios: 5,
                   tittle: "Dispositivos Empleados. . . ",
                   onChangeValue: () {
-                    _key.currentState!.closeEndDrawer();
+                    _keyVisual.currentState!.closeEndDrawer();
                     Cambios.toNextActivity(context,
                         backgroundColor: Theming.cuaternaryColor,
                         chyld:
@@ -1253,7 +1257,7 @@ class _VisualPacientesState extends State<VisualPacientes> {
                   difRadios: 3,
                   tittle: "Exploraciones y Analisis . . . ",
                   onChangeValue: () {
-                    _key.currentState!.closeEndDrawer();
+                    _keyVisual.currentState!.closeEndDrawer();
                     Cambios.toNextPage(context, Semiologicos());
                   },
                 ),

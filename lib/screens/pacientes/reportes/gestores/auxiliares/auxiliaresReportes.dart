@@ -161,7 +161,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                                 esAbreviado: false);
                                         Reportes.reportes[
                                             'Auxiliares_Diagnosticos'] = value;
-                                        Navigator.of(context).pop();
+                                        // Navigator.of(context).pop();
                                       });
                                     },
                                     onClose: (value) {
@@ -173,7 +173,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                         Reportes.reportes[
                                             'Auxiliares_Diagnosticos'] = value;
                                         //
-                                        Navigator.of(context).pop();
+                                        // Navigator.of(context).pop();
                                       });
                                     },
                                   );
@@ -292,7 +292,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                             Reportes.reportes[
                                                     'Auxiliares_Diagnosticos'] =
                                                 value;
-                                            Navigator.of(context).pop();
+                                            // Navigator.of(context).pop();
                                           });
                                         },
                                         onClose: (value) {
@@ -304,7 +304,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                             Reportes.reportes[
                                                     'Auxiliares_Diagnosticos'] =
                                                 value;
-                                            Navigator.of(context).pop();
+                                            // Navigator.of(context).pop();
                                           });
                                         },
                                       );
@@ -655,7 +655,7 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                                 Reportes.reportes[
                                                         'Auxiliares_Diagnosticos'] =
                                                     value;
-                                                Navigator.of(context).pop();
+                                                // Navigator.of(context).pop();
                                               });
                                             },
                                           );

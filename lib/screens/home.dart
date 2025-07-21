@@ -9,9 +9,12 @@ import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/embarazadas
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizados.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/insulinas.dart';
+import 'package:assistant/screens/pacientes/intensiva/procedimientos/hemodialisis.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
 import 'package:assistant/screens/pacientes/paraclinicos/auxiliares/extractorParaclinicos.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/otros/infusiones.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/terapias.dart';
 import 'package:assistant/screens/usuarios/usuarios.dart';
 import 'package:assistant/screens/vocablos/vocablos.dart';
 import 'package:assistant/values/SizingInfo.dart';
@@ -655,6 +658,15 @@ class PacientesPanel extends StatelessWidget {
                 //     context: context,
                 //     tittle: "Error",
                 //     message: "Interfaz en contrucción");
+              },
+            ),
+            HomeButton(
+              iconData: Icons.hourglass_empty,
+              labelButton: "Terapias",
+              onPress: () {
+                toNextScreen(
+                    context: context, screen:  Scaffold(body: TerapiasItems()));
+                    // context: context, screen:  InfusionesCriticas());
               },
             ),
             HomeButton(

@@ -149,8 +149,11 @@ class _OperacionesQuirurgicosState extends State<OperacionesQuirurgicos> {
               flex: 3,
               child: SingleChildScrollView(
                   controller: ScrollController(),
-                  child: Column(
-                    children: component(context),
+                  child: FocusTraversalGroup(
+                    policy: WidgetOrderTraversalPolicy(),
+                    child: Column(
+                      children: component(context),
+                    ),
                   )),
             ),
             const SizedBox(

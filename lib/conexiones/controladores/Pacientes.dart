@@ -7291,6 +7291,9 @@ class Auxiliares {
 
   static String abreviado(
       {required String tipoEstudio, required String estudio}) {
+
+    Terminal.printExpected(message: "$tipoEstudio . . $estudio");
+    //
     if (tipoEstudio != 'Examen General de Orina' &&
         tipoEstudio != 'Liquido Cefalorraquídeo' &&
         tipoEstudio != 'Líquido de Diálisis Peritoneal') {
@@ -10333,6 +10336,8 @@ class Reportes {
         Databases.siteground_database_reghosp,
         "SELECT * FROM pace_hosp_repo WHERE ID_Hosp = ?",
         Pacientes.ID_Hospitalizacion);
+    // Terminal.printExpected(message: "${response.toString()}");
+
     return response;
   }
 }

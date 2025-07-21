@@ -1,6 +1,7 @@
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/operativity/pacientes/valores/semiologia/semiotica.dart';
+import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/otros/infusiones.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
@@ -26,7 +27,8 @@ class _TerapiasItemsState extends State<TerapiasItems> {
   void reInit() {
     if (widget.esCorto!) {
       Reportes.exploracionFisica = Formatos.exploracionTerapiaCorta;
-      Reportes.reportes['Exploracion_Fisica'] = Formatos.exploracionTerapiaCorta;
+      Reportes.reportes['Exploracion_Fisica'] =
+          Formatos.exploracionTerapiaCorta;
     } else {
       Reportes.exploracionFisica = Formatos.exploracionTerapia;
       Reportes.reportes['Exploracion_Fisica'] = Formatos.exploracionTerapia;
@@ -107,7 +109,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                     : isTablet(context)
                                         ? 100
                                         : isMobile(context)
-                                    ? 65
+                                            ? 65
                                             : 300,
                                 tittle: 'R.A.S.S.',
                                 onChangeValue: (value) {
@@ -127,7 +129,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                     : isTablet(context)
                                         ? 100
                                         : isMobile(context)
-                                    ? 65
+                                            ? 65
                                             : 300,
                                 tittle: 'Ramsay',
                                 onChangeValue: (value) {
@@ -142,25 +144,30 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                             ),
                           ],
                         ),
-                        Spinner(
-                          width: isLargeDesktop(context) ?700
-                              :  isDesktop(context)
-                              ? 300
-                              : isTablet(context)
-                                  ? 250
-                                  : isMobile(context)
-                              ? 216
-                                      : 300,
-                          tittle: 'Sedo-analgesia',
-                          onChangeValue: (value) {
-                            setState(() {
-                              Exploracion.sedoanalgesia = value;
-                              reInit();
-                            });
-                          },
-                          items: Items.sedacion,
-                          initialValue: Exploracion.sedoanalgesia,
-                        ),
+                        CrossLine(thickness: 2.0, height: 20),
+                        // Spinner(
+                        //   width: isLargeDesktop(context)
+                        //       ? 700
+                        //       : isDesktop(context)
+                        //           ? 300
+                        //           : isTablet(context)
+                        //               ? 250
+                        //               : isMobile(context)
+                        //                   ? 216
+                        //                   : 300,
+                        //   tittle: 'Sedo-analgesia',
+                        //   onChangeValue: (value) {
+                        //     setState(() {
+                        //       Exploracion.sedoanalgesia = value;
+                        //       reInit();
+                        //     });
+                        //   },
+                        //   items: Items.sedacion,
+                        //   initialValue: Exploracion.sedoanalgesia,
+                        // ),
+                        // INFUSIONES
+                        InfusionesCriticas(),
+                        //
                         CrossLine(),
                         TittlePanel(textPanel: "Evaluación Neuromuscular"),
                         Row(
@@ -170,10 +177,10 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                 width: isDesktop(context)
                                     ? 200
                                     : isTablet(context)
-                                    ? 100
-                                    : isMobile(context)
-                                    ? 65
-                                    : 300,
+                                        ? 100
+                                        : isMobile(context)
+                                            ? 65
+                                            : 300,
                                 tittle: 'Asworth',
                                 onChangeValue: (value) {
                                   setState(() {
@@ -190,10 +197,10 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                 width: isDesktop(context)
                                     ? 200
                                     : isTablet(context)
-                                    ? 100
-                                    : isMobile(context)
-                                    ? 65
-                                    : 300,
+                                        ? 100
+                                        : isMobile(context)
+                                            ? 65
+                                            : 300,
                                 tittle: 'Daniels',
                                 onChangeValue: (value) {
                                   setState(() {
@@ -214,10 +221,10 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                 width: isDesktop(context)
                                     ? 200
                                     : isTablet(context)
-                                    ? 100
-                                    : isMobile(context)
-                                    ? 65
-                                    : 300,
+                                        ? 100
+                                        : isMobile(context)
+                                            ? 65
+                                            : 300,
                                 tittle: 'Siedel',
                                 onChangeValue: (value) {
                                   setState(() {
@@ -234,10 +241,10 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                 width: isDesktop(context)
                                     ? 200
                                     : isTablet(context)
-                                    ? 100
-                                    : isMobile(context)
-                                    ? 65
-                                    : 300,
+                                        ? 100
+                                        : isMobile(context)
+                                            ? 65
+                                            : 300,
                                 tittle: 'M.R.C.',
                                 onChangeValue: (value) {
                                   setState(() {
@@ -251,7 +258,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                             ),
                           ],
                         ),
-                         CrossLine(),
+                        CrossLine(),
                       ],
                     ),
                   ),
@@ -264,10 +271,10 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           width: isDesktop(context)
                               ? 200
                               : isTablet(context)
-                              ? 200
-                              : isMobile(context)
-                              ? 216
-                              : 300,
+                                  ? 200
+                                  : isMobile(context)
+                                      ? 216
+                                      : 300,
                           tittle: 'Fase ventilatoria',
                           onChangeValue: (value) {
                             setState(() {
@@ -303,10 +310,10 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                 width: isDesktop(context)
                                     ? 200
                                     : isTablet(context)
-                                    ? 200
-                                    : isMobile(context)
-                                    ? 216
-                                    : 300,
+                                        ? 200
+                                        : isMobile(context)
+                                            ? 216
+                                            : 300,
                                 tittle: 'Tubo Endotraqueal',
                                 onChangeValue: (value) {
                                   setState(() {
@@ -323,10 +330,10 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                 width: isDesktop(context)
                                     ? 200
                                     : isTablet(context)
-                                    ? 200
-                                    : isMobile(context)
-                                    ? 216
-                                    : 300,
+                                        ? 200
+                                        : isMobile(context)
+                                            ? 216
+                                            : 300,
                                 tittle: 'Distancia a arcada',
                                 onChangeValue: (value) {
                                   setState(() {
@@ -340,7 +347,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                             ),
                           ],
                         ),
-                         CrossLine(),
+                        CrossLine(),
                       ],
                     ),
                   ),
@@ -353,10 +360,10 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           width: isDesktop(context)
                               ? 200
                               : isTablet(context)
-                              ? 200
-                              : isMobile(context)
-                              ? 216
-                              : 300,
+                                  ? 200
+                                  : isMobile(context)
+                                      ? 216
+                                      : 300,
                           tittle: 'Riesgo por úlcera',
                           onChangeValue: (value) {
                             setState(() {
@@ -371,10 +378,10 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           width: isDesktop(context)
                               ? 200
                               : isTablet(context)
-                              ? 200
-                              : isMobile(context)
-                              ? 216
-                              : 300,
+                                  ? 200
+                                  : isMobile(context)
+                                      ? 216
+                                      : 300,
                           tittle: 'Riesgo por Inmovilidad',
                           onChangeValue: (value) {
                             setState(() {
@@ -389,10 +396,10 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           width: isDesktop(context)
                               ? 500
                               : isTablet(context)
-                              ? 500
-                              : isMobile(context)
-                              ? 216
-                              : 300,
+                                  ? 500
+                                  : isMobile(context)
+                                      ? 216
+                                      : 300,
                           tittle: 'Antibioticoterapia',
                           onChangeValue: (value) {
                             setState(() {
@@ -415,10 +422,10 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           width: isDesktop(context)
                               ? 500
                               : isTablet(context)
-                              ? 250
-                              : isMobile(context)
-                              ? 216
-                              : 300,
+                                  ? 250
+                                  : isMobile(context)
+                                      ? 216
+                                      : 300,
                           tittle: 'Apoyo Aminérgico',
                           onChangeValue: (value) {
                             setState(() {
@@ -433,38 +440,37 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                           padding: const EdgeInsets.all(8.0),
                           margin: const EdgeInsets.all(8.0),
                           decoration: ContainerDecoration.roundedDecoration(),
-                          child: Row(children: [
-                            Expanded(
-                              child: ValuePanel(
-                                heigth: 60,
-                                firstText: 'Noradrenalina',
-
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: ValuePanel(
+                                  heigth: 60,
+                                  firstText: 'Noradrenalina',
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: ValuePanel(
-                                heigth: 60,
-                                firstText: 'Midazolam',
-
+                              Expanded(
+                                child: ValuePanel(
+                                  heigth: 60,
+                                  firstText: 'Midazolam',
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: ValuePanel(
-                                heigth: 60,
-                                firstText: 'Buprenorfina',
-
+                              Expanded(
+                                child: ValuePanel(
+                                  heigth: 60,
+                                  firstText: 'Buprenorfina',
+                                ),
                               ),
-                            ),
-                          ],),
+                            ],
+                          ),
                         ),
                         Spinner(
                           width: isDesktop(context)
                               ? 500
                               : isTablet(context)
-                              ? 200
-                              : isMobile(context)
-                              ? 216
-                              : 300,
+                                  ? 200
+                                  : isMobile(context)
+                                      ? 216
+                                      : 300,
                           tittle: 'Dieta Establecida',
                           onChangeValue: (value) {
                             setState(() {
@@ -483,10 +489,10 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                 width: isDesktop(context)
                                     ? 170
                                     : isTablet(context)
-                                    ? 200
-                                    : isMobile(context)
-                                    ? 216
-                                    : 300,
+                                        ? 200
+                                        : isMobile(context)
+                                            ? 216
+                                            : 300,
                                 tittle: 'Sonda Oro/Nasogástrica',
                                 onChangeValue: (value) {
                                   setState(() {
@@ -504,10 +510,10 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                                 width: isDesktop(context)
                                     ? 110
                                     : isTablet(context)
-                                    ? 200
-                                    : isMobile(context)
-                                    ? 216
-                                    : 300,
+                                        ? 200
+                                        : isMobile(context)
+                                            ? 216
+                                            : 300,
                                 tittle: 'Sonda Foley',
                                 onChangeValue: (value) {
                                   setState(() {
@@ -521,7 +527,7 @@ class _TerapiasItemsState extends State<TerapiasItems> {
                             ),
                           ],
                         ),
-                         CrossLine(),
+                        CrossLine(),
                       ],
                     ),
                   ),
@@ -533,4 +539,6 @@ class _TerapiasItemsState extends State<TerapiasItems> {
       ],
     );
   }
+
+
 }

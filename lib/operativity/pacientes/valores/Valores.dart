@@ -2272,9 +2272,9 @@ class Valorados {
     int score = 0;
 
     // Edad (Hombres)
-    if (Valores.edad! >= 20 && Valores.edad! <= 34)
+    if (Valores.edad! >= 20 && Valores.edad! <= 34) {
       score += -9;
-    else if (Valores.edad! <= 39)
+    } else if (Valores.edad! <= 39)
       score += -4;
     else if (Valores.edad! <= 44)
       score += 0;
@@ -2295,9 +2295,9 @@ class Valorados {
 
     // Colesterol total (Hombres 40–49 años como ejemplo)
     if (Valores.edad! >= 40 && Valores.edad! <= 49) {
-      if (Valores.colesterolTotal! < 160)
+      if (Valores.colesterolTotal! < 160) {
         score += 0;
-      else if (Valores.colesterolTotal! <= 199)
+      } else if (Valores.colesterolTotal! <= 199)
         score += 1;
       else if (Valores.colesterolTotal! <= 239)
         score += 2;
@@ -2308,9 +2308,9 @@ class Valorados {
     }
 
     // HDL
-    if (Valores.cHDL! >= 60)
+    if (Valores.cHDL! >= 60) {
       score -= 1;
-    else if (Valores.cHDL! >= 50)
+    } else if (Valores.cHDL! >= 50)
       score += 0;
     else if (Valores.cHDL! >= 40)
       score += 1;
@@ -2319,9 +2319,9 @@ class Valorados {
 
     // Presión sistólica
     if (tratamientoHipertension) {
-      if (Valores.tensionArterialSystolica! < 120)
+      if (Valores.tensionArterialSystolica! < 120) {
         score += 0;
-      else if (Valores.tensionArterialSystolica! <= 129)
+      } else if (Valores.tensionArterialSystolica! <= 129)
         score += 1;
       else if (Valores.tensionArterialSystolica! <= 139)
         score += 2;
@@ -2330,9 +2330,9 @@ class Valorados {
       else
         score += 3;
     } else {
-      if (Valores.tensionArterialSystolica! < 120)
+      if (Valores.tensionArterialSystolica! < 120) {
         score += 0;
-      else if (Valores.tensionArterialSystolica! <= 129)
+      } else if (Valores.tensionArterialSystolica! <= 129)
         score += 0;
       else if (Valores.tensionArterialSystolica! <= 139)
         score += 1;
@@ -2971,7 +2971,8 @@ class Formatos {
   static String get exploracionTerapia => ""
       "Durante la Exploración Física, siendo evaluado por Aparatos y Sistemas, es encontrado: \n"
       "NEUROLOGICO: "
-      "En sedoanalgesia con ${Exploracion.sedoanalgesia} consiguiendo "
+      "En sedoanalgesia con ${Parenterales.generarProsaSedantes()} . . . ${Parenterales.generarProsaAnalgesicos()}  "
+      "consiguiendo "
       "R.A.S.S. ${Exploracion.rass} y "
       "Ramsay ${Exploracion.ramsay}, sin datos de focalización neurológica. \n"
       "VENTILATORIO: Apoyo ventilatorio con ${Exploracion.dispositivoEmpleado!.toLowerCase()}, "
@@ -2987,7 +2988,8 @@ class Formatos {
       "\n"
       "HEMODINAMICO: "
       "Con tensión arterial sistémica ${Valores.tensionArterialSistemica} mmHg, "
-      "(TAM ${Cardiometrias.presionArterialMedia.toStringAsFixed(0)} mmHg), ${Exploracion.apoyoAminergico!.toLowerCase()}; "
+      "(TAM ${Cardiometrias.presionArterialMedia.toStringAsFixed(0)} mmHg), "
+      "${Parenterales.generarProsaVasopresores()} . . ${Parenterales.generarProsaInotropicos()}; "
       "frecuencia cardiaca ${Valores.frecuenciaCardiaca!.toStringAsFixed(0)} L/min detectada por monitoreo cardiaco continuo, "
       "con telemetría a  ritmo sinusal; ruidos cardiacos rítmicos, "
       "adecuada frecuencia aumentados en intensidad, llenado capilar distal de 2 segundos, pulsos presentes de adecuada frecuencia e intensidad. \n"
@@ -3039,7 +3041,7 @@ class Formatos {
       "${Antropometrias.vitalesTerapiaAbreviado}\n"
       "Durante la Exploración Física, siendo evaluado por Aparatos y Sistemas, es encontrado: \n"
       "          "
-      "En sedoanalgesia con ${Exploracion.sedoanalgesia}, "
+      "En sedoanalgesia con ${Parenterales.generarProsaSedantes()} . . . ${Parenterales.generarProsaAnalgesicos()} , "
       "R.A.S.S. ${Exploracion.rass}, "
       // "Ramsay ${Valores.ramsay}, "
       "sin focalización neurológica. \n"
@@ -3066,7 +3068,7 @@ class Formatos {
       "          "
       // "T/A ${Valores.tensionArterialSistemica} mmHg, "
       "(TAM ${Cardiometrias.presionArterialMedia.toStringAsFixed(0)} mmHg), "
-      "${Exploracion.apoyoAminergico!.toLowerCase()}; "
+      "${Parenterales.generarProsaVasopresores()} . . ${Parenterales.generarProsaInotropicos()}; "
       // "FC ${Valores.frecuenciaCardiaca!.toStringAsFixed(0)} L/min, "
       "telemetría a  ritmo sinusal; precordio rítmico, "
       "llenado capilar 2 segundos, pulsos homócrotos presentes. \n"
@@ -3124,7 +3126,8 @@ class Formatos {
       // "\n"
       "     .     "
       "R.A.S.S. ${Exploracion.rass}, "
-      "En sedoanalgesia con ${Exploracion.sedoanalgesia}, "
+      // "En sedoanalgesia con ${Exploracion.sedoanalgesia}, ${Parenterales.generarProsaSedantes()} . . . ${Parenterales.generarProsaAnalgesicos()} . "
+      "En sedoanalgesia con ${Parenterales.generarProsaSedantes()} . . . ${Parenterales.generarProsaAnalgesicos()} . "
       "sin focalización neurológica con púpilas isóricas mióticas, arreflécticas; reflejos corneal presente, deglutorio, tusígeno abolidos . . . "
       "${Exploracion.tipoSondaAlimentacion}; ${Exploracion.alimentacion!.toLowerCase()}. "
       // "          "
@@ -3136,7 +3139,7 @@ class Formatos {
       //
       "Precordio ritmico, eudinámico, homócrotos; "
       "TAM ${Cardiometrias.presionArterialMedia.toStringAsFixed(0)} mmHg, "
-      "${Exploracion.apoyoAminergico!.toLowerCase()}; "
+      "${Parenterales.generarProsaVasopresores()} . . ${Parenterales.generarProsaInotropicos()}; "
       "telemetría a ritmo sinusal; llenado capilar 2 seg . . . "
       "Abdomen sin alteraciones, euperístole, depresible, blando, sin irritación peritoneal. "
       "Genitourinario ${Exploracion.tipoSondaVesical!.toLowerCase()}; "
@@ -3183,7 +3186,7 @@ class Formatos {
       "${Antropometrias.vitalesTerapiaAbreviado}\n"
       "Durante la Exploración Física, siendo evaluado por Aparatos y Sistemas, es encontrado: \n"
       "          "
-      "En sedoanalgesia con ${Exploracion.sedoanalgesia}, "
+      "En sedoanalgesia con ${Parenterales.generarProsaSedantes()} . . . ${Parenterales.generarProsaAnalgesicos()} , "
       "R.A.S.S. ${Exploracion.rass}, sin focalización neurológica. \n"
       "          "
       "Apoyo ventilatorio mediante ${Exploracion.tuboEndotraqueal} ${Exploracion.haciaArcadaDentaria!.toLowerCase()}. "
@@ -3192,7 +3195,7 @@ class Formatos {
       "\n"
       "          "
       "T/A ${Valores.tensionArterialSistemica} (${Cardiometrias.presionArterialMedia.toStringAsFixed(0)}) mmHg, "
-      "${Exploracion.apoyoAminergico!.toLowerCase()}; "
+      "${Parenterales.generarProsaVasopresores()} . . ${Parenterales.generarProsaInotropicos()}; "
       "FC ${Valores.frecuenciaCardiaca!.toStringAsFixed(0)} L/min, "
       "telemetría a  ritmo sinusal; precordio rítmico, "
       "llenado capilar 2 segundos, pulsos homócrotos presentes. \n"
@@ -4442,7 +4445,174 @@ class Items {
   ];
 }
 
+class InfusionCritica {
+  String farmaco;
+  String dosis;
+  String concentracionMg;
+  String volumenMl;
+  String velocidad;
+  double resultadoCalculado;
+
+  InfusionCritica({
+    this.farmaco = '',
+    this.dosis = '',
+    this.concentracionMg = '',
+    this.volumenMl = '',
+    this.velocidad = '',
+    this.resultadoCalculado = 0.0,
+  });
+
+  Map<String, dynamic> toJson() => {
+        'farmaco': farmaco,
+        'dosis': dosis,
+        'concentracionMg': concentracionMg,
+        'volumenMl': volumenMl,
+        'velocidad': velocidad,
+        'resultadoCalculado': resultadoCalculado,
+      };
+
+  factory InfusionCritica.fromJson(Map<String, dynamic> json) =>
+      InfusionCritica(
+        farmaco: json['farmaco'] ?? '',
+        dosis: json['dosis'] ?? '',
+        concentracionMg: json['concentracionMg'] ?? '',
+        volumenMl: json['volumenMl'] ?? '',
+        velocidad: json['velocidad'] ?? '',
+        resultadoCalculado:
+            (json['resultadoCalculado'] as num?)?.toDouble() ?? 0.0,
+      );
+}
+
 class Parenterales {
+  static Map<String, List<String>> categoriasFarmacos = {
+    'Sedantes': [
+      'Midazolam',
+      'Propofol',
+      'Dexmedetomidina',
+      'Ketamina',
+    ],
+    'Analgésicos': [
+      'Fentanilo',
+      'Remifentanilo',
+      'Buprenorfina',
+    ],
+    'Vasopresores': [
+      'Noradrenalina',
+      'Adrenalina',
+      'Vasopresina',
+    ],
+    'Inotrópicos': [
+      'Dopamina',
+      'Dobutamina',
+      'Milrinona',
+      'Levosimendán',
+    ],
+  };
+  static List<InfusionCritica> infusiones = []; //[InfusionCritica()];
+  //
+  static void agregarInfusion() {
+    Parenterales.infusiones.add(InfusionCritica());
+  }
+
+  static void eliminarInfusion(int index) {
+    Parenterales.infusiones.removeAt(index);
+  }
+
+  static double calcularMCGml(int index) {
+    // try {
+      final velocidad =
+          double.tryParse(Parenterales.infusiones[index].velocidad) ?? 0.0;
+      final concentracionMg =
+          double.tryParse(Parenterales.infusiones[index].concentracionMg) ??
+              0.0;
+      final volumenMl =
+          double.tryParse(Parenterales.infusiones[index].volumenMl) ?? 0.0;
+      if (concentracionMg == 0 ||
+          volumenMl == 0 ||
+          Valores.pesoCorporalTotal! == 0) {
+        return 0.0;
+      }
+
+      final mcgPorMl = (concentracionMg * 1000) / volumenMl; // mg -> mc
+      //
+      // Parenterales.infusiones[index]. =
+      //     double.parse(mcgPorMl.toStringAsFixed(2));
+
+      return double.parse(mcgPorMl.toStringAsFixed(2));
+    // } catch (_) {
+    //   Parenterales.infusiones[index].resultadoCalculado = 0.0;
+    // }
+  }
+
+  static double calcularMCGKGMin(int index) {
+    // try {
+    final velocidad =
+        double.tryParse(Parenterales.infusiones[index].velocidad) ?? 0.0;
+    final concentracionMg =
+        double.tryParse(Parenterales.infusiones[index].concentracionMg) ??
+            0.0;
+    final volumenMl =
+        double.tryParse(Parenterales.infusiones[index].volumenMl) ?? 0.0;
+    if (concentracionMg == 0 ||
+        volumenMl == 0 ||
+        Valores.pesoCorporalTotal! == 0) {
+      return 0.0;
+    }
+
+    final mcgPorMl = (concentracionMg * 1000) / volumenMl; // mg -> mcg
+    final resultado =
+        (velocidad * mcgPorMl) / Valores.pesoCorporalTotal! / 60;
+    //
+    Parenterales.infusiones[index].resultadoCalculado =
+        double.parse(resultado.toStringAsFixed(2));
+
+    return double.parse(resultado.toStringAsFixed(2));
+    // } catch (_) {
+    //   Parenterales.infusiones[index].resultadoCalculado = 0.0;
+    // }
+  }
+  //
+  static String generarProsaSedantes() => generarProsaPorCategoria('Sedantes');
+
+  static String generarProsaVasopresores() =>
+      generarProsaPorCategoria('Vasopresores');
+
+  static String generarProsaInotropicos() =>
+      generarProsaPorCategoria('Inotrópicos');
+
+  static String generarProsaAnalgesicos() =>
+      generarProsaPorCategoria('Analgésicos');
+
+  static String generarProsaPorCategoria(String categoria) {
+    final farmacosDeCategoria =
+        Parenterales.categoriasFarmacos[categoria] ?? [];
+
+    final listaFiltrada = Parenterales.infusiones
+        .where((i) => farmacosDeCategoria.contains(i.farmaco))
+        .toList();
+
+    if (listaFiltrada.isEmpty) return "";
+    // return 'No se encontraron Parenterales.infusiones de $categoria.\n';
+
+    return listaFiltrada
+        .asMap()
+        .entries
+        .map((e) => '${e.value.farmaco} '
+            '${e.value.resultadoCalculado.toStringAsFixed(2)} mcg/kg/min')
+        .join(', ');
+
+    // return '🔹 $categoria:\n${listaFiltrada.asMap().entries.map((e) => '${e.value.farmaco} '
+    //     '${e.value.resultadoCalculado.toStringAsFixed(2)} mcg/kg/min.').join('\n\n')}';
+
+    //     .map((e) =>
+    // '• Infusión ${e.key + 1}: Se administró ${e.value.farmaco}, '
+    //     'concentración de ${e.value.concentracionMg} mg en ${e.value.volumenMl} ml, '
+    //     'a una velocidad de ${e.value.velocidad} ml/h. '
+    //     'Equivalente a ${e.value.resultadoCalculado.toStringAsFixed(2)} mcg/kg/min.')
+    //     .join('\n\n')}\n';
+    //
+  }
+
   static List parenterales = [
     'Sol. Hartmann',
     'Sol. NaCl 0.9%',

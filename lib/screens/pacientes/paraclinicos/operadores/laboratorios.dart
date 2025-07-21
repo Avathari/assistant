@@ -281,7 +281,7 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                                 setState(() {
                                   textDateController.text = value;
                                   _runFilterSearch(value);
-                                  Navigator.of(context).pop();
+                                  // Navigator.of(context).pop();
                                 });
                               });
                         },
@@ -430,12 +430,11 @@ class _LaboratoriosGestionState extends State<LaboratoriosGestion> {
                                     setState(() {
                                       textDateController.text = value;
                                       _runFilterSearch(value);
-                                      Navigator.of(context).pop();
+                                      // Navigator.of(context).pop();
                                     });
                                   });
                             });
                             //
-
                           },
                           onChange: (value) {
                             setState(

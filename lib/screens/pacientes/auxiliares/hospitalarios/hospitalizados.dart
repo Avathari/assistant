@@ -503,7 +503,7 @@ class _HospitalizadosState extends State<Hospitalizados> {
   // VISTAS *******************************************************
   GestureDetector desktopView(AsyncSnapshot snapshot, int index) {
     Pacientes.ID_Hospitalizacion =
-        foundedItems![index].hospitalizedData['ID_Hosp'];
+        foundedItems![index].hospitalizedData['ID_Hosp'] ?? 0;
     //
     return GestureDetector(
       // onTap: () {
