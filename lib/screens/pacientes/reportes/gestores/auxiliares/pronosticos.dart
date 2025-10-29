@@ -50,6 +50,8 @@ class _DiagnosticosAndPronosticoState extends State<DiagnosticosAndPronostico> {
     Reportes.reportes['Pronostico_Medico']?.isNotEmpty == true
         ? Reportes.reportes['Pronostico_Medico']!
         : Pacientes.pronosticoMedico();
+
+    aceptar();
   }
 
   void aceptar() {

@@ -1046,9 +1046,9 @@ class _HospitalizadosState extends State<Hospitalizados> {
                     }),
                 if (!isTablet(context))
                   CircleIcon(
-                    tittle: 'Recargar Registro . . . ',
-                    iconed: Icons.recent_actors_rounded,
-                    onChangeValue: () => _refreshActualList(index),
+                    tittle: '¿Egreso Hospitalario? . . . ',
+                    iconed: Icons.holiday_village_sharp,
+                    onChangeValue: () => _actualizarHospitalizacion(index),
                   ),
                 GrandIcon(
                     iconData: Icons.hourglass_bottom,
@@ -1326,23 +1326,26 @@ class _HospitalizadosState extends State<Hospitalizados> {
                       Expanded(
                         flex: 1,
                         child: CircleIcon(
-                          tittle: 'Recargar laboratorios . . . ',
-                          iconed: Icons.receipt_long,
-                          difRadios: 7,
-                          onLongChangeValue: () => Datos.portapapeles(
-                              context: context,
-                              text:
-                                  "${Internado.getUltimo(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}"
-                                  "${Internado.getGasometrico(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}"
-                                  "${Internado.getEspeciales(listadoFrom: foundedItems![index].paraclinicos) != "" ? "RELAVANTES\n" : ""}"
-                                  "${Internado.getEspeciales(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}\n"
-                                  "${Auxiliares.getCoagulacion()}\n"
-                                  "${Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos) != "" ? "MICROBIOLOGICOS\n" : ""}"
-                                  "${Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos)}"),
+                            tittle: 'Recargar laboratorios . . . ',
+                            iconed: Icons.receipt_long,
+                            difRadios: 7,
+                            onLongChangeValue: () => Datos.portapapeles(
+                                context: context,
+                                text:
+                                    "${Internado.getUltimo(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}"
+                                    "${Internado.getGasometrico(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}"
+                                    "${Internado.getEspeciales(listadoFrom: foundedItems![index].paraclinicos) != "" ? "RELAVANTES\n" : ""}"
+                                    "${Internado.getEspeciales(listadoFrom: foundedItems![index].paraclinicos, esAbreviado: true)}\n"
+                                    "${Auxiliares.getCoagulacion()}\n"
+                                    "${Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos) != "" ? "MICROBIOLOGICOS\n" : ""}"
+                                    "${Internado.getCultivos(listadoFrom: foundedItems![index].paraclinicos)}"),
                             onChangeValue: () async {
-                              final statusNotifier = ValueNotifier<String>("Iniciando...");
-                              final subStatusNotifier = ValueNotifier<String>("Preparando módulo...");
-                              final progressNotifier = ValueNotifier<double>(0.0);
+                              final statusNotifier =
+                                  ValueNotifier<String>("Iniciando...");
+                              final subStatusNotifier =
+                                  ValueNotifier<String>("Preparando módulo...");
+                              final progressNotifier =
+                                  ValueNotifier<double>(0.0);
                               bool cancelado = false;
                               final paciente = snapshot.data![index];
 
@@ -1359,18 +1362,24 @@ class _HospitalizadosState extends State<Hospitalizados> {
                               );
 
                               try {
-                                statusNotifier.value = "Cargando historial de paraclínicos...";
-                                subStatusNotifier.value = "Solicitando información remota...";
+                                statusNotifier.value =
+                                    "Cargando historial de paraclínicos...";
+                                subStatusNotifier.value =
+                                    "Solicitando información remota...";
 
-                                final response = await paciente.getParaclinicosHistorial();
+                                final response =
+                                    await paciente.getParaclinicosHistorial();
 
                                 if (cancelado) return;
 
-                                statusNotifier.value = "Procesando datos obtenidos...";
-                                subStatusNotifier.value = "Almacenando en memoria y disco";
+                                statusNotifier.value =
+                                    "Procesando datos obtenidos...";
+                                subStatusNotifier.value =
+                                    "Almacenando en memoria y disco";
 
                                 // Guardar en memoria
-                                Pacientes.Paraclinicos = paciente.paraclinicos = response;
+                                Pacientes.Paraclinicos =
+                                    paciente.paraclinicos = response;
 
                                 // Guardar en archivo
                                 await Archivos.createJsonFromMap(
@@ -1380,8 +1389,10 @@ class _HospitalizadosState extends State<Hospitalizados> {
 
                                 progressNotifier.value = 1.0;
 
-                                await Future.delayed(const Duration(milliseconds: 300)); // Suavizar cierre
-                                if (context.mounted) Navigator.of(context).pop();
+                                await Future.delayed(const Duration(
+                                    milliseconds: 300)); // Suavizar cierre
+                                if (context.mounted)
+                                  Navigator.of(context).pop();
 
                                 setState(() {});
                               } catch (e, stack) {
@@ -1390,19 +1401,19 @@ class _HospitalizadosState extends State<Hospitalizados> {
                                   Operadores.alertActivity(
                                     context: context,
                                     tittle: "Error durante la carga",
-                                    message: "No se pudo obtener el historial de paraclínicos:\n$e",
+                                    message:
+                                        "No se pudo obtener el historial de paraclínicos:\n$e",
                                     onAcept: () => Navigator.of(context).pop(),
                                   );
                                 }
-                                Terminal.printAlert(message: "❌ Error: $e\n$stack");
+                                Terminal.printAlert(
+                                    message: "❌ Error: $e\n$stack");
                               } finally {
                                 statusNotifier.dispose();
                                 subStatusNotifier.dispose();
                                 progressNotifier.dispose();
                               }
-                            }
-
-                        ),
+                            }),
                       ),
                     ])),
                   ],
@@ -2359,5 +2370,89 @@ class _HospitalizadosState extends State<Hospitalizados> {
 
   var fileAssocieted = 'assets/vault/hospitalized.json';
   List<String> auxiliarServicios = [];
+
+  Future<void> _actualizarHospitalizacion(int index) async {
+    Operadores.optionsActivity(
+      context: context,
+      tittle: "¿Egresar al Paciente?",
+      message: "Actualizar estatus de paciente . . . ",
+      onClose: () => Navigator.of(context).pop(),
+      textOptionA: "No . . . ",
+      optionA: () => Navigator.of(context).pop(),
+      textOptionB: "Si. . . ",
+      optionB: () async {
+        Navigator.of(context).pop();
+        final motivoEgresoValue = await Operadores.selectOptionsActivity(
+          context: context,
+          tittle: "Paciente Egresado . . . ",
+          message: "Seleccione modo de atención",
+          options: Escalas.motivosEgresos,
+        );
+
+        if (motivoEgresoValue.isEmpty) return;
+
+        Pacientes.modoAtencion = motivoEgresoValue;
+        Terminal.printWarning(message: "Modo de atención: $motivoEgresoValue");
+
+        final _idHosp = foundedItems![index].hospitalizedData['ID_Hosp'];
+        await Actividades.actualizar(
+                Databases.siteground_database_reghosp,
+                "UPDATE pace_hosp "
+                "SET Dia_Estan = ?,  Feca_EGE_Hosp = ?,  EGE_Motivo = ? "
+                "WHERE ID_Hosp =  ?",
+                [
+                  Calendarios.differenceInDaysToNow(
+                      foundedItems![index].hospitalizedData['Feca_INI_Hosp']),
+                  foundedItems![index].hospitalizedData['Feca_INI_Hosp'],
+                  motivoEgresoValue,
+                  //
+                  _idHosp
+                ],
+                _idHosp)
+            .whenComplete(() {
+          Navigator.of(context).pop();
+          Operadores.notifyActivity(
+            context: context,
+            tittle: "Notificación !!",
+            message: "Se completo actualización",
+            onAcept: () async {
+              final estadoActual = await Operadores.selectOptionsActivity(
+                context: context,
+                tittle: "Estado actual del paciente . . . ",
+                message: "Seleccione el estado actual del paciente . . . ",
+                options: Pacientes.Atencion,
+              );
+
+              final _idPace = foundedItems![index].idPaciente;
+              await Actividades.actualizar(
+                      Databases.siteground_database_regpace,
+                      "UPDATE pace_iden_iden "
+                      "SET Pace_Hosp = ? "
+                      "WHERE ID_Pace = ?",
+                      [estadoActual, _idPace],
+                      _idPace)
+                  .whenComplete(
+                () => Operadores.notifyActivity(
+                  context: context,
+                  tittle: "Notificación !!",
+                  message: "Se completo actualización",
+                  onAcept: () => Navigator.of(context).pop(),
+                ),
+              );
+            },
+          );
+        }
+                // ).onError((onError, stackTrace){
+                //   Operadores.notifyActivity(
+                //     context: context,
+                //     tittle: "Error !!",
+                //     message: "$onError : $stackTrace",
+                //     onAcept: () => Navigator.of(context).pop(),
+                //   );
+                // }
+                );
+      },
+    );
+  }
   //
 }

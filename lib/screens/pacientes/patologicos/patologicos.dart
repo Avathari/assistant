@@ -507,7 +507,7 @@ class GestionPatologicos extends StatefulWidget {
   GestionPatologicos(
       {super.key,
       this.actualSidePage,
-      this.actualized = false,
+      this.actualized = true,
       this.withReturnOption = true});
 
   @override
@@ -696,7 +696,6 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
   }
 
   //
-
   void iniciar() {
     Terminal.printWarning(
         message:
@@ -732,7 +731,6 @@ class _GestionPatologicosState extends State<GestionPatologicos> {
       });
     });
   }
-
   //
   Container itemListView(
       AsyncSnapshot snapshot, int posicion, BuildContext context) {

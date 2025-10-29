@@ -10,6 +10,7 @@ import 'package:assistant/screens/pacientes/hospitalizacion/hospitalizacion.dart
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/situacionesHospitalizacion.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
+import 'package:assistant/screens/pacientes/intensiva/contenidos/ventilaciones.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/hitosHospitalarios.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/WidgetValues.dart';
@@ -56,62 +57,83 @@ class _HospitalizadoState extends State<Hospitalizado> {
       child: widget.isVertical == true ? _verticalView() : _generalView());
 
   _verticalView() {
-    return SingleChildScrollView(
-      controller: ScrollController(),
-      child: Column(
-        children: [
-          ValuePanel(
+    return Column(
+      children: [
+        Expanded(
+          child: ValuePanel(
             margin: 1,
             padding: 1,
             withBorder: false,
             firstText: 'Folio',
             secondText: Pacientes.ID_Hospitalizacion.toString(),
           ),
-          ValuePanel(
+        ),
+        Expanded(
+          child: ValuePanel(
             margin: 1,
             padding: 1,
             withBorder: false,
             firstText: 'NG.: ',
-            secondText: Valores.fechaIngresoHospitalario,
+            secondText: Valores.fechaIngresoHospitalario ?? "",
           ),
-          ValuePanel(
+        ),
+        Expanded(
+          child: ValuePanel(
             margin: 1,
             padding: 1,
             firstText: 'Cama',
-            secondText: Valores.numeroCama, // .toString(),
+            secondText: Valores.numeroCama ?? 'N/A', // .toString(),
           ),
-          ValuePanel(
+        ),
+        Expanded(
+          child: ValuePanel(
             margin: 1,
             padding: 1,
             firstText: 'D.E.H.',
             secondText: Valores.diasEstancia.toString(),
           ),
-          CrossLine(
-            height: 1,
-            color: Colors.grey,
-          ),
-          CircleIcon(
+        ),
+        CrossLine(
+          height: 1,
+          color: Colors.grey,
+        ),
+        Expanded(
+          flex: 2,
+          child: CircleIcon(
               iconed: Icons.receipt_outlined,
               radios: 30,
               difRadios: 5,
               onChangeValue: () => Repositorios.consultarAnalisis()),
-          CrossLine(
-            height: 1,
-            color: Colors.grey,
-            thickness: 2,
-          ),
-          CircleIcon(
+        ),
+        CrossLine(
+          height: 1,
+          color: Colors.grey,
+          thickness: 2,
+        ),
+        Expanded(
+          flex: 3,
+          child: CircleIcon(
               iconed: Icons.local_hospital_outlined,
               onChangeValue: () => Cambios.toNextActivity(context,
                   chyld: OperacionesHospitalizaciones(
                       operationActivity: Constantes.Update))),
-          const SizedBox(height: 25),
-          CircleIcon(
+        ),
+        // const SizedBox(height: 15),
+        // Expanded(
+        //   flex: 3,
+        //   child: CircleIcon(
+        //       iconed: Icons.airline_seat_flat,
+        //       onChangeValue: () => Cambios.toNextActivity(context,
+        //           chyld: GestionVentilaciones())),
+        // ),
+        const SizedBox(height: 15),
+        Expanded(
+          child: CircleIcon(
               iconed: Icons.balance,
               onChangeValue: () => Operadores.openDialog(
                   context: context, chyldrim: const Concentraciones())),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -125,9 +147,12 @@ class _HospitalizadoState extends State<Hospitalizado> {
               flex: isMobile(context) ? 6 : 6,
               child: SingleChildScrollView(
                 controller: ScrollController(),
-                child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.start,
-                  children: component(context),
+                child: FocusTraversalGroup(
+                  policy: WidgetOrderTraversalPolicy(), // orden natural
+                  child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                    children: component(context),
+                  ),
                 ),
               ),
             ),

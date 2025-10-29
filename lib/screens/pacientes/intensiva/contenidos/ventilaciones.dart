@@ -39,9 +39,10 @@ class OperacionesVentilaciones extends StatefulWidget {
 
   String _operationButton = 'Nulo';
   int actualView = 0;
+  bool? isReturn;
 
   OperacionesVentilaciones(
-      {super.key, this.operationActivity = Constantes.Nulo});
+      {super.key, this.operationActivity = Constantes.Nulo, this.isReturn = false});
 
   @override
   State<OperacionesVentilaciones> createState() =>
@@ -1190,6 +1191,7 @@ class _OperacionesVentilacionesState extends State<OperacionesVentilaciones> {
 
 class GestionVentilaciones extends StatefulWidget {
   Widget? actualSidePage = Container();
+
   // ****************** *** ****** **************
   var keySearch = "Pace_APP_ALE";
   // ****************** *** ****** **************
@@ -1201,6 +1203,9 @@ class GestionVentilaciones extends StatefulWidget {
 }
 
 class _GestionVentilacionesState extends State<GestionVentilaciones> {
+
+
+
   @override
   void initState() {
     if (Constantes.dummyArray!.isNotEmpty) {

@@ -51,6 +51,8 @@ class AuxiliarVitales extends StatefulWidget {
 class _AuxiliarVitalesState extends State<AuxiliarVitales> {
   @override
   void initState() {
+    super.initState();
+
     // TODO: implement initState
     textDateEstudyController.text =
         Calendarios.today(format: 'yyyy-MM-dd HH:mm:ss');
@@ -71,8 +73,8 @@ class _AuxiliarVitalesState extends State<AuxiliarVitales> {
     //
     fraccionInspiratoriaOxigenoTextController.text = 21.toString();
     //
-    super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Wrap(
@@ -189,12 +191,17 @@ class _AuxiliarVitalesState extends State<AuxiliarVitales> {
                   labelEditText: 'Peso corporal total',
                   textController: pctTextController,
                   onChange: (String value) {
-                    Valores.pesoCorporalTotal =
-                        double.parse(pctTextController.text);
-                    // viaPerdidaTextController.text =
-                    //     Valores.perdidasInsensibles.toStringAsFixed(0);
-                    // viaOtrosIngresosTextController.text =
-                    //     Valores.aguaMetabolica.toStringAsFixed(0);
+                    final parsedValue = double.tryParse(pctTextController.text);
+                    if (parsedValue != null) {
+                      Valores.pesoCorporalTotal = parsedValue;
+                      // Opcional: actualizar otros campos si lo necesitas
+                      // viaPerdidaTextController.text =
+                      //     Valores.perdidasInsensibles.toStringAsFixed(0);
+                      // viaOtrosIngresosTextController.text =
+                          Valores.aguaMetabolica.toStringAsFixed(0);
+                    } else {
+                      Valores.pesoCorporalTotal = 0.0;
+                    }
                   }),
             ),
             Expanded(
@@ -248,8 +255,7 @@ class _AuxiliarVitalesState extends State<AuxiliarVitales> {
                     filter: {"#": RegExp(r'[0-9]')},
                     type: MaskAutoCompletionType.lazy),
                 numOfLines: 1,
-                labelEditText:
-                'Insulina Gastada (UI/Día)',
+                labelEditText: 'Insulina Gastada (UI/Día)',
                 textController: insulinaTextController,
                 onChange: (value) => Valores.insulinaGastada = int.parse(value),
               ),
@@ -400,8 +406,8 @@ class _AuxiliarVitalesState extends State<AuxiliarVitales> {
         pctTextController.text,
         gluTextController.text,
         gluAyuTextController.text,
-    //
-    insulinaTextController.text,
+        //
+        insulinaTextController.text,
         //
         fraccionInspiratoriaOxigenoTextController.text,
         presionVenosaCentralTextController.text,
@@ -452,8 +458,6 @@ class _AuxiliarVitalesState extends State<AuxiliarVitales> {
         Actividades.registrar(Databases.siteground_database_regpace,
                 registerQueryantropo!, listOfSecondValues!)
             .then((value) {
-
-
           // Actividades.registrar(Databases.siteground_database_reghosp,
           //         Balances.balance['registerQuery'], listOfValues!)
           //     .then((value) => Actividades.consultarAllById(
@@ -483,7 +487,8 @@ class _AuxiliarVitalesState extends State<AuxiliarVitales> {
       Operadores.alertActivity(
           context: context,
           tittle: 'ERROR Encontrado . . . ',
-          message: 'Error al Operar con los Valores :  : $onError : $stackTrace',
+          message:
+              'Error al Operar con los Valores :  : $onError : $stackTrace',
           onAcept: () {
             Navigator.of(context).pop();
           });

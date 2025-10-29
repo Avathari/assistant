@@ -1,5 +1,7 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
+import 'package:assistant/screens/pacientes/patologicos/patologicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/analisisMedico.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/exploracionFisica.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/hitosHospitalarios.dart';
@@ -174,15 +176,22 @@ class _ReporteEgresoState extends State<ReporteEgreso> {
                           textController: patoloTextController,
                           labelEditText: "Antecedentes personales patológicos",
                           keyBoardType: TextInputType.multiline,
-                          numOfLines: 10,
+                          selection: true,
+                          withShowOption: true,
+                          iconData: Icons.medical_information_outlined,
+                          optionEqui: 1,
+                          onSelected: () =>
+                              Cambios.toNextPage(context, GestionPatologicos(withReturnOption: false)),
+                          numOfLines: 15,
+                          readOnly: true,
                           inputFormat: MaskTextInputFormatter()),
-                      // EditTextArea(
-                      //     textController: relevantesTextController,
-                      //     labelEditText: "Relevantes . . . ",
-                      //     keyBoardType: TextInputType.multiline,
-                      //     numOfLines: 5,
-                      //     withShowOption: true,
-                      //     inputFormat: MaskTextInputFormatter()),
+                      EditTextArea(
+                          textController: relevantesTextController,
+                          labelEditText: "Relevantes . . . ",
+                          keyBoardType: TextInputType.multiline,
+                          numOfLines: 5,
+                          withShowOption: true,
+                          inputFormat: MaskTextInputFormatter()),
                       EditTextArea(
                           textController: padesTextController,
                           labelEditText: "Padecimiento Actual",

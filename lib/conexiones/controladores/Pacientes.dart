@@ -229,6 +229,8 @@ class Pacientes {
   }
 
   static fromJson(Map<String, dynamic> json) {
+    // Terminal.printExpected(message: json.toString());
+    //
     numeroPaciente = json['Pace_NSS'];
     agregadoPaciente = json['Pace_AGRE'];
 
@@ -248,6 +250,20 @@ class Pacientes {
     datosIniciales = "${nombreCompleto!.toUpperCase()}\n"
         "${json['Pace_NSS']} ${json['Pace_AGRE']}";
 
+    //
+    Paciente = json;
+    // "Pace_Nome_PI, Pace_Nome_SE, Pace_Ape_Pat, Pace_Ape_Mat, "
+    //     "Pace_Hemo, " // Pace_FIAT, "
+    //     "Pace_UMF, Pace_Hosp_Real, Pace_Turo, "
+    //     "Pace_Feca_Hace, Pace_Hora_Hace, "
+    //     "Pace_Tele, Pace_Nace, Pace_Ses, Pace_Hosp, "
+    //     "Pace_Curp, Pace_RFC, Pace_Eda, Pace_Stat, "
+    //     "Pace_Ocupa, Pace_Edo_Civ, Pace_Reli, "
+    //     "Pace_Esco, Pace_Esco_COM, Pace_Esco_ESPE, "
+    //     "Pace_Orig_Muni, Pace_Orig_EntFed, "
+    //     "Pace_Resi_Loca, Pace_Resi_Dur, Pace_Domi, Indi_Pace_SiNo, "
+    //     "IndiIdio_Pace_SiNo, IndiIdio_Pace_Espe "
+    //
     localPath = 'assets/vault/'
         '$nombreCompleto/'
         '$nombreCompleto.json';
@@ -314,7 +330,14 @@ class Pacientes {
     if (isTerapia == true) {
       // ************* *********** ************* ************ ********* ********
       if (otherForm) {
-        return "${Pacientes.Paciente['Pace_Ses']} de ${Pacientes.Paciente['Pace_Eda']} años, "
+        String genero = "";
+        if (Pacientes.Paciente['Pace_Ses'] == "Masculino"){
+          genero = "Hombre";
+        } else if (Pacientes.Paciente['Pace_Ses'] == "Femenino"){
+          genero = "Mujer";
+        }
+        //
+        return "${genero}, ${Pacientes.Paciente['Pace_Eda']} años, "
             "DEH ${Valores.diasEstancia} día(s). \n";
       } else {
         return "${Pacientes.Paciente['Pace_Ses']} de ${Pacientes.Paciente['Pace_Eda']} años, "
@@ -1220,7 +1243,9 @@ class Pacientes {
         "Pace_Ocupa, Pace_Edo_Civ, Pace_Reli, Pace_Esco, Pace_Esco_COM, Pace_Esco_ESPE, "
         "Pace_Orig_Muni, Pace_Orig_EntFed, Pace_Resi_Loca, Pace_Resi_Dur, "
         "Pace_Domi, Indi_Pace_SiNo, "
-        "IndiIdio_Pace_SiNo, IndiIdio_Pace_Espe FROM pace_iden_iden WHERE ID_Pace = ?",
+        "IndiIdio_Pace_SiNo, IndiIdio_Pace_Espe "
+        "FROM pace_iden_iden "
+        "WHERE ID_Pace = ?",
     "consultHospitalized": "SELECT "
         "ID_Pace, Pace_NSS, Pace_AGRE, "
         "Pace_Nome_PI, Pace_Nome_SE, Pace_Ape_Pat, Pace_Ape_Mat, "
@@ -1501,6 +1526,32 @@ class Pacientes {
               .asUint8List());
 
       if (value != null) {
+        Pacientes.imagenPaciente = value['Pace_FIAT'] ?? img;
+        Valores.imagenUsuario = value['Pace_FIAT'] ?? img;
+      }
+    });
+  }
+
+  /// Hace un Consultar ID para los Datos generales relacionados al Paciente.
+  /// Incluye getImage() . . .
+  static getPaciente() async {
+    Terminal.printAlert(
+        message: " : : Consultando Pacientes.getPaciente() . . : : ${Pacientes.ID_Paciente}");
+    //
+    await Actividades.consultarId(Databases.siteground_database_regpace,
+        pacientes['consultIdQuery'], Pacientes.ID_Paciente)
+        .then((value) async {
+
+      print("getPaciente $value");
+
+      final img = base64.encode(
+          (await rootBundle.load('assets/images/person.png'))
+              .buffer
+              .asUint8List());
+
+      if (value != null && value['Error'] != "Respuesta vacía del servidor") {
+        fromJson(value);
+
         Pacientes.imagenPaciente = value['Pace_FIAT'] ?? img;
         Valores.imagenUsuario = value['Pace_FIAT'] ?? img;
       }
@@ -5575,7 +5626,9 @@ class Vitales {
       );
 
       if (vitalesData.isEmpty ||
-          vitalesData[0]['Error'] == "No se encontraron datos") return;
+          vitalesData[0]['Error'] == "No se encontraron datos") {
+        return;
+      }
 
       final antropoData = await Actividades.consultarAllById(
         Databases.siteground_database_regpace,
@@ -6636,133 +6689,207 @@ class Auxiliares {
     return "$prosa${Sentences.capitalize(max)}. ";
   }
 
-  static String getUltimo(
-      {bool esAbreviado = false, bool withoutInsighs = false}) {
+  static String getUltimo({
+    bool esAbreviado = false,
+    bool withoutInsighs = false,
+  }) {
     String prosa = "";
 
-    var fechar = Listas.listWithoutRepitedValues(
+    final fechar = Listas.listWithoutRepitedValues(
       Listas.listFromMapWithOneKey(
-        // Pacientes.Paraclinicos!,
-        Listas.filterAndFindRecent(
-            Pacientes.Paraclinicos!, Auxiliares.especiales),
+        Listas.filterAndFindRecent(Pacientes.Paraclinicos!, Auxiliares.especiales),
         keySearched: 'Fecha_Registro',
       ),
-    );
+    ).where((e) => e != null && e.toString().isNotEmpty).toList();
 
-    if (fechar.isNotEmpty) {
-      if (fechar.first.isNotEmpty) {
+    // Lanzar excepción si no hay fechas válidas
+    if (fechar.isEmpty) {
+      throw Exception("No hay registros recientes de paraclínicos.");
+    }
+
+    final fechaReciente = fechar.first.toString();
+
+    final estudiosDelDia = Pacientes.Paraclinicos!
+        .where((e) => e["Fecha_Registro"].toString().contains(fechaReciente))
+        .toList();
+
+    const estudiosIgnorados = [
+      "Examen General de Orina",
+      "Depuración de Orina de 24 Horas",
+      "Líquido de Diálisis Peritoneal",
+      "Gasometría Arterial",
+      "Gasometría Venosa",
+      "Reactantes de Fase Aguda",
+      "Cultivos",
+      "Panel Viral",
+      "Citoquímico de Líquido Cefalorraquídeo",
+      "Citológico de Líquido Cefalorraquídeo",
+    ];
+
+    String fecha = "          Paraclínicos ($fechaReciente)";
+    List<String> resultados = [];
+
+    for (var e in estudiosDelDia) {
+      if (!estudiosIgnorados.contains(e['Tipo_Estudio'])) {
+        final estudio = e['Estudio'];
+        final resultado = e['Resultado'] ?? "";
+        final unidad = e['Unidad_Medida'] ?? "";
+
         if (esAbreviado) {
-          List<dynamic>? alam = Pacientes.Paraclinicos!;
-          //
-          var aux = alam
-              .where((user) => user["Fecha_Registro"].contains(fechar.first))
-              .toList();
-          String fecha = "          Paraclínicos (${fechar.first})", max = "";
-
-          for (var element in aux) {
-            // ***************************** *****************
-            if (element['Tipo_Estudio'] != "Examen General de Orina" &&
-                element['Tipo_Estudio'] != "Depuración de Orina de 24 Horas" &&
-                element['Tipo_Estudio'] != "Líquido de Diálisis Peritoneal" &&
-                element['Tipo_Estudio'] != "Gasometría Arterial" &&
-                element['Tipo_Estudio'] != "Gasometría Venosa" &&
-                element['Tipo_Estudio'] != "Reactantes de Fase Aguda" &&
-                element['Tipo_Estudio'] != "Cultivos" &&
-                element['Tipo_Estudio'] != "Panel Viral" &&
-                element['Tipo_Estudio'] !=
-                    "Citoquímico de Líquido Cefalorraquídeo" &&
-                element['Tipo_Estudio'] !=
-                    "Citológico de Líquido Cefalorraquídeo") {
-              if (max == "") {
-                max =
-                    "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
-              } else {
-                max =
-                    "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
-              }
-            }
-          }
-          // COMPROBACIÓN
-          if (max != "") {
-            prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
-          }
+          final abreviado = Auxiliares.abreviado(
+            estudio: estudio,
+            tipoEstudio: e['Tipo_Estudio'],
+          );
+          resultados.add("$abreviado $resultado $unidad".trim());
         } else if (withoutInsighs) {
-          List<dynamic>? alam = Pacientes.Paraclinicos!;
-          var aux = alam
-              .where((user) => user["Fecha_Registro"].contains(fechar.first))
-              .toList();
-          String fecha = "          Paraclínicos (${fechar.first})", max = "";
-
-          for (var element in aux) {
-            // ***************************** *****************
-            if (element['Tipo_Estudio'] != "Examen General de Orina" &&
-                element['Tipo_Estudio'] != "Depuración de Orina de 24 Horas" &&
-                element['Tipo_Estudio'] != "Líquido de Diálisis Peritoneal" &&
-                element['Tipo_Estudio'] != "Gasometría Arterial" &&
-                element['Tipo_Estudio'] != "Gasometría Venosa" &&
-                element['Tipo_Estudio'] != "Reactantes de Fase Aguda" &&
-                element['Tipo_Estudio'] != "Cultivos" &&
-                element['Tipo_Estudio'] !=
-                    "Citoquímico de Líquido Cefalorraquídeo" &&
-                element['Tipo_Estudio'] !=
-                    "Citológico de Líquido Cefalorraquídeo") {
-              if (max == "") {
-                max =
-                    "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
-              } else {
-                max =
-                    "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
-              }
-            }
-          }
-          // COMPROBACIÓN
-          if (max != "") {
-            prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
-          }
+          final abreviado = Auxiliares.abreviado(
+            estudio: estudio,
+            tipoEstudio: e['Tipo_Estudio'],
+          );
+          resultados.add("$abreviado $resultado".trim());
         } else {
-          List<dynamic>? alam = Pacientes.Paraclinicos!;
-          var aux = alam
-              .where((user) => user["Fecha_Registro"].contains(fechar.first))
-              .toList();
-          String fecha = "          Paraclínicos (${fechar.first})", max = "";
-
-          for (var element in aux) {
-            // ***************************** *****************
-            if (element['Tipo_Estudio'] != "Examen General de Orina" &&
-                element['Tipo_Estudio'] != "Depuración de Orina de 24 Horas" &&
-                element['Tipo_Estudio'] != "Líquido de Diálisis Peritoneal" &&
-                element['Tipo_Estudio'] != "Gasometría Arterial" &&
-                element['Tipo_Estudio'] != "Gasometría Venosa" &&
-                element['Tipo_Estudio'] != "Reactantes de Fase Aguda" &&
-                element['Tipo_Estudio'] != "Cultivos" &&
-                element['Tipo_Estudio'] !=
-                    "Citoquímico de Líquido Cefalorraquídeo" &&
-                element['Tipo_Estudio'] !=
-                    "Citológico de Líquido Cefalorraquídeo") {
-              if (max == "") {
-                max =
-                    "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
-              } else {
-                max =
-                    "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
-              }
-            }
-          }
-          // COMPROBACIÓN
-          if (max != "") {
-            prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
-          }
+          resultados.add("${estudio.toString().toLowerCase()} $resultado $unidad".trim());
         }
       }
     }
-    // ************** ***************** ***************
+
+    if (resultados.isNotEmpty) {
+      final resultadosUnidos = resultados.join(", ");
+      prosa = "$fecha: ${Sentences.capitalize(resultadosUnidos)}\n";
+    } else {
+      throw Exception("No se encontraron resultados relevantes en la última fecha registrada.");
+    }
+
     return prosa;
   }
 
+  // static String getUltimo(
+  //     {bool esAbreviado = false, bool withoutInsighs = false}) {
+  //   String prosa = "";
+  //
+  //   var fechar = Listas.listWithoutRepitedValues(
+  //     Listas.listFromMapWithOneKey(
+  //       // Pacientes.Paraclinicos!,
+  //       Listas.filterAndFindRecent(
+  //           Pacientes.Paraclinicos!, Auxiliares.especiales),
+  //       keySearched: 'Fecha_Registro',
+  //     ),
+  //   );
+  //
+  //   if (fechar.isNotEmpty) {
+  //     if (fechar.first.isNotEmpty) {
+  //       if (esAbreviado) {
+  //         List<dynamic>? alam = Pacientes.Paraclinicos!;
+  //         //
+  //         var aux = alam
+  //             .where((user) => user["Fecha_Registro"].contains(fechar.first))
+  //             .toList();
+  //         String fecha = "          Paraclínicos (${fechar.first})", max = "";
+  //
+  //         for (var element in aux) {
+  //           // ***************************** *****************
+  //           if (element['Tipo_Estudio'] != "Examen General de Orina" &&
+  //               element['Tipo_Estudio'] != "Depuración de Orina de 24 Horas" &&
+  //               element['Tipo_Estudio'] != "Líquido de Diálisis Peritoneal" &&
+  //               element['Tipo_Estudio'] != "Gasometría Arterial" &&
+  //               element['Tipo_Estudio'] != "Gasometría Venosa" &&
+  //               element['Tipo_Estudio'] != "Reactantes de Fase Aguda" &&
+  //               element['Tipo_Estudio'] != "Cultivos" &&
+  //               element['Tipo_Estudio'] != "Panel Viral" &&
+  //               element['Tipo_Estudio'] !=
+  //                   "Citoquímico de Líquido Cefalorraquídeo" &&
+  //               element['Tipo_Estudio'] !=
+  //                   "Citológico de Líquido Cefalorraquídeo") {
+  //             if (max == "") {
+  //               max =
+  //                   "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+  //             } else {
+  //               max =
+  //                   "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+  //             }
+  //           }
+  //         }
+  //         // COMPROBACIÓN
+  //         if (max != "") {
+  //           prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+  //         }
+  //       } else if (withoutInsighs) {
+  //         List<dynamic>? alam = Pacientes.Paraclinicos!;
+  //         var aux = alam
+  //             .where((user) => user["Fecha_Registro"].contains(fechar.first))
+  //             .toList();
+  //         String fecha = "          Paraclínicos (${fechar.first})", max = "";
+  //
+  //         for (var element in aux) {
+  //           // ***************************** *****************
+  //           if (element['Tipo_Estudio'] != "Examen General de Orina" &&
+  //               element['Tipo_Estudio'] != "Depuración de Orina de 24 Horas" &&
+  //               element['Tipo_Estudio'] != "Líquido de Diálisis Peritoneal" &&
+  //               element['Tipo_Estudio'] != "Gasometría Arterial" &&
+  //               element['Tipo_Estudio'] != "Gasometría Venosa" &&
+  //               element['Tipo_Estudio'] != "Reactantes de Fase Aguda" &&
+  //               element['Tipo_Estudio'] != "Cultivos" &&
+  //               element['Tipo_Estudio'] !=
+  //                   "Citoquímico de Líquido Cefalorraquídeo" &&
+  //               element['Tipo_Estudio'] !=
+  //                   "Citológico de Líquido Cefalorraquídeo") {
+  //             if (max == "") {
+  //               max =
+  //                   "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+  //             } else {
+  //               max =
+  //                   "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+  //             }
+  //           }
+  //         }
+  //         // COMPROBACIÓN
+  //         if (max != "") {
+  //           prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+  //         }
+  //       } else {
+  //         List<dynamic>? alam = Pacientes.Paraclinicos!;
+  //         var aux = alam
+  //             .where((user) => user["Fecha_Registro"].contains(fechar.first))
+  //             .toList();
+  //         String fecha = "          Paraclínicos (${fechar.first})", max = "";
+  //
+  //         for (var element in aux) {
+  //           // ***************************** *****************
+  //           if (element['Tipo_Estudio'] != "Examen General de Orina" &&
+  //               element['Tipo_Estudio'] != "Depuración de Orina de 24 Horas" &&
+  //               element['Tipo_Estudio'] != "Líquido de Diálisis Peritoneal" &&
+  //               element['Tipo_Estudio'] != "Gasometría Arterial" &&
+  //               element['Tipo_Estudio'] != "Gasometría Venosa" &&
+  //               element['Tipo_Estudio'] != "Reactantes de Fase Aguda" &&
+  //               element['Tipo_Estudio'] != "Cultivos" &&
+  //               element['Tipo_Estudio'] !=
+  //                   "Citoquímico de Líquido Cefalorraquídeo" &&
+  //               element['Tipo_Estudio'] !=
+  //                   "Citológico de Líquido Cefalorraquídeo") {
+  //             if (max == "") {
+  //               max =
+  //                   "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+  //             } else {
+  //               max =
+  //                   "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+  //             }
+  //           }
+  //         }
+  //         // COMPROBACIÓN
+  //         if (max != "") {
+  //           prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+  //         }
+  //       }
+  //     }
+  //   }
+  //   // ************** ***************** ***************
+  //   return prosa;
+  // }
+
   static String historial(
       {bool esAbreviado = false,
-      bool withoutInsighs = false,
-      bool? withEspeciales = false}) {
+        bool withoutInsighs = false,
+        bool? withEspeciales = false}) {
     String prosa = "";
 
     try {
@@ -6791,20 +6918,20 @@ class Auxiliares {
               if (max == "") {
                 if (element['Tipo_Estudio'] == Auxiliares.Categorias[13]) {
                   max =
-                      "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                  "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
                 } else {
                   max =
-                      "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                  "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
                 }
               } else {
                 max =
-                    "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
+                "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']} ${element['Unidad_Medida']}";
               }
             }
           }
           //
           if (max != "") {
-            if (max.startsWith("pH")) {
+            if (max.startsWith("pH") || max.startsWith("PH")) {
               prosa = "$prosa$fecha: $max\n";
             } else {
               prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
@@ -6831,14 +6958,14 @@ class Auxiliares {
               if (max == "") {
                 if (element['Tipo_Estudio'] == Auxiliares.Categorias[13]) {
                   max =
-                      "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+                  "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
                 } else {
                   max =
-                      "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+                  "${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
                 }
               } else {
                 max =
-                    "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
+                "$max, ${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} ${element['Resultado']}";
               }
             } else {
               max = "";
@@ -6865,14 +6992,14 @@ class Auxiliares {
           for (var element in aux) {
             if (max == "") {
               max =
-                  "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+              "${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
             } else {
               max =
-                  "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
+              "$max, ${element['Estudio'].toLowerCase()} ${element['Resultado']} ${element['Unidad_Medida']}";
             }
           }
 
-          if (max.startsWith("pH")) {
+          if (max.startsWith("pH") || max.startsWith("PH")) {
             prosa = "$prosa$fecha: $max\n";
           } else {
             prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
@@ -6882,8 +7009,9 @@ class Auxiliares {
       // ************** ***************** ***************
       // Terminal.printExpected(message: "prosa $prosa");
 
-      if (withEspeciales == true)
-        prosa = "$prosa\n${Auxiliares.getEspeciales()}";
+      if (withEspeciales == true) {
+        prosa = "$prosa${Auxiliares.getEspeciales()}";
+      }
       //
       return prosa;
     } on Exception catch (e) {
@@ -7042,21 +7170,22 @@ class Auxiliares {
                 // fechado = "          .          ($fecha): ";
                 fechado = " ($fecha): ";
                 max =
-                    "$max${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} "
+                "$max${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} "
                     "${element['Resultado']} ${element['Unidad_Medida']}, ";
               } else {
                 max =
-                    "$max${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} "
+                "$max${Auxiliares.abreviado(estudio: element['Estudio'], tipoEstudio: element['Tipo_Estudio'])} "
                     "${element['Resultado']}, ";
               }
             }
           }
         }
         // COMPROBACIÓN
-        if (fechado != "") {
-          prosa = "$prosa "
-              "          .          "
-              "$tipoEstudio $fechado ${Sentences.capitalize(max)}\n";
+        if (fechado.isNotEmpty && max.trim().isNotEmpty) {
+          final linea = "${tipoEstudio.trim()} $fechado ${Sentences.capitalize(max.trim())}".trim();
+          if (linea.isNotEmpty) {
+            prosa += "          .          $linea\n";
+          }
         }
       }
     }
@@ -7111,7 +7240,7 @@ class Auxiliares {
   }
 
   static String getGasometrico() {
-    String prosa = "", fecha = "", max = "";
+    String prosa = "", fecha = "", max = "", tipoGasometria = "";
 
     var fechar = Listas.listFromMapWithOneKey(
       // Pacientes.Paraclinicos!,
@@ -7132,9 +7261,10 @@ class Auxiliares {
       var aux = Pacientes.Paraclinicos!
           .where((user) => user["Fecha_Registro"].contains(fechar.first))
           .toList();
-      fecha = "          Paraclínicos (${fechar.first})";
+      // fecha = "          Paraclínicos (${fechar.first})";
 
       for (var element in aux) {
+        tipoGasometria = element['Tipo_Estudio'] == "Gasometría Arterial" ? "Gasometría Arterial" : "Gasometría Venosa";
         // ***************************** *****************
         if (element['Tipo_Estudio'] != "Gasometría Arterial" ||
             element['Tipo_Estudio'] != "Gasometría Venosa") {
@@ -7153,7 +7283,10 @@ class Auxiliares {
 
     // COMPROBACIÓN
     if (max != "") {
-      prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n\n";
+
+      fecha = "          .  $tipoGasometria (${fechar.first})";
+
+      prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
     }
     // ************** ***************** ***************
     return prosa;
@@ -7239,8 +7372,11 @@ class Auxiliares {
     }
 
     // COMPROBACIÓN
-    if (max != "") {
-      prosa = "$prosa$fecha: ${Sentences.capitalize(max)}\n";
+    if (max.trim().isNotEmpty) {
+      final linea = "$fecha: ${Sentences.capitalize(max.trim())}".trim();
+      if (linea.isNotEmpty) {
+        prosa += "$linea\n";
+      }
     }
     // ************** ***************** ***************
     return prosa;

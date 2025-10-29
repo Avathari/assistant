@@ -10,6 +10,7 @@ import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitaliza
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/info/Hospitalizado.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/auxiliares/auxiliaresGenerales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/generales.dart';
+import 'package:assistant/screens/pacientes/auxiliares/revisiones/revisiones.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/licencias.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/pendientes.dart';
 import 'package:assistant/screens/pacientes/intensiva/analisis/cardiovasculares.dart';
@@ -521,21 +522,28 @@ class Paneles {
             //
             if (foundedItems[index].vitales.isNotEmpty) {
               Valores.alturaPaciente =
-                  foundedItems[index].vitales.last['Pace_SV_est'];
-              Valores.pesoCorporalTotal = double.parse(
-                  foundedItems[index].vitales.last['Pace_SV_pct'].toString());
+                  foundedItems[index].vitales.last['Pace_SV_est'] ?? 0;
+
+              final peso = foundedItems[index].vitales.last['Pace_SV_pct'];
+              if (peso != null && peso.toString().isNotEmpty) {
+                Valores.pesoCorporalTotal = double.tryParse(peso.toString()) ?? 0.0;
+              } else {
+                Valores.pesoCorporalTotal = 0.0;
+              }
             } else {
               Valores.alturaPaciente = 0;
               Valores.pesoCorporalTotal = 0;
             }
 
+
             Pacientes.localRepositoryPath =
                 foundedItems[index].localRepositoryPath;
             //
-            Cambios.toNextActivity(context,
-                tittle: "Signos Vitales del Paciente . . . ",
-                chyld: SingleChildScrollView(
-                    controller: ScrollController(), child: AuxiliarVitales()));
+            // Cambios.toNextActivity(context,
+            //     tittle: "Signos Vitales del Paciente . . . ",
+            //     chyld: SingleChildScrollView(
+            //         controller: ScrollController(), child: AuxiliarVitales()));
+            Cambios.toNextPage(context, Generales());
           },
           onLongChangeValue: () async {
             Pacientes.ID_Paciente = foundedItems![index].idPaciente;
@@ -679,35 +687,41 @@ class Paneles {
                     child: ListView.builder(
                         itemCount: snapshot.data![index].licencias.length,
                         itemBuilder: (BuildContext context, int ind) {
-                          return ListTile(
-                            title: Text(
-                              snapshot.data![index].licencias[ind]['Folio'],
-                              style: Styles.textSyleGrowth(fontSize: 9),
-                            ),
-                            subtitle: Text(
-                              snapshot.data![index].licencias[ind]
-                                      ['Fecha_Inicio'] +
-                                  " : " +
-                                  snapshot.data![index].licencias[ind]
-                                      ['Fecha_Termino'] +
-                                  " : : " +
-                                  "${snapshot.data![index].licencias[ind]['Dias_Otorgados']} Días",
-                              style: Styles.textSyleGrowth(fontSize: 9),
-                            ),
-                            onTap: () {
-                              Operadores.openWindow(
-                                  context: context,
-                                  chyldrim: Center(
-                                    child: snapshot.data![index].licencias[ind]
-                                                ['Licencia_FIAT'] !=
-                                            null
-                                        ? Image.memory(base64Decode(snapshot
-                                            .data![index]
-                                            .licencias[ind]['Licencia_FIAT']))
-                                        : Container(),
-                                  ));
-                            },
-                          );
+                          var list = Listas.listWithoutRepitedValues(
+                              Listas.listFromMapWithOneKey(
+                                  snapshot.data[index].licencias));
+
+                          if (list.isNotEmpty && list.first != null) {
+                            return ListTile(
+                              title: Text(
+                                snapshot.data![index].licencias[ind]['Folio'],
+                                style: Styles.textSyleGrowth(fontSize: 9),
+                              ),
+                              subtitle: Text(
+                                snapshot.data![index].licencias[ind]
+                                        ['Fecha_Inicio'] +
+                                    " : " +
+                                    snapshot.data![index].licencias[ind]
+                                        ['Fecha_Termino'] +
+                                    " : : " +
+                                    "${snapshot.data![index].licencias[ind]['Dias_Otorgados']} Días",
+                                style: Styles.textSyleGrowth(fontSize: 9),
+                              ),
+                              onTap: () {
+                                Operadores.openWindow(
+                                    context: context,
+                                    chyldrim: Center(
+                                      child: snapshot.data![index].licencias[ind]
+                                                  ['Licencia_FIAT'] !=
+                                              null
+                                          ? Image.memory(base64Decode(snapshot
+                                              .data![index]
+                                              .licencias[ind]['Licencia_FIAT']))
+                                          : Container(),
+                                    ));
+                              },
+                            );
+                          }
                         })),
                 CrossLine(thickness: 3),
                 CircleIcon(

@@ -721,7 +721,7 @@ class _ImagenologiasGestionState extends State<ImagenologiasGestion> {
                             options: Imagenologias.regiones[index].toList(),
                             onClose: (value) {
                               setState(() {
-                                Navigator.pop(context);
+                                // Navigator.pop(context);
                                 regionCorporalTextController.text = value;
                               });
                             });

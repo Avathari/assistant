@@ -130,6 +130,7 @@ class _InfusionesCriticasState extends State<InfusionesCriticas> {
                   },
                 ),
               ),
+              const SizedBox(width: 10),
               Expanded(
                 child: ElevatedButton.icon(
                   icon: const Icon(Icons.add),
@@ -163,8 +164,8 @@ class _InfusionesCriticasState extends State<InfusionesCriticas> {
                   : 3, // Número de columnas
               crossAxisSpacing: 10.0,
               mainAxisSpacing: 10.0,
-              childAspectRatio: isDesktop(context)
-                  ? 1.35
+              childAspectRatio: isDesktop(context) || isLargeDesktop(context)
+                  ? 1.50
                   : 0.85, // Ajusta la altura de las tarjetas
             ),
             itemBuilder: (context, index) {
@@ -248,6 +249,7 @@ class _InfusionesCriticasState extends State<InfusionesCriticas> {
                          SizedBox(height: isDesktop(context) ? 16 : 10),
                         Expanded(
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
                                 child: TextFormField(
@@ -269,12 +271,7 @@ class _InfusionesCriticasState extends State<InfusionesCriticas> {
                                   keyboardType: TextInputType.number,
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Row(
-                            children: [
+                              const SizedBox(width: 14),
                               Expanded(
                                 child: TextFormField(
                                   initialValue: Parenterales

@@ -30,7 +30,7 @@ class Valores {
     valores.addAll(Pacientes.Paciente);
     // ********* *********** ********** ******
     Future.microtask(() async {
-      Pacientes.getImage();
+      Pacientes.getPaciente();
       // ********* *********** ********** ******
       Vitales.registros(context); // Vitales.ultimoRegistro();
       Quirurgicos.registros(); // Quirurgicos.consultarRegistro();
@@ -500,6 +500,7 @@ class Valores {
       Valores.fechaIngresoHospitalario = json['Feca_INI_Hosp'] ?? '';
       Hospitalizaciones.Hospitalizacion['Feca_INI_Hosp'] =
           Valores.fechaIngresoHospitalario;
+      //
       Valores.numeroCama = json['Id_Cama'].toString() ?? 'N/A';
       Hospitalizaciones.Hospitalizacion['Id_Cama'] = Valores.numeroCama;
       Valores.medicoTratante = json['Medi_Trat'] ?? '';
@@ -510,9 +511,11 @@ class Valores {
       Valores.servicioTratanteInicial = json['Serve_Trat_INI'] ?? '';
       Hospitalizaciones.Hospitalizacion['Serve_Trat_INI'] =
           Valores.servicioTratanteInicial;
+      //
       Valores.fechaEgresoHospitalario = json['Feca_EGE_Hosp'] ?? '';
       Hospitalizaciones.Hospitalizacion['Feca_EGE_Hosp'] =
           Valores.fechaEgresoHospitalario;
+      //
       Valores.motivoEgreso = json['EGE_Motivo'] ?? '';
       Hospitalizaciones.Hospitalizacion['EGE_Motivo'] = Valores.motivoEgreso;
     }
@@ -637,7 +640,7 @@ class Valores {
           'No refiere alergia o intolerancia alimentaria de ningún tipo',
       alteracionesPesoDescripcion =
           'No refiere variaciones significativas del peso en los últimos dos meses';
-  static bool? alimentacionDiaria = false,
+  static bool? alimentacionDiaria = true,
       dietaAsignada = false,
       variacionAlimentacion = false,
       problemasMasticacion = false,
@@ -731,15 +734,29 @@ class Valores {
       tiposDrogadismoDescripcion = 'Drogas';
 
   static int get diasEstancia {
-    if (fechaIngresoHospitalario != '' && fechaIngresoHospitalario != null) {
-      // print(fechaIngresoHospitalario!);
-      return DateTime.now()
-          .difference(DateTime.parse(fechaIngresoHospitalario!))
-          .inDays;
-    } else {
+    try {
+      if (fechaIngresoHospitalario != null &&
+          fechaIngresoHospitalario!.isNotEmpty) {
+        DateTime ingreso = DateTime.parse(fechaIngresoHospitalario!);
+
+        if (fechaEgresoHospitalario != null &&
+            fechaEgresoHospitalario!.isNotEmpty &&
+            fechaEgresoHospitalario != "0000-00-00") {
+          DateTime egreso = DateTime.parse(fechaEgresoHospitalario!);
+          return egreso.difference(ingreso).inDays;
+        } else {
+          return DateTime.now().difference(ingreso).inDays;
+        }
+      } else {
+        return 0;
+      }
+    } catch (e) {
+      print('Error calculando días de estancia: $e');
       return 0;
     }
   }
+
+
 
   static String? get isEstanciaProlongada {
     if (diasEstancia == 0) {
@@ -875,8 +892,8 @@ class Valores {
       presionIntraabdominal,
       presionIntraCerebral;
   static double? temperaturCorporal,
-      pesoCorporalTotal,
-      alturaPaciente,
+      pesoCorporalTotal = 70,
+      alturaPaciente = 1.70,
       factorActividad,
       factorEstres;
 
@@ -911,13 +928,15 @@ class Valores {
   /// ** Otra formula encontrada es AM = PCT (Kg) * 0.5 * 3;
   ///
   static double get aguaMetabolica {
-    return (Valores.pesoCorporalTotal! * 0.5 * horario!.toDouble()) - 300;
+    if (Valores.pesoCorporalTotal == null) return 300;
+
     if (Valores.sexo == "Masculino") {
       return (Valores.pesoCorporalTotal! * 0.6) * 3;
     } else {
       return (Valores.pesoCorporalTotal! * 0.5) * 3;
     }
   }
+
 
   static double? uresis = 0;
   static int? horario = 24;
@@ -1216,8 +1235,15 @@ class Valores {
   // (Valores.pcoArteriales! * Valores.frecuenciaVentilatoria!) / 40.00;
 
   // # Análisis Gasométrico : : de pCO2 / pO2
-  static double get indiceTobinYang =>
-      (Valores.frecuenciaVentilatoria! / Valores.volumenTidal!) * 100;
+  static double get indiceTobinYang {
+    final fr = Valores.frecuenciaVentilatoria ?? 0.0; // respiraciones/min
+    final vt = Valores.volumenTidal ?? 0.0;           // mL o mL/kg (según tu convención)
+
+    if (vt <= 0.0 || fr <= 0.0) return 0.0; // evita divisiones por cero
+
+    final rsbi = (fr / vt) * 100;
+    return rsbi.isFinite ? rsbi : 0.0;
+  }
 
   /// Indice de Oxígenación
   /// El OI (Índice de Oxigenación) es un parámetro utilizado en medicina para evaluar la eficiencia del intercambio de oxígeno en pacientes con ventilación mecánica, especialmente en aquellos con insuficiencia respiratoria severa o síndrome de dificultad respiratoria aguda (SDRA). Este índice ayuda a valorar la gravedad de la hipoxemia y el grado de soporte ventilatorio necesario.
@@ -3321,7 +3347,7 @@ class Escalas {
   ];
 
   static List<dynamic> serviciosHospitalarios = [];
-  static List<String> motivosEgresos = [
+  static List<dynamic> motivosEgresos = [
     '',
     'Máximo beneficio',
     'Mejorado',
@@ -4520,25 +4546,24 @@ class Parenterales {
 
   static double calcularMCGml(int index) {
     // try {
-      final velocidad =
-          double.tryParse(Parenterales.infusiones[index].velocidad) ?? 0.0;
-      final concentracionMg =
-          double.tryParse(Parenterales.infusiones[index].concentracionMg) ??
-              0.0;
-      final volumenMl =
-          double.tryParse(Parenterales.infusiones[index].volumenMl) ?? 0.0;
-      if (concentracionMg == 0 ||
-          volumenMl == 0 ||
-          Valores.pesoCorporalTotal! == 0) {
-        return 0.0;
-      }
+    final velocidad =
+        double.tryParse(Parenterales.infusiones[index].velocidad) ?? 0.0;
+    final concentracionMg =
+        double.tryParse(Parenterales.infusiones[index].concentracionMg) ?? 0.0;
+    final volumenMl =
+        double.tryParse(Parenterales.infusiones[index].volumenMl) ?? 0.0;
+    if (concentracionMg == 0 ||
+        volumenMl == 0 ||
+        Valores.pesoCorporalTotal! == 0) {
+      return 0.0;
+    }
 
-      final mcgPorMl = (concentracionMg * 1000) / volumenMl; // mg -> mc
-      //
-      // Parenterales.infusiones[index]. =
-      //     double.parse(mcgPorMl.toStringAsFixed(2));
+    final mcgPorMl = (concentracionMg * 1000) / volumenMl; // mg -> mc
+    //
+    // Parenterales.infusiones[index]. =
+    //     double.parse(mcgPorMl.toStringAsFixed(2));
 
-      return double.parse(mcgPorMl.toStringAsFixed(2));
+    return double.parse(mcgPorMl.toStringAsFixed(2));
     // } catch (_) {
     //   Parenterales.infusiones[index].resultadoCalculado = 0.0;
     // }
@@ -4549,19 +4574,18 @@ class Parenterales {
     final velocidad =
         double.tryParse(Parenterales.infusiones[index].velocidad) ?? 0.0;
     final concentracionMg =
-        double.tryParse(Parenterales.infusiones[index].concentracionMg) ??
-            0.0;
+        double.tryParse(Parenterales.infusiones[index].concentracionMg) ?? 0.0;
     final volumenMl =
         double.tryParse(Parenterales.infusiones[index].volumenMl) ?? 0.0;
     if (concentracionMg == 0 ||
         volumenMl == 0 ||
         Valores.pesoCorporalTotal! == 0) {
-      return 0.0;
+      // return 0.0;
+      Valores.pesoCorporalTotal = 70.0; // Si Valores.pesoCorporalTotal! == 0 entonces asignar 70 kG.
     }
 
     final mcgPorMl = (concentracionMg * 1000) / volumenMl; // mg -> mcg
-    final resultado =
-        (velocidad * mcgPorMl) / Valores.pesoCorporalTotal! / 60;
+    final resultado = (velocidad * mcgPorMl) / Valores.pesoCorporalTotal! / 60;
     //
     Parenterales.infusiones[index].resultadoCalculado =
         double.parse(resultado.toStringAsFixed(2));
@@ -4571,6 +4595,7 @@ class Parenterales {
     //   Parenterales.infusiones[index].resultadoCalculado = 0.0;
     // }
   }
+
   //
   static String generarProsaSedantes() => generarProsaPorCategoria('Sedantes');
 

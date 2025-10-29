@@ -1,4 +1,6 @@
+import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
+import 'package:assistant/screens/pacientes/patologicos/patologicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/analisisMedico.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/exploracionFisica.dart';
@@ -145,7 +147,14 @@ class _ReporteRevisionState extends State<ReporteRevision> {
                           textController: patoloTextController,
                           labelEditText: "Antecedentes personales patológicos",
                           keyBoardType: TextInputType.multiline,
-                          numOfLines: 15,
+                          selection: true,
+                          withShowOption: true,
+                          iconData: Icons.medical_information_outlined,
+                          optionEqui: 1,
+                          onSelected: () =>
+                              Cambios.toNextPage(context, GestionPatologicos(withReturnOption: false)),
+                          numOfLines: 25,
+                          readOnly: true,
                           inputFormat: MaskTextInputFormatter()),
                       EditTextArea(
                           textController: relevantesTextController,

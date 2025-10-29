@@ -18,11 +18,9 @@ import 'package:assistant/screens/pacientes/intensiva/valoraciones/aereos.dart';
 import 'package:assistant/screens/pacientes/intensiva/valoraciones/prequirurgicos.dart';
 
 import 'package:assistant/values/SizingInfo.dart';
-import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/GrandLabel.dart';
 import 'package:assistant/widgets/RoundedPanel.dart';
-import 'package:assistant/widgets/Tittle.dart';
 import 'package:assistant/widgets/TittleContainer.dart';
 import 'package:flutter/material.dart';
 

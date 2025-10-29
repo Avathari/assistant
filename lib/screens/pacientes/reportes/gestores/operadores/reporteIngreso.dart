@@ -3,6 +3,7 @@ import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/hospitalizacion/padecimientoActual.dart';
 import 'package:assistant/screens/pacientes/pacientes.dart';
+import 'package:assistant/screens/pacientes/patologicos/epidemiologicos.dart';
 import 'package:assistant/screens/pacientes/patologicos/patologicos.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/analisisMedico.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/auxiliaresReportes.dart';
@@ -229,9 +230,12 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                           selection: true,
                           withShowOption: true,
                           iconData: Icons.update,
-                          onSelected: () => Cambios.toNextActivity(context,
-                              chyld: OperacionesPacientes(
-                                  operationActivity: Constantes.Update)),
+                          onSelected: () => Cambios.toNextPage(
+                              context,
+                              OperacionesPacientes(
+                                operationActivity: Constantes.Update,
+                                withReturnOption: false,
+                              )),
                           inputFormat: MaskTextInputFormatter()),
                       Row(
                         children: [
@@ -242,12 +246,19 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                                 labelEditText: "Antecedentes No Patológicos",
                                 keyBoardType: TextInputType.multiline,
                                 numOfLines: 8,
+                                selection: true,
                                 withShowOption: true,
                                 onChange: (value) {
                                   Reportes.personalesNoPatologicos = Reportes
                                           .reportes[
                                       'Antecedentes_No_Patologicos'] = value;
                                 },
+                                onSelected: () => Cambios.toNextPage(
+                                    context,
+                                    GestionNoPatologicos(
+                                      withReturnOption: false,
+                                    )),
+                                readOnly: true,
                                 inputFormat: MaskTextInputFormatter()),
                           ),
                           Expanded(
@@ -331,8 +342,8 @@ class _ReporteIngresoState extends State<ReporteIngreso> {
                           withShowOption: true,
                           iconData: Icons.medical_information_outlined,
                           optionEqui: 1,
-                          onSelected: () =>
-                              Cambios.toNextPage(context, GestionPatologicos(withReturnOption: false)),
+                          onSelected: () => Cambios.toNextPage(context,
+                              GestionPatologicos(withReturnOption: false)),
                           numOfLines: 25,
                           readOnly: true,
                           inputFormat: MaskTextInputFormatter()),

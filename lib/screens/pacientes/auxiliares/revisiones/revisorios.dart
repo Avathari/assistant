@@ -2,7 +2,6 @@ import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
-import 'package:assistant/screens/pacientes/auxiliares/revisiones/auxiliares/infusiones.dart';
 import 'package:assistant/screens/pacientes/auxiliares/revisiones/generales.dart';
 import 'package:assistant/screens/pacientes/reportes/gestores/auxiliares/semiologicos.dart';
 import 'package:assistant/values/SizingInfo.dart';
@@ -942,7 +941,7 @@ class _AnalisisRevisoriosState extends State<AnalisisRevisorios> {
               Expanded(
                 flex: activePage == 0 ? 10 : 15,
                 child: _activePage == 0
-                    ? const Infusiones()
+                    ?  Container()
                     : Row(
                     children: [
                       Expanded(child: _primerRevision(context)),

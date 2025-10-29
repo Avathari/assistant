@@ -39,13 +39,13 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
           Pacientes.prosa(isTerapia: true);
       //
       diagoTextController.text =
-      Reportes.reportes['Impresiones_Diagnosticas'] != ""
-          ? Reportes.reportes['Impresiones_Diagnosticas']
-          : Reportes.reportes['Diagnosticos_Hospital'] != ""
-          ? Reportes.reportes['Diagnosticos_Hospital']
-          : Reportes.impresionesDiagnosticas.isNotEmpty
-          ? Reportes.impresionesDiagnosticas
-          : Pacientes.diagnosticos();
+          Reportes.reportes['Impresiones_Diagnosticas'] != ""
+              ? Reportes.reportes['Impresiones_Diagnosticas']
+              : Reportes.reportes['Diagnosticos_Hospital'] != ""
+                  ? Reportes.reportes['Diagnosticos_Hospital']
+                  : Reportes.impresionesDiagnosticas.isNotEmpty
+                      ? Reportes.impresionesDiagnosticas
+                      : Pacientes.diagnosticos();
 
       //
       consultaTextController.text =
@@ -87,33 +87,33 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                             labelEditText: "Datos generales",
                             keyBoardType: TextInputType.text,
                             numOfLines: 1,
-                            fontSize: isTablet(context) ? 12: 8,
+                            fontSize: isTablet(context) ? 12 : 8,
                             withShowOption: true,
                             inputFormat: MaskTextInputFormatter()),
                         Row(
                           children: [
                             Expanded(
-                              flex:
-                                  isMobile(context) || isDesktop(context) || isLargeDesktop(context)
-                                      ? 3
-                                      : 2, // #_#
+                              flex: isMobile(context) ||
+                                      isDesktop(context) ||
+                                      isLargeDesktop(context)
+                                  ? 3
+                                  : 2, // #_#
                               child: EditTextArea(
                                   textController: diagoTextController,
-                                  labelEditText:
-                                      "Impresiones diagnósticas",
+                                  labelEditText: "Impresiones diagnósticas",
                                   keyBoardType: TextInputType.multiline,
-                                  numOfLines: isTablet(context) ? 18: 22,
-                                  fontSize: isTablet(context) ? 12: 8,
+                                  numOfLines: isTablet(context) ? 18 : 22,
+                                  fontSize: isTablet(context) ? 12 : 8,
                                   limitOfChars: 700,
-                                  onChange: ((value) {
-                                    setState(() {
-                                      Reportes.reportes['Diagnosticos_Hospital'] =
-                                      Reportes.reportes[
-                                      'Impresiones_Diagnosticas'] =
-                                          Reportes.impresionesDiagnosticas =
-                                      "$value.";
-                                    });
-                                  }),
+                                  onChange: (value) {
+                                    final texto = value.trim();
+                                    Reportes.impresionesDiagnosticas =
+                                        "$texto.";
+                                    Reportes.reportes['Diagnosticos_Hospital'] =
+                                        "$texto.";
+                                    Reportes.reportes[
+                                        'Impresiones_Diagnosticas'] = "$texto.";
+                                  },
                                   inputFormat: MaskTextInputFormatter()),
                             ),
                             Expanded(
@@ -136,8 +136,7 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                                           //                                         "$value.";
                                           diagoTextController.text =
                                               Sentences.capitalizeAll(
-                                                  diagoTextController
-                                                      .text);
+                                                  diagoTextController.text);
                                         });
                                       }),
                                   CircleIcon(
@@ -151,8 +150,7 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
                                                   Diagnosticos
                                                           .selectedDiagnosis =
                                                       value;
-                                                  diagoTextController
-                                                          .text =
+                                                  diagoTextController.text =
                                                       "${diagoTextController.text}\n${Diagnosticos.selectedDiagnosis}";
                                                 });
                                               }),
@@ -283,7 +281,7 @@ class _ReporteTerapiaState extends State<ReporteTerapia> {
             labelButton: 'Análisis Ventilatorio',
             onPress: () {
               Operadores.openDialog(
-                  context: context, chyldrim:  const Ventilatorios());
+                  context: context, chyldrim: const Ventilatorios());
             },
           ),
           GrandIcon(

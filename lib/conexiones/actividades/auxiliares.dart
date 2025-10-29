@@ -302,8 +302,8 @@ class Archivos {
   }
 
   static createJsonFromMap(List<dynamic> map, {String filePath = ''}) async {
-    Terminal.printWarning(
-        message: 'Creando archivo JSON en $filePath : : OBTENIDO : $map');
+    // Terminal.printWarning(
+    //     message: 'Creando archivo JSON en $filePath : : OBTENIDO : $map');
     //
     if (Platform.isAndroid) {
       final directory = await getTemporaryDirectory();
@@ -1073,6 +1073,7 @@ class Operadores {
         });
   }
 
+  /// opcionsActivity desplega una dialog dicotomico . . .
   static void optionsActivity({
     required BuildContext context,
     String? tittle = "Manejo de Opciones",

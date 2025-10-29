@@ -7,6 +7,7 @@ import 'package:assistant/screens/financieros/estadisticas.dart';
 import 'package:assistant/screens/financieros/finanzas.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/embarazadas.dart';
 import 'package:assistant/screens/pacientes/auxiliares/hospitalarios/hospitalizados.dart';
+import 'package:assistant/screens/pacientes/hospitalizacion/auxiliar/sintomatologias.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/concentraciones.dart';
 import 'package:assistant/screens/pacientes/intensiva/contenidos/insulinas.dart';
 import 'package:assistant/screens/pacientes/intensiva/procedimientos/hemodialisis.dart';
@@ -665,6 +666,7 @@ class PacientesPanel extends StatelessWidget {
               labelButton: "Terapias",
               onPress: () {
                 toNextScreen(
+                    // context: context, screen:  Scaffold(body: Sintomatologias())); // appBar: AppBar(),
                     context: context, screen:  Scaffold(body: TerapiasItems()));
                     // context: context, screen:  InfusionesCriticas());
               },

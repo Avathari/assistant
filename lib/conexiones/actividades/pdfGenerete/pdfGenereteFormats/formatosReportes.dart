@@ -3276,7 +3276,7 @@ class CopiasReportes {
 
     // # # # # # # ### # # # # # # ###
     tipoReporte = "$tipoReporte"
-        "S. ${paraph['Subjetivo']}";
+        "S. ${paraph['Subjetivo']}\n";
     if (esAbreviado) {
       tipoReporte = "$tipoReporte"
           "${paraph['Signos_Vitales']}\n"

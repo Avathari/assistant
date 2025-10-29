@@ -25,67 +25,72 @@ class AuxiliaresExploracion extends StatefulWidget {
 }
 
 class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
+  //1. Declarar las banderas
+  bool _isUserEditingAux = false;
+  bool _isUserEditingCommen = false;
+
   var auxTextController = TextEditingController(),
       commenTextController = TextEditingController();
   var scrollAuxController = ScrollController(),
       scrollCommenController = ScrollController();
-  late String? tipoEstudio;
+  // late String? tipoEstudio;
 
   double mainAxisExtend = 50;
 
   @override
   void initState() {
-    Auxiliares.registros();
-    setState(() {
-      if (widget.isPrequirurgico! == true) {
-        Reportes.analisisComplementarios = Valorados.prequirurgicos;
-      }
-      //
-      if (widget.isIngreso! == true) {
-        Reportes.reportes['Analisis_Complementarios'] =
-            Reportes.analisisComplementarios = Antropometrias.antropometricos();
-        Reportes.reportes['Analisis_Complementarios'] =
-            Reportes.analisisComplementarios + Metabolometrias.metabolometrias;
-        Reportes.reportes['Analisis_Complementarios'] =
-            Reportes.analisisComplementarios + Renometrias.renales();
-        Reportes.reportes['Analisis_Complementarios'] =
-            Reportes.analisisComplementarios + Renometrias.renales();
-        //
+    super.initState();
 
-        if (Reportes.auxiliaresDiagnosticos != "") {
-          auxTextController.text =
-              Reportes.reportes['Auxiliares_Diagnosticos'] != ""
-                  ? Reportes.reportes['Auxiliares_Diagnosticos']
-                  : Reportes.auxiliaresDiagnosticos;
-        } else if (Auxiliares.historial(
-                esAbreviado: true, withEspeciales: true) !=
-            "") {
-          Reportes.reportes['Auxiliares_Diagnosticos'] =
-              Reportes.auxiliaresDiagnosticos =
-                  Auxiliares.historial(esAbreviado: true, withEspeciales: true);
-        } else {
-          Reportes.reportes['Auxiliares_Diagnosticos'] =
-              Reportes.auxiliaresDiagnosticos = "";
-        }
-      }
-      // **************************************
-      if (Reportes.reportes['Analisis_Complementarios'] != "" &&
-          Reportes.reportes['Analisis_Complementarios'] != Null) {
-        commenTextController.text = Reportes.analisisComplementarios =
-            Reportes.reportes['Analisis_Complementarios'] ?? "";
-      } else {
-        commenTextController.text = Reportes.analisisComplementarios =
-            Reportes.reportes['Analisis_Complementarios'] = "";
-      }
+    auxTextController.addListener(() {
+      _isUserEditingAux = true;
+    });
 
-      // ASIGNAR AUXILIARES GUARDADOS . . .
-      if (Reportes.reportes['Auxiliares_Diagnosticos'] != "" &&
-          Reportes.reportes['Auxiliares_Diagnosticos'] != Null) {
-        auxTextController.text = Reportes.auxiliaresDiagnosticos =
-            Reportes.reportes['Auxiliares_Diagnosticos'];
+    commenTextController.addListener(() {
+      _isUserEditingCommen = true;
+    });
+
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (!_isUserEditingAux) {
+        auxTextController.text = obtenerTextoInicialAux();
+      }
+      if (!_isUserEditingCommen) {
+        commenTextController.text = obtenerTextoInicialCommen();
       }
     });
-    super.initState();
+
+    Auxiliares.registros();
+
+    // Si necesitas preparar `Reportes.*` para otros componentes:
+    if (widget.isPrequirurgico == true) {
+      Reportes.analisisComplementarios = Valorados.prequirurgicos ?? "";
+    }
+
+    if (widget.isIngreso == true) {
+      Reportes.analisisComplementarios = Antropometrias.antropometricos() +
+          Metabolometrias.metabolometrias +
+          Renometrias.renales();
+      Reportes.reportes['Analisis_Complementarios'] =
+          Reportes.analisisComplementarios;
+
+      // Si quieres preparar Reportes.* aunque no escribas en los TextController:
+      Reportes.auxiliaresDiagnosticos = obtenerTextoInicialAux();
+      Reportes.reportes['Auxiliares_Diagnosticos'] =
+          Reportes.auxiliaresDiagnosticos;
+    }
+  }
+
+  String obtenerTextoInicialAux() {
+    if (Reportes.reportes['Auxiliares_Diagnosticos']?.isNotEmpty == true) {
+      return Reportes.reportes['Auxiliares_Diagnosticos']!;
+    } else if (Reportes.auxiliaresDiagnosticos.isNotEmpty) {
+      return Reportes.auxiliaresDiagnosticos;
+    } else {
+      return Auxiliares.historial(esAbreviado: true, withEspeciales: true);
+    }
+  }
+
+  String obtenerTextoInicialCommen() {
+    return Reportes.reportes['Analisis_Complementarios'] ?? "";
   }
 
   @override
@@ -113,12 +118,10 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                               ? 5
                               : 50
                           : 18,
-                  onChange: ((value) {
-                    setState(() {
-                      Reportes.auxiliaresDiagnosticos =
-                          Reportes.reportes['Auxiliares_Diagnosticos'] = value;
-                    });
-                  }),
+                  onChange: (value) {
+                    Reportes.auxiliaresDiagnosticos =
+                        Reportes.reportes['Auxiliares_Diagnosticos'] = value;
+                  },
                   inputFormat: MaskTextInputFormatter()),
             ),
             Expanded(
@@ -137,46 +140,66 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                 iconData: Icons.attractions_outlined,
                                 labelButton: "Actualizados",
                                 onPress: () {
-                                  // Elimina todos los datos de Paraclínicos que sean Tipo de Estudio 'Cultivos'
-                                  Pacientes.Paraclinicos!.removeWhere(
+                                  if (Pacientes.Paraclinicos != null &&
+                                      Pacientes.Paraclinicos!.isNotEmpty &&
+                                      !(Pacientes.Paraclinicos!.length == 1 &&
+                                          Pacientes.Paraclinicos!.first
+                                              is Map &&
+                                          Pacientes.Paraclinicos!.first
+                                              .containsKey("Error"))) {
+                                    // Eliminar cultivos
+                                    Pacientes.Paraclinicos!.removeWhere(
                                       (estudio) =>
-                                          estudio['Tipo_Estudio'] ==
-                                          'Cultivos');
-                                  //
-                                  Operadores.selectOptionsActivity(
-                                    context: context,
-                                    tittle:
-                                        "Elija la fecha de los estudios . . . ",
-                                    options: Listas.listWithoutRepitedValues(
-                                      Listas.listFromMapWithOneKey(
-                                        Pacientes.Paraclinicos!,
-                                        keySearched: 'Fecha_Registro',
+                                          estudio['Tipo_Estudio'] == 'Cultivos',
+                                    );
+
+                                    // Mostrar selector
+                                    Operadores.selectOptionsActivity(
+                                      context: context,
+                                      tittle:
+                                          "Elija la fecha de los estudios . . . ",
+                                      options: Listas.listWithoutRepitedValues(
+                                        Listas.listFromMapWithOneKey(
+                                          Pacientes.Paraclinicos!,
+                                          keySearched: 'Fecha_Registro',
+                                        ),
                                       ),
-                                    ),
-                                    onLongCloss: (value) {
-                                      setState(() {
-                                        auxTextController.text =
-                                            Auxiliares.porFecha(
-                                                fechaActual: value,
-                                                esAbreviado: false);
-                                        Reportes.reportes[
-                                            'Auxiliares_Diagnosticos'] = value;
-                                        // Navigator.of(context).pop();
-                                      });
-                                    },
-                                    onClose: (value) {
-                                      setState(() {
-                                        auxTextController.text =
-                                            Auxiliares.porFecha(
-                                                fechaActual: value,
-                                                esAbreviado: true);
-                                        Reportes.reportes[
-                                            'Auxiliares_Diagnosticos'] = value;
-                                        //
-                                        // Navigator.of(context).pop();
-                                      });
-                                    },
-                                  );
+                                      onLongCloss: (value) {
+                                        setState(() {
+                                          auxTextController.text =
+                                              Auxiliares.porFecha(
+                                            fechaActual: value,
+                                            esAbreviado: false,
+                                          );
+                                          Reportes.reportes[
+                                                  'Auxiliares_Diagnosticos'] =
+                                              value;
+                                        });
+                                      },
+                                      onClose: (value) {
+                                        setState(() {
+                                          auxTextController.text =
+                                              Auxiliares.porFecha(
+                                            fechaActual: value,
+                                            esAbreviado: true,
+                                          );
+                                          Reportes.reportes[
+                                                  'Auxiliares_Diagnosticos'] =
+                                              value;
+                                        });
+                                      },
+                                    );
+                                  } else {
+                                    // Mostrar SnackBar si no hay datos válidos
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                            "No hay datos paraclínicos disponibles para mostrar."),
+                                        backgroundColor: Colors.black45,
+                                        duration: Duration(seconds: 3),
+                                      ),
+                                    );
+                                  }
                                 },
                               ),
                             ),
@@ -185,16 +208,24 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                 iconData: Icons.clear_all,
                                 labelButton: "Historial",
                                 onPress: () {
-                                  setState(() {
+                                  try {
                                     auxTextController.text =
                                         Reportes.auxiliaresDiagnosticos =
                                             Reportes.reportes[
                                                     'Auxiliares_Diagnosticos'] =
                                                 Auxiliares.historial();
-                                  });
+                                  } catch (e) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(e.toString()),
+                                        backgroundColor: Colors.black45,
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                  }
                                 },
                                 onLongPress: () {
-                                  setState(() {
+                                  try {
                                     auxTextController.text =
                                         Reportes.auxiliaresDiagnosticos =
                                             Reportes.reportes[
@@ -202,7 +233,15 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                                 Auxiliares.historial(
                                                     esAbreviado: true,
                                                     withEspeciales: true);
-                                  });
+                                  } catch (e) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(e.toString()),
+                                        backgroundColor: Colors.black45,
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                  }
                                 },
                               ),
                             ),
@@ -211,13 +250,22 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                 iconData: Icons.clear_all,
                                 labelButton: "Ultimos Recabados . . . ",
                                 onPress: () {
-                                  setState(() {
+                                  try {
                                     auxTextController.text = Reportes
                                         .auxiliaresDiagnosticos = Reportes
                                                 .reportes[
                                             'Auxiliares_Diagnosticos'] =
                                         Auxiliares.getUltimo(esAbreviado: true);
-                                  });
+                                    // úsalo como quieras
+                                  } catch (e) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(e.toString()),
+                                        backgroundColor: Colors.black45,
+                                        duration: Duration(seconds: 2),
+                                      ),
+                                    );
+                                  }
                                 },
                               ),
                             ),
@@ -241,18 +289,12 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                 iconed: Icons.import_contacts,
                                 radios: 27,
                                 difRadios: 6,
-                                onChangeValue: () => setState(() =>
-                                auxTextController.text = Reportes
-                                    .auxiliaresDiagnosticos = Reportes
-                                    .reportes[
-                                'Auxiliares_Diagnosticos'] =
-                                "${Auxiliares.getUltimo(esAbreviado: true)}\n"
-                                    "${Auxiliares.getEspeciales(esAbreviado: true) != "" ? "RELEVANTES . \n" : ""}"
-                                    "${Auxiliares.getEspeciales(esAbreviado: true)}"
-                                    "${Auxiliares.getCoagulacion()}\n"
-                                    "\n"
-                                    "${Auxiliares.getCultivos(esAbreviado: true) != "" ? "MICROBIOLÓGICOS . \n" : ""}"
-                                    "\n${Auxiliares.getCultivos(esAbreviado: true)}"),
+                                onChangeValue: () => setState(
+                                  () => auxTextController.text = Reportes
+                                      .auxiliaresDiagnosticos = Reportes
+                                          .reportes['Auxiliares_Diagnosticos'] =
+                                      getRelevantes(),
+                                ),
                               ),
                             ),
                           ],
@@ -342,22 +384,17 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                                     Expanded(
                                       flex: 3,
                                       child: CircleIcon(
-                                          tittle: "Relevantes . . . ",
-                                          iconed: Icons.import_contacts,
-                                          radios: 27,
-                                          difRadios: 6,
-                                          onChangeValue: () => setState(() =>
-                                              auxTextController.text = Reportes
-                                                  .auxiliaresDiagnosticos = Reportes
-                                                          .reportes[
-                                                      'Auxiliares_Diagnosticos'] =
-                                                  "${Auxiliares.getUltimo(esAbreviado: true)}\n"
-                                                      "${Auxiliares.getEspeciales(esAbreviado: true) != "" ? "RELEVANTES . \n" : ""}"
-                                                      "${Auxiliares.getEspeciales(esAbreviado: true)}"
-                                                      "${Auxiliares.getCoagulacion()}\n"
-                                                      "\n"
-                                                      "${Auxiliares.getCultivos(esAbreviado: true) != "" ? "MICROBIOLÓGICOS . \n" : ""}"
-                                                      "\n${Auxiliares.getCultivos(esAbreviado: true)}"),
+                                        tittle: "Relevantes . . . ",
+                                        iconed: Icons.import_contacts,
+                                        radios: 27,
+                                        difRadios: 6,
+                                        onChangeValue: () => setState(
+                                          () => auxTextController.text = Reportes
+                                              .auxiliaresDiagnosticos = Reportes
+                                                      .reportes[
+                                                  'Auxiliares_Diagnosticos'] =
+                                              getRelevantes(),
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -723,12 +760,10 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                   labelEditText: "Análisis complementarios",
                   keyBoardType: TextInputType.multiline,
                   numOfLines: isTablet(context) ? 16 : 22,
-                  onChange: ((value) {
-                    setState(() {
-                      Reportes.analisisComplementarios = Reportes
-                          .reportes['Analisis_Complementarios'] = value ?? "";
-                    });
-                  }),
+                  onChange: (value) {
+                    Reportes.analisisComplementarios = Reportes
+                        .reportes['Analisis_Complementarios'] = value ?? "";
+                  },
                   inputFormat: MaskTextInputFormatter()),
             ),
             Expanded(
@@ -748,11 +783,8 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
                           iconData: Icons.cleaning_services,
                           labelButton: 'Limpiar . . . ',
                           onPress: () {
-                            setState(() {
-                              commenTextController.text = '';
-                              Reportes.reportes['Analisis_Complementarios'] =
-                                  "";
-                            });
+                            commenTextController.text = '';
+                            Reportes.reportes['Analisis_Complementarios'] = "";
                           }),
                     ),
                     CrossLine(color: Colors.grey),
@@ -794,6 +826,18 @@ class _AuxiliaresExploracionState extends State<AuxiliaresExploracion> {
       Reportes.reportes['Analisis_Complementarios'] = commenTextController.text;
       Reportes.analisisComplementarios = commenTextController.text;
     });
+  }
+
+  String getRelevantes() {
+    return "${Auxiliares.getUltimo(esAbreviado: true)}"
+        "${Auxiliares.getEspeciales(esAbreviado: true) != "" ? "\nRELEVANTES . " : ""}"
+        "${Auxiliares.getEspeciales(esAbreviado: true)}"
+        "${Auxiliares.getGasometrico() != "" ? Auxiliares.getGasometrico() : ""}"
+
+        "${Auxiliares.getCoagulacion()}"
+        "\n"
+        "${Auxiliares.getCultivos(esAbreviado: true) != "" ? "MICROBIOLÓGICOS . " : ""}"
+        "\n${Auxiliares.getCultivos(esAbreviado: true)}";
   }
 
   //

@@ -1,4 +1,5 @@
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
+import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Pacientes.dart' as patients;
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/alimenticios.dart';
@@ -8,7 +9,9 @@ import 'package:assistant/screens/pacientes/epidemiologicos/exposiciones.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/higienicos.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/limitaciones.dart';
 import 'package:assistant/screens/pacientes/epidemiologicos/viviendas.dart';
+import 'package:assistant/screens/pacientes/reportes/reportes.dart';
 import 'package:assistant/values/SizingInfo.dart';
+import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
@@ -19,50 +22,54 @@ import 'package:flutter/material.dart';
 
 class GestionNoPatologicos extends StatefulWidget {
   int? index;
+  bool? withReturnOption;
 
-   GestionNoPatologicos({super.key, this.index = 0});
+  GestionNoPatologicos(
+      {super.key, this.index = 0, this.withReturnOption = true});
 
   @override
   State<GestionNoPatologicos> createState() => _GestionNoPatologicosState();
 }
 
 class _GestionNoPatologicosState extends State<GestionNoPatologicos> {
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        leading: IconButton(
-          tooltip: 'Regresar al Panel del Paciente',
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            toNextScreen(
-                context: context,
-                screen: VisualPacientes(
-                  actualPage: 2,
-                ));
-          },
-        ),
+        leading: widget.withReturnOption!
+            ? IconButton(
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
+                tooltip: Sentences.regresar,
+                onPressed: () {
+                  Constantes.reinit();
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => VisualPacientes(actualPage: 2)));
+                },
+              )
+            : null,
         title: AppBarText('Antecedentes Personales No Patológicos'),
       ),
       body: isMobile(context) ? mobileView() : tabletView(),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
-      floatingActionButton: isMobile(context) ? CircleIcon(
-        onChangeValue: () =>
-          onActionActivity(),
-        tittle: 'Actualizar el Registro',
-      ) : null,
+      floatingActionButton: isMobile(context)
+          ? CircleIcon(
+              onChangeValue: () => onActionActivity(),
+              tittle: 'Actualizar el Registro',
+            )
+          : null,
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
-          // sets the background color of the `BottomNavigationBar`
+            // sets the background color of the `BottomNavigationBar`
             canvasColor: Colors.black,
-            textTheme: Theme
-                .of(context)
+            textTheme: Theme.of(context)
                 .textTheme
                 .copyWith(bodySmall: const TextStyle(color: Colors.yellow))),
         child: BottomNavigationBar(
-           currentIndex: widget.index!,
+          currentIndex: widget.index!,
           backgroundColor: Colors.black,
           onTap: (int index) {
             switch (index) {
@@ -108,44 +115,58 @@ class _GestionNoPatologicosState extends State<GestionNoPatologicos> {
                 });
                 carouselController.jumpToPage(6);
                 break;
-
             }
           },
           items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Ética y Moral",),
-            BottomNavigationBarItem(icon: Icon(Icons.explicit), label: "Vivienda",),
-            BottomNavigationBarItem(icon: Icon(Icons.medical_information), label: "Habitos Alimenticios",),
-            BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Hábitos Diarios",),
-            BottomNavigationBarItem(icon: Icon(Icons.next_plan), label: "Hábitos Higienicos",),
-            BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Limitaciones Físicas",),
-            BottomNavigationBarItem(icon: Icon(Icons.next_plan), label: "Exposición a Sustancias Nocivas",),
-
-        ],
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: "Ética y Moral",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.explicit),
+              label: "Vivienda",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.medical_information),
+              label: "Habitos Alimenticios",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.explore),
+              label: "Hábitos Diarios",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.next_plan),
+              label: "Hábitos Higienicos",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.explore),
+              label: "Limitaciones Físicas",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.next_plan),
+              label: "Exposición a Sustancias Nocivas",
+            ),
+          ],
         ),
       ),
-
     );
   }
 
   // ######################### ### # ### ############################
   // Controladores de widgets en general.
-  // ######################### ### # ### ############################
   var carouselController = CarouselSliderController();
   // ######################### ### # ### ############################
   // Variables auxiliares de widget.
-  // ######################### ### # ### ############################
   num index = 6;
   int wieghtRow = 50;
 
   void toNextScreen({context, screen}) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
-    // if (isMobile(context) || isTablet(context)) {
-    //   Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
-    // } else {
-    //   setState(() {
-    //     // widget.actualPage = index!;
-    //   });
-    // }
+    if (widget.withReturnOption!) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => VisualPacientes(actualPage: 2)));
+    } else {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => screen));
+    }
   }
 
   void onActionActivity() {
@@ -173,7 +194,8 @@ class _GestionNoPatologicosState extends State<GestionNoPatologicos> {
       patients.Limitaciones.consultarRegistro();
       patients.Sustancias.consultarRegistro();
 
-      toNextScreen(context: context, screen: VisualPacientes(actualPage: 2));
+      //
+      toNextScreen(context: context, screen: ReportesMedicos(analysis: 1));
     }
   }
 
@@ -333,14 +355,14 @@ class _GestionNoPatologicosState extends State<GestionNoPatologicos> {
               ),
               Expanded(
                   child: Container(
-                    width: 1400,
-                    decoration: ContainerDecoration.roundedDecoration(),
-                    child: GrandButton(
-                        labelButton: 'Actualizar el Registro',
-                        onPress: () {
-                          onActionActivity();
-                        }),
-                  ))
+                width: 1400,
+                decoration: ContainerDecoration.roundedDecoration(),
+                child: GrandButton(
+                    labelButton: 'Actualizar el Registro',
+                    onPress: () {
+                      onActionActivity();
+                    }),
+              ))
             ]),
           ),
         ),
@@ -348,4 +370,3 @@ class _GestionNoPatologicosState extends State<GestionNoPatologicos> {
     );
   }
 }
-

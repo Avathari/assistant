@@ -147,6 +147,9 @@ class ReportsMethods {
             ": : : guardarNota - - fechaRealizacion . . . $fechaRealizacion "
             ": ${fechaRealizacion! == Calendarios.today(format: "yyyy-MM-dd")}\n "
             ": : $getTypeReport . . . "
+                "${Reportes.copiarReporte(
+                tipoReporte: ReportsMethods.getTypeReport(
+                    actualPage: actualPage))}"
             // ". . . Reportes.impresionesDiagnosticas ${Reportes.impresionesDiagnosticas}"
             "\n\n");
     Pacientes.ID_Hospitalizacion = idHospitalizacion!
@@ -167,7 +170,10 @@ class ReportsMethods {
                 "     Tipo de Reporte . . $getTypeReport\n "
                 "_______________________________________\n"
                 "Datos: \n"
-                "${Reportes.impresionesDiagnosticas.toString()}"
+                // "${Reportes.impresionesDiagnosticas.toString()}"
+                "${Reportes.copiarReporte(
+                tipoReporte: ReportsMethods.getTypeReport(
+                    actualPage: actualPage))}"
                 "\n\n",
             textOptionB: "Cerrar . . . ",
             onClose: () => Navigator.of(context).pop(),

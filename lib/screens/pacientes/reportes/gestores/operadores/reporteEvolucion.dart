@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -30,36 +32,64 @@ class ReporteEvolucion extends StatefulWidget {
 }
 
 class _ReporteEvolucionState extends State<ReporteEvolucion> {
+  bool _isUserEditing = false;
+  bool _isUserEditingSubjetivo = false;
+
+  Timer? _debounce;
+
   @override
   void initState() {
-    // # # # ############## #### ########
-    setState(() {
-      Repositorios.tipo_Analisis = Items.tiposAnalisis[1];
-      //
-      initialTextController.text = Pacientes.prosa(isTerapia: true);
-      // ********************************************
-      diagoTextController.text =
-          Reportes.reportes['Impresiones_Diagnosticas'] != ""
-              ? Reportes.reportes['Impresiones_Diagnosticas']
-              : Reportes.reportes['Diagnosticos_Hospital'] != ""
-                  ? Reportes.reportes['Diagnosticos_Hospital']
-                  : Reportes.impresionesDiagnosticas.isNotEmpty
-                      ? Reportes.impresionesDiagnosticas
-                      : Pacientes.diagnosticos();
-      //
-      subjetivoTextController.text =
-          Reportes.reportes['Subjetivo']; // Pacientes.subjetivos();
-      // ********************************************
-      // ********************************************
-      Reportes.reportes['Datos_Generales'] = Pacientes.prosa(isTerapia: true);
-      Reportes.reportes['Antecedentes_Heredofamiliares'] =
-          Pacientes.heredofamiliares();
-      Reportes.reportes['Antecedentes_Hospitalarios'] =
-          Pacientes.hospitalarios();
-      Reportes.reportes['Antecedentes_Patologicos'] = Pacientes.patologicos();
-    });
     super.initState();
+
+    // Escucha si el usuario empieza a escribir manualmente
+    diagoTextController.addListener(() {
+      _isUserEditing = true;
+    });
+
+    subjetivoTextController.addListener(() {
+      _isUserEditingSubjetivo = true;
+    });
+
+    // Asignación diferida para evitar sobrescritura si el usuario ya empezó
+    Future.delayed(const Duration(milliseconds: 200), () {
+      if (!_isUserEditing) {
+        diagoTextController.text = obtenerTextoInicial();
+      }
+    });
+
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (!_isUserEditingSubjetivo) {
+        subjetivoTextController.text = obtenerTextoInicialSubjetivo();
+      }
+    });
+
+    // Inicializa demás controladores y estados
+    initialTextController.text = Pacientes.prosa(isTerapia: true);
+    // subjetivoTextController.text = Reportes.reportes['Subjetivo'] ?? "";
+
+    Reportes.reportes['Datos_Generales'] = Pacientes.prosa(isTerapia: true);
+    Reportes.reportes['Antecedentes_Heredofamiliares'] =
+        Pacientes.heredofamiliares();
+    Reportes.reportes['Antecedentes_Hospitalarios'] = Pacientes.hospitalarios();
+    Reportes.reportes['Antecedentes_Patologicos'] = Pacientes.patologicos();
+
+    Repositorios.tipo_Analisis = Items.tiposAnalisis[1];
   }
+
+  String obtenerTextoInicial() {
+    return Reportes.reportes['Impresiones_Diagnosticas']?.isNotEmpty == true
+        ? Reportes.reportes['Impresiones_Diagnosticas']!
+        : Reportes.reportes['Diagnosticos_Hospital']?.isNotEmpty == true
+        ? Reportes.reportes['Diagnosticos_Hospital']!
+        : Reportes.impresionesDiagnosticas.isNotEmpty
+        ? Reportes.impresionesDiagnosticas
+        : Pacientes.diagnosticos();
+  }
+
+  String obtenerTextoInicialSubjetivo() {
+    return Reportes.reportes['Subjetivo'] ?? "";
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -86,120 +116,128 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
                     child: CarouselSlider(
                       items: [
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            EditTextArea(
-                                textController: initialTextController,
-                                labelEditText: "Datos generales",
-                                keyBoardType: TextInputType.text,
-                                numOfLines: 1,
-                                inputFormat: MaskTextInputFormatter()),
+                            Expanded(
+                              child: EditTextArea(
+                                  textController: initialTextController,
+                                  labelEditText: "Datos generales",
+                                  keyBoardType: TextInputType.text,
+                                  numOfLines: 1,
+                                  inputFormat: MaskTextInputFormatter()),
+                            ),
                             if (isTablet(context)) const SizedBox(height: 15),
-                            Row(
-                              children: [
-                                Expanded(
-                                  flex: isMobile(context) || isDesktop(context)
-                                      ? 3
-                                      : isLargeDesktop(context)
-                                          ? 4
-                                          : isTablet(context)
-                                              ? 2
-                                              : 1,
-                                  child: EditTextArea(
+                            Expanded(
+                              flex: 5,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    flex: isLargeDesktop(context)
+                                        ? 4
+                                        : isDesktop(context)
+                                        ? 3
+                                        : isTablet(context)
+                                        ? 2
+                                        : 1,
+                                    child: EditTextArea(
                                       textController: diagoTextController,
                                       labelEditText: "Impresiones diagnósticas",
                                       keyBoardType: TextInputType.multiline,
-                                      numOfLines: 10,
+                                      numOfLines: 15,
                                       limitOfChars: 700,
-                                      onChange: ((value) {
-                                        setState(() {
-                                          Reportes
-                                              .impresionesDiagnosticas = Reportes
-                                                      .reportes[
-                                                  'Impresiones_Diagnosticas'] =
-                                              Reportes.reportes[
-                                                      'Diagnosticos_Hospital'] =
-                                                  value;
-                                          // Terminal.printData(message: Reportes.impresionesDiagnosticas);
+                                      inputFormat: MaskTextInputFormatter(),
+                                      onChange: (value) {
+                                        // Cancela debounce previo si está activo
+                                        if (_debounce?.isActive ?? false) _debounce?.cancel();
+
+                                        // Reinicia debounce
+                                        _debounce = Timer(const Duration(milliseconds: 500), () {
+                                          final texto = value.trim();
+
+                                          Reportes.impresionesDiagnosticas = texto;
+                                          Reportes.reportes['Impresiones_Diagnosticas'] = texto;
+                                          Reportes.reportes['Diagnosticos_Hospital'] = texto;
                                         });
-                                      }),
-                                      inputFormat: MaskTextInputFormatter()),
-                                ),
-                                Expanded(
-                                  child: Wrap(
-                                    alignment: WrapAlignment.center,
-                                    spacing: 10,
-                                    children: [
-                                      CircleIcon(
-                                          iconed: Icons.abc,
-                                          onChangeValue: () {
-                                            setState(() {
-                                              diagoTextController.text =
-                                                  Sentences.capitalizeAll(
-                                                      diagoTextController.text);
-                                            });
-                                          }),
-                                      CircleIcon(
-                                          radios: 30,
-                                          iconed: Icons.home_mini_outlined,
-                                          onChangeValue: () {
-                                            setState(() {
-                                              diagoTextController.text =
-                                                  Reportes
-                                                      .impresionesDiagnosticas;
-                                            });
-                                          }),
-                                      CircleIcon(
-                                          iconed: Icons.list_alt_sharp,
-                                          onChangeValue: () {
-                                            Operadores.openDialog(
-                                                context: context,
-                                                chyldrim: DialogSelector(
-                                                  onSelected: ((value) {
-                                                    setState(() {
-                                                      Diagnosticos
-                                                              .selectedDiagnosis =
-                                                          value;
-                                                      diagoTextController.text =
-                                                          "${diagoTextController.text}\n${Diagnosticos.selectedDiagnosis}";
-                                                    });
-                                                  }),
-                                                ));
-                                          })
-                                    ],
+                                      },
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  Expanded(
+                                    child: Wrap(
+                                      alignment: WrapAlignment.center,
+                                      spacing: 10,
+                                      children: [
+                                        CircleIcon(
+                                            iconed: Icons.abc,
+                                            onChangeValue: () {
+                                              setState(() {
+                                                diagoTextController.text =
+                                                    Sentences.capitalizeAll(
+                                                        diagoTextController
+                                                            .text);
+                                              });
+                                            }),
+                                        CircleIcon(
+                                            radios: 30,
+                                            iconed: Icons.home_mini_outlined,
+                                            onChangeValue: () {
+                                              setState(() {
+                                                diagoTextController.text =
+                                                    Reportes
+                                                        .impresionesDiagnosticas;
+                                              });
+                                            }),
+                                        CircleIcon(
+                                            iconed: Icons.list_alt_sharp,
+                                            onChangeValue: () {
+                                              Operadores.openDialog(
+                                                  context: context,
+                                                  chyldrim: DialogSelector(
+                                                    onSelected: ((value) {
+                                                      setState(() {
+                                                        Diagnosticos
+                                                                .selectedDiagnosis =
+                                                            value;
+                                                        diagoTextController
+                                                                .text =
+                                                            "${diagoTextController.text}\n${Diagnosticos.selectedDiagnosis}";
+                                                      });
+                                                    }),
+                                                  ));
+                                            })
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                             if (isTablet(context)) const SizedBox(height: 10),
-                            EditTextArea(
-                                textController: subjetivoTextController,
-                                labelEditText: "Referidos del Paciente",
-                                keyBoardType: TextInputType.text,
-                                numOfLines: 1,
-                                selection: true,
-                                withShowOption: true,
-                                onSelected: () {
-                                  Cambios.toNextActivity(context, onClose: () {
-                                    setState(() {
-                                      subjetivoTextController.text =
-                                          Reportes.subjetivoHospitalizacion;
-                                      Reportes.reportes['Subjetivo'] =
-                                          "${subjetivoTextController.text}.";
-                                      // *******************************
-                                      Navigator.pop(context);
-                                    });
-                                  },
+                            Expanded(
+                              child: EditTextArea(
+                                  textController: subjetivoTextController,
+                                  labelEditText: "Referidos del Paciente",
+                                  keyBoardType: TextInputType.text,
+                                  numOfLines: 1,
+                                  selection: true,
+                                  withShowOption: true,
+                                  onSelected: () {
+                                    Cambios.toNextActivity(
+                                      context,
+                                      onClose: () {
+                                        subjetivoTextController.text = Reportes.subjetivoHospitalizacion;
+                                        Reportes.reportes['Subjetivo'] = "${subjetivoTextController.text}.";
+                                        Navigator.pop(context);
+                                      },
                                       tittle: 'Subjetivo del paciente',
-                                      chyld: const Subjetivos());
-                                },
-                                onChange: ((value) {
-                                  setState(() {
-                                    Reportes.subjetivoHospitalizacion = Reportes
-                                        .reportes['Subjetivo'] = "$value.";
-                                  });
-                                }),
-                                inputFormat: MaskTextInputFormatter()),
+                                      chyld: const Subjetivos(),
+                                    );
+                                  },
+                                  onChange: (value) {
+                                    Reportes.subjetivoHospitalizacion =
+                                    Reportes.reportes['Subjetivo'] = "$value.";
+                                  },
+                                  inputFormat: MaskTextInputFormatter()),
+                            ),
                           ],
                         ),
                         ExploracionFisica(),
@@ -399,6 +437,12 @@ class _ReporteEvolucionState extends State<ReporteEvolucion> {
         ),
       ]),
     );
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
   }
 
   // Controladores de widgets en general. ######################### ### # ### ############################

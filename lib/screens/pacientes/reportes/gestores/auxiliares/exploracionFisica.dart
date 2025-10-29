@@ -27,15 +27,14 @@ class ExploracionFisica extends StatefulWidget {
 }
 
 class _ExploracionFisicaState extends State<ExploracionFisica> {
-  Timer? _timer; // Definir un temporizador
+  late Timer _timer; // Definir un temporizador
   //
   var expoTextController = TextEditingController();
   var vitalTextController = TextEditingController();
 
-  var scrollSignoController = ScrollController();
-  var scrollExpoController = ScrollController();
+  var scrollSignoController = ScrollController(), scrollExpoController = ScrollController();
 
-  //
+  double? fontSize, numLines;
 
   // ######################### ### # ### ############################
   // INICIO DE LAS OPERACIONES STATE() Y BUILD().
@@ -43,18 +42,37 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
 
   @override
   void initState() {
-    setState(() {
-      expoTextController.text = Reportes.reportes['Exploracion_Fisica'] != ""
-          ? expoTextController.text = Reportes.reportes['Exploracion_Fisica']
-          : expoTextController.text = Reportes.exploracionFisica;
-      //
-      vitalTextController.text = Reportes.signosVitales = Reportes
-          .reportes['Signos_Vitales'] = Pacientes.signosVitales(indice: 6);
-    });
-    //
+    expoTextController.text =
+    Reportes.reportes['Exploracion_Fisica']?.isNotEmpty == true
+        ? Reportes.reportes['Exploracion_Fisica']!
+        : Reportes.exploracionFisica;
+
+    final vitalSigns = Pacientes.signosVitales(indice: 6);
+    Reportes.signosVitales = vitalSigns;
+    Reportes.reportes['Signos_Vitales'] = vitalSigns;
+    vitalTextController.text = vitalSigns;
+
     _timer = Timer.periodic(
-        Duration(seconds: 10), (timer) => _saveToFile(expoTextController.text));
+      const Duration(seconds: 10),
+          (timer) => _saveToFile(expoTextController.text),
+    );
+
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    fontSize = isTablet(context) ? 12 : 8;
+    numLines = isTablet(context) ? 12 : isMobile(context) ? 7 : 10;
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    expoTextController.dispose();
+    vitalTextController.dispose();
+    super.dispose();
   }
 
   @override
@@ -81,17 +99,12 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                                   textController: vitalTextController,
                                   labelEditText: "Signos Vitales",
                                   keyBoardType: TextInputType.multiline,
-                                  fontSize: isTablet(context) ? 12 : 8,
-                                  numOfLines: isTablet(context)
-                                      ? 12
-                                      : isMobile(context)
-                                          ? 7
-                                          : 10,
-                                  onChange: ((value) => setState(() {
-                                        Reportes.signosVitales = value;
-                                        Reportes.reportes['Signos_Vitales'] =
-                                            value;
-                                      })),
+                                  fontSize: fontSize!,
+                                  numOfLines: numLines!.toInt(),
+                                  onChange: (value) {
+                                    Reportes.signosVitales = value;
+                                    Reportes.reportes['Signos_Vitales'] = value;
+                                  },
                                   inputFormat: MaskTextInputFormatter()),
                             ),
                             isMobile(context)
@@ -108,17 +121,13 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                                   textController: vitalTextController,
                                   labelEditText: "Signos Vitales",
                                   keyBoardType: TextInputType.multiline,
-                                  fontSize: isTablet(context) ? 12 : 8,
-                                  numOfLines: isTablet(context)
-                                      ? 12
-                                      : isMobile(context)
-                                          ? 16
-                                          : 10,
-                                  onChange: ((value) => setState(() {
-                                        Reportes.signosVitales = value;
-                                        Reportes.reportes['Signos_Vitales'] =
-                                            value;
-                                      })),
+                                  fontSize: fontSize!,
+                                  numOfLines: numLines!.toInt(),
+                                  onChange: (value) {
+                                    Reportes.signosVitales = value;
+                                    Reportes.reportes['Signos_Vitales'] = value;
+                                  },
+
                                   inputFormat: MaskTextInputFormatter()),
                             ),
                             isMobile(context)
@@ -156,10 +165,11 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
                               : isMobile(context)
                                   ? 80
                                   : 20,
-                      onChange: (value) => setState(() {
-                            Reportes.exploracionFisica = value;
-                            Reportes.reportes['Exploracion_Fisica'] = value;
-                          }),
+                      onChange: (value) {
+                        Reportes.exploracionFisica = value;
+                        Reportes.reportes['Exploracion_Fisica'] = value;
+                      },
+
                       inputFormat: MaskTextInputFormatter()),
                 ),
                 widget.isTerapia!
@@ -312,35 +322,34 @@ class _ExploracionFisicaState extends State<ExploracionFisica> {
     ]);
   }
 
-  @override
-  void dispose() {
-    _timer!.cancel(); // Terminar Timer
-    super.dispose();
-  }
 
   mobileExploreOptions() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        CircleIcon(
-            iconed: Icons.file_open_outlined,
-            tittle: "Memoria temporal . . . ",
-            onChangeValue: () =>
-                _readFromFile().then((onValue) => Operadores.optionsActivity(
-                    context: context,
-                    tittle: "Memoria temporal . . . ",
-                    message: onValue.toString(),
-                    onClose: () => Navigator.of(context).pop(),
-                    textOptionA: "¿Sobre-escribier memoria?",
-                    optionA: () {
-                      expoTextController.text = onValue;
-                      Navigator.of(context).pop();
-                    }))),
-        CircleIcon(
-            iconed: Icons.save,
-            tittle: "Guardar en Temporal . . . ",
-            onChangeValue: () => _saveToFile(expoTextController.text)),
-        otherExploreOptions(context),
+        Expanded(
+          child: CircleIcon(
+              iconed: Icons.file_open_outlined,
+              tittle: "Memoria temporal . . . ",
+              onChangeValue: () =>
+                  _readFromFile().then((onValue) => Operadores.optionsActivity(
+                      context: context,
+                      tittle: "Memoria temporal . . . ",
+                      message: onValue.toString(),
+                      onClose: () => Navigator.of(context).pop(),
+                      textOptionA: "¿Sobre-escribier memoria?",
+                      optionA: () {
+                        expoTextController.text = onValue;
+                        Navigator.of(context).pop();
+                      }))),
+        ),
+        Expanded(
+          child: CircleIcon(
+              iconed: Icons.save,
+              tittle: "Guardar en Temporal . . . ",
+              onChangeValue: () => _saveToFile(expoTextController.text)),
+        ),
+        Expanded(child: otherExploreOptions(context)),
       ],
     );
   }

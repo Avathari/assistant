@@ -173,7 +173,7 @@ class _OperacionesHospitalizacionesState
               foregroundColor: Colors.white,
               backgroundColor: Theming.primaryColor,
               title: AppBarText(appBarTitile),
-              leading: IconButton(
+              leading: isDesktop(context)! ? IconButton(
                 icon: const Icon(
                   Icons.arrow_back,
                 ),
@@ -181,7 +181,7 @@ class _OperacionesHospitalizacionesState
                 onPressed: () {
                   onClose(context);
                 },
-              )),
+              ) : Container()),
       body: Container(
         decoration: ContainerDecoration.roundedDecoration(),
         padding: const EdgeInsets.all(8.0),
@@ -556,7 +556,7 @@ class _OperacionesHospitalizacionesState
               motivoEgresoValue = value;
             });
           },
-          items: Escalas.motivosEgresos,
+          items: Escalas.motivosEgresos.cast<String>(),
           width: isTablet(context)
               ? 200
               : isMobile(context)

@@ -38,61 +38,118 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
   var tratamientoTextController = TextEditingController();
 
   @override
+  @override
   void initState() {
-    if (widget.isPrequirurgica!) {
+    super.initState();
+
+    if (widget.isPrequirurgica == true) {
       Reportes.tratamientoPropuesto = Formatos.indicacionesPreoperatorias;
       Reportes.reportes['Recomendaciones_Generales'] =
           Reportes.tratamientoPropuesto;
 
-      eventualidadesTextController.text = "";
-      terapiasTextController.text = "";
-      analisisTextController.text = "";
+      eventualidadesTextController.clear();
+      terapiasTextController.clear();
+      analisisTextController.clear();
       tratamientoTextController.text = Reportes.tratamientoPropuesto;
     } else {
-      // eventualidadesTextController.text = Reportes.eventualidadesOcurridas;
-      // terapiasTextController.text = Reportes.terapiasPrevias;
-      analisisTextController.text = Reportes.reportes['Analisis_Medico'] != ""
-          ? Reportes.reportes['Analisis_Medico']
-          : Reportes.reportes['Analisis_Terapia'] != ""
-              ? Reportes.reportes['Analisis_Terapia']
-              : Reportes.analisisMedico;
-      // tratamientoTextController.text = Reportes.tratamientoPropuesto;
+      final analisis = (Reportes.analisisMedico?.trim().isNotEmpty ?? false)
+          ? Reportes.analisisMedico!.trim()
+          : (Reportes.reportes['Analisis_Medico'] ?? "").isNotEmpty
+              ? Reportes.reportes['Analisis_Medico']!
+              : (Reportes.reportes['Analisis_Terapia'] ?? "").isNotEmpty
+                  ? Reportes.reportes['Analisis_Terapia']!
+                  : "";
 
-      // Se reinicia Reportes.pendientes porque resulta acumulativo * * * * * * * * * * * * * * *
+      analisisTextController.text = analisis;
+
+      // Y sincronizas hacia el resto
+      Reportes.analisisMedico = analisis;
+      Reportes.reportes['Analisis_Medico'] = analisis;
+      Reportes.reportes['Analisis_Terapia'] = analisis;
+
       Reportes.pendientes.clear();
-      if (Pacientes.Pendiente != null && Pacientes.Pendiente!.isNotEmpty) {
+      if (Pacientes.Pendiente?.isNotEmpty == true) {
         String pendientes = "";
         for (var element in Pacientes.Pendiente!) {
-          final desc = element['Pace_Desc_PEN'];
+          final desc = element['Pace_Desc_PEN'] ?? "";
           final pen = element['Pace_PEN'] ?? "";
-
-          if (desc != null) {
+          if (desc.isNotEmpty) {
             final cleanDesc = desc.replaceAll("\n", "");
-            if (pendientes.isEmpty) {
-              pendientes = "          $cleanDesc. \n";
-            } else {
-              pendientes += "          $cleanDesc. \n";
-            }
-            Reportes.pendientes.add("          $pen - $cleanDesc. ");
+            pendientes += "          $cleanDesc.\n";
+            Reportes.pendientes.add("          $pen - $cleanDesc.");
           }
         }
 
         if (pendientes.isNotEmpty) {
+          final base = tratamientoTextController.text.trim();
           tratamientoTextController.text =
-          "${tratamientoTextController.text}. \nPLAN: \n$pendientes";
+              "$base${base.endsWith('.') ? '' : '.'}\nPLAN:\n$pendientes";
         }
       }
-
     }
 
-    // Añadir un Listener a analisisTextController
-    // analisisTextController
-    //     .addListener(() => _saveToFile(analisisTextController.text));
-    // Configurar un Timer que llame a _saveToFile cada 10 segundos
-    _timer = Timer.periodic(Duration(seconds: 7),
-        (timer) => _saveToFile(analisisTextController.text));
-    super.initState();
+    // Auto-save cada 7 s
+    _timer = Timer.periodic(
+      const Duration(seconds: 7),
+      (timer) => _saveToFile(analisisTextController.text),
+    );
   }
+
+  // void initState() {
+  //   if (widget.isPrequirurgica!) {
+  //     Reportes.tratamientoPropuesto = Formatos.indicacionesPreoperatorias;
+  //     Reportes.reportes['Recomendaciones_Generales'] =
+  //         Reportes.tratamientoPropuesto;
+  //
+  //     eventualidadesTextController.text = "";
+  //     terapiasTextController.text = "";
+  //     analisisTextController.text = "";
+  //     tratamientoTextController.text = Reportes.tratamientoPropuesto;
+  //   } else {
+  //     // eventualidadesTextController.text = Reportes.eventualidadesOcurridas;
+  //     // terapiasTextController.text = Reportes.terapiasPrevias;
+  //     analisisTextController.text = Reportes.reportes['Analisis_Medico'] != ""
+  //         ? Reportes.reportes['Analisis_Medico']
+  //         : Reportes.reportes['Analisis_Terapia'] != ""
+  //             ? Reportes.reportes['Analisis_Terapia']
+  //             : Reportes.analisisMedico;
+  //     // tratamientoTextController.text = Reportes.tratamientoPropuesto;
+  //
+  //     // Se reinicia Reportes.pendientes porque resulta acumulativo * * * * * * * * * * * * * * *
+  //     Reportes.pendientes.clear();
+  //     if (Pacientes.Pendiente != null && Pacientes.Pendiente!.isNotEmpty) {
+  //       String pendientes = "";
+  //       for (var element in Pacientes.Pendiente!) {
+  //         final desc = element['Pace_Desc_PEN'];
+  //         final pen = element['Pace_PEN'] ?? "";
+  //
+  //         if (desc != null) {
+  //           final cleanDesc = desc.replaceAll("\n", "");
+  //           if (pendientes.isEmpty) {
+  //             pendientes = "          $cleanDesc. \n";
+  //           } else {
+  //             pendientes += "          $cleanDesc. \n";
+  //           }
+  //           Reportes.pendientes.add("          $pen - $cleanDesc. ");
+  //         }
+  //       }
+  //
+  //       if (pendientes.isNotEmpty) {
+  //         tratamientoTextController.text =
+  //         "${tratamientoTextController.text}. \nPLAN: \n$pendientes";
+  //       }
+  //     }
+  //
+  //   }
+  //
+  //   // Añadir un Listener a analisisTextController
+  //   // analisisTextController
+  //   //     .addListener(() => _saveToFile(analisisTextController.text));
+  //   // Configurar un Timer que llame a _saveToFile cada 10 segundos
+  //   _timer = Timer.periodic(Duration(seconds: 7),
+  //       (timer) => _saveToFile(analisisTextController.text));
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -180,16 +237,11 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                                         ? 25
                                         : 22,
                             onChange: ((value) {
-                              setState(() {
-                                Reportes.analisisMedico =
-                                    Reportes.reportes['Analisis_Terapia'] =
-                                        Reportes.reportes['Analisis_Medico'] =
-                                            value;
-                                // Reportes.reportes['Analisis_Medico'] =
-                                //     "${Reportes.eventualidadesOcurridas} ${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                                // Reportes.reportes['Analisis_Terapia'] =
-                                //     "${Reportes.terapiasPrevias} ${Reportes.analisisMedico} ${Reportes.tratamientoPropuesto}";
-                              });
+                              final texto = value.trim();
+                              Reportes.analisisMedico = texto;
+
+                              Reportes.reportes['Analisis_Medico'] = texto;
+                              Reportes.reportes['Analisis_Terapia'] = texto;
                             }),
                             inputFormat: MaskTextInputFormatter()),
 
@@ -223,9 +275,10 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                     ),
                   ),
                   Expanded(
-                      flex: isMobile(context)? 4: 2,
-                      child: Wrap(alignment: WrapAlignment.center,
-                        runAlignment: WrapAlignment.spaceBetween,runSpacing: 5,
+                      flex: isMobile(context) ? 4 : 2,
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        runAlignment: WrapAlignment.spaceBetween, runSpacing: 5,
                         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           CircleIcon(
@@ -242,7 +295,7 @@ class _AnalisisMedicoState extends State<AnalisisMedico> {
                                                         widget.actualPage!)));
                               }),
                           CircleIcon(
-                            radios: 40,
+                              radios: 40,
                               iconed: Icons.library_books_outlined,
                               tittle: "Bibliográfico . . . ",
                               onChangeValue: () {

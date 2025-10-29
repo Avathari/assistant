@@ -298,30 +298,46 @@ class Ventometrias {
   ///
 
   static double get poderMecanico {
-    // return (0.098 * Valores.frecuenciaVentilatoria! * (Valores.volumenTidal!/1000) * (Valores.presionMaxima! - (Valores.presionPlateau! - Valores.presionFinalEsiracion!) / 2));
-    return (Valores.frecuenciaVentilatoria! *
-        (Valores.volumenTidal! / 1000) *
-        (Valores.presionMaxima! -
-            ((Valores.presionPlateau! - Valores.presionFinalEsiracion!) / 2)) *
-        0.098);
-    return (0.098 *
-        Valores.frecuenciaVentilatoria! *
-        (Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2));
-    // PM = (0.098 * Valores.frecuenciaVentilatoria * (
-    // Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2))
+    final fr = Valores.frecuenciaVentilatoria ?? 0.0;     // rpm
+    final vt = Valores.volumenTidal ?? 0.0;               // mL
+    final pmax = Valores.presionMaxima ?? 0.0;            // cmH2O
+    final pplat = Valores.presionPlateau ?? 0.0;          // cmH2O
+    final peep = Valores.presionFinalEsiracion ?? 0.0;    // cmH2O
+
+    if (fr == 0.0 || vt == 0.0) return 0.0;
+
+    final pm = fr * (vt / 1000) * (pmax - ((pplat - peep) / 2)) * 0.098;
+    return pm.isFinite ? pm : 0.0;
   }
+
+  // static double get poderMecanico {
+  //   // return (0.098 * Valores.frecuenciaVentilatoria! * (Valores.volumenTidal!/1000) * (Valores.presionMaxima! - (Valores.presionPlateau! - Valores.presionFinalEsiracion!) / 2));
+  //   return (Valores.frecuenciaVentilatoria! *
+  //       (Valores.volumenTidal! / 1000) *
+  //       (Valores.presionMaxima! -
+  //           ((Valores.presionPlateau! - Valores.presionFinalEsiracion!) / 2)) *
+  //       0.098);
+  //   return (0.098 *
+  //       Valores.frecuenciaVentilatoria! *
+  //       (Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2));
+  //   // PM = (0.098 * Valores.frecuenciaVentilatoria * (
+  //   // Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2))
+  // }
 
   /// Poder Distencion expresado como []
   ///
   /// VN : Menor a 12 J/min
   static double get poderDistencion {
-    return (0.098 *
-        (Ventometrias.drivingPressure) *
-        (Valores.volumenTidal! / 1000) *
-        Valores.frecuenciaVentilatoria!);
-    // PM = (0.098 * Valores.frecuenciaVentilatoria * (
-    // Valores.presionPlateau! - Valores.presionFinalEsiracion! / 2))
+    final dp = Ventometrias.drivingPressure.isFinite ? Ventometrias.drivingPressure : 0.0;
+    final vt = Valores.volumenTidal ?? 0.0;
+    final fr = Valores.frecuenciaVentilatoria ?? 0.0;
+
+    if (dp == 0.0 || vt == 0.0 || fr == 0.0) return 0.0;
+
+    final pd = 0.098 * dp * (vt / 1000) * fr;
+    return pd.isFinite ? pd : 0.0;
   }
+
 
   /// Poder Mecánico Indexado .
   ///     Al parecer describe exíto de intubación.
@@ -349,23 +365,32 @@ class Ventometrias {
 
   /// Driving Pressure expresado como [Vt / Cstat]
   static double get drivingPressure {
-    if (Valores.distensibilidadEstaticaMedida == null) {
-      if (Valores.volumenTidal != 0 &&
-          Ventometrias.distensibilidadPulmonarEstatica != 0) {
-        return (Valores.volumenTidal! /
-            Ventometrias.distensibilidadPulmonarEstatica);
-      } else {
-        return double.nan;
-      }
-    } else {
-      if (Valores.volumenTidal != 0 &&
-          Valores.distensibilidadEstaticaMedida != 0) {
-        return (Valores.volumenTidal! / Valores.distensibilidadEstaticaMedida!);
-      } else {
-        return double.nan;
-      }
-    }
+    final vt = Valores.volumenTidal ?? 0.0;
+    final cstat = Valores.distensibilidadEstaticaMedida ?? Ventometrias.distensibilidadPulmonarEstatica ?? 0.0;
+
+    if (vt == 0.0 || cstat == 0.0) return 0.0;
+
+    return vt / cstat;
   }
+
+  // static double get drivingPressure {
+  //   if (Valores.distensibilidadEstaticaMedida == null) {
+  //     if (Valores.volumenTidal != 0 &&
+  //         Ventometrias.distensibilidadPulmonarEstatica != 0) {
+  //       return (Valores.volumenTidal! /
+  //           Ventometrias.distensibilidadPulmonarEstatica);
+  //     } else {
+  //       return 0.0; // double.nan
+  //     }
+  //   } else {
+  //     if (Valores.volumenTidal != 0 &&
+  //         Valores.distensibilidadEstaticaMedida != 0) {
+  //       return (Valores.volumenTidal! / Valores.distensibilidadEstaticaMedida!);
+  //     } else {
+  //       return 0.0; // double.nan
+  //     }
+  //   }
+  // }
 
   // # ######################################################
   static double get distensibilidadPulmonarEstatica {

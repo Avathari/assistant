@@ -8,6 +8,7 @@ import 'package:assistant/operativity/pacientes/valores/Valores.dart';
 import 'package:assistant/screens/pacientes/auxiliares/antecesor/visuales.dart';
 import 'package:assistant/screens/pacientes/auxiliares/detalles/menus.dart';
 import 'package:assistant/screens/pacientes/auxiliares/estadisticas/estadisticas.dart';
+import 'package:assistant/screens/pacientes/reportes/reportes.dart';
 import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CrossLine.dart';
 
@@ -279,7 +280,6 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                               );
                                             }
                                           },
-
                                           child: Container(
                                             padding: const EdgeInsets.only(
                                                 left: 10.0,
@@ -483,60 +483,60 @@ class _GestionPacientesState extends State<GestionPacientes> {
                                                           //     isHorizontal: false,
                                                           //     // color: Colors.grey,
                                                           //     thickness: 4),
-                                                          Expanded(
-                                                            child: IconButton(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      right:
-                                                                          1.0),
-                                                              color:
-                                                                  Colors.grey,
-                                                              icon: Icon(snapshot
-                                                                              .data[posicion]
-                                                                          [
-                                                                          'Pace_Hosp'] ==
-                                                                      'Hospitalización'
-                                                                  ? Icons
-                                                                      .local_hotel_sharp
-                                                                  : Icons
-                                                                      .desk_sharp),
-                                                              onPressed: () {
-                                                                String hospen =
-                                                                    "";
-                                                                if (snapshot.data[
-                                                                            posicion]
-                                                                        [
-                                                                        'Pace_Hosp'] ==
-                                                                    'Consulta Externa') {
-                                                                  hospen =
-                                                                      'Hospitalización';
-                                                                } else {
-                                                                  hospen =
-                                                                      'Consulta Externa';
-                                                                }
-                                                                Actividades
-                                                                        .actualizar(
-                                                                            Databases
-                                                                                .siteground_database_regpace,
-                                                                            "UPDATE pace_iden_iden "
-                                                                            "SET Pace_Hosp = ? "
-                                                                            "WHERE ID_Pace = ?",
-                                                                            [
-                                                                              hospen,
-                                                                              snapshot.data[posicion]['ID_Pace']
-                                                                            ],
-                                                                            snapshot.data[posicion][
-                                                                                'ID_Pace'])
-                                                                    .then(
-                                                                        (value) =>
-                                                                            null)
-                                                                    .whenComplete(
-                                                                        () =>
-                                                                            reiniciar());
-                                                              },
-                                                            ),
-                                                          ),
+                                                          // Expanded(
+                                                          //   child: IconButton(
+                                                          //     padding:
+                                                          //         const EdgeInsets
+                                                          //             .only(
+                                                          //             right:
+                                                          //                 1.0),
+                                                          //     color:
+                                                          //         Colors.grey,
+                                                          //     icon: Icon(snapshot
+                                                          //                     .data[posicion]
+                                                          //                 [
+                                                          //                 'Pace_Hosp'] ==
+                                                          //             'Hospitalización'
+                                                          //         ? Icons
+                                                          //             .local_hotel_sharp
+                                                          //         : Icons
+                                                          //             .desk_sharp),
+                                                          //     onPressed: () {
+                                                          //       String hospen =
+                                                          //           "";
+                                                          //       if (snapshot.data[
+                                                          //                   posicion]
+                                                          //               [
+                                                          //               'Pace_Hosp'] ==
+                                                          //           'Consulta Externa') {
+                                                          //         hospen =
+                                                          //             'Hospitalización';
+                                                          //       } else {
+                                                          //         hospen =
+                                                          //             'Consulta Externa';
+                                                          //       }
+                                                          //       Actividades
+                                                          //               .actualizar(
+                                                          //                   Databases
+                                                          //                       .siteground_database_regpace,
+                                                          //                   "UPDATE pace_iden_iden "
+                                                          //                   "SET Pace_Hosp = ? "
+                                                          //                   "WHERE ID_Pace = ?",
+                                                          //                   [
+                                                          //                     hospen,
+                                                          //                     snapshot.data[posicion]['ID_Pace']
+                                                          //                   ],
+                                                          //                   snapshot.data[posicion][
+                                                          //                       'ID_Pace'])
+                                                          //           .then(
+                                                          //               (value) =>
+                                                          //                   null)
+                                                          //           .whenComplete(
+                                                          //               () =>
+                                                          //                   reiniciar());
+                                                          //     },
+                                                          //   ),
+                                                          // ),
                                                         ],
                                                       )
                                                     ],
@@ -992,10 +992,11 @@ class OperacionesPacientes extends StatefulWidget {
   // final Map<String, dynamic> lista;
   // final int index;
   final String operationActivity;
+  bool? withReturnOption;
 
   String _operation_button = 'Nulo';
 
-  OperacionesPacientes({super.key, required this.operationActivity});
+  OperacionesPacientes({super.key, required this.operationActivity, this.withReturnOption = true});
 
   @override
   State<OperacionesPacientes> createState() => _OperacionesPacientesState();
@@ -1111,7 +1112,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
           ? AppBar(
               title: AppBarText('Registro del Paciente'),
               backgroundColor: Colors.black,
-              leading: IconButton(
+              leading: widget.withReturnOption! ? IconButton(
                 icon: const Icon(
                   color: Colors.white,
                   Icons.arrow_back,
@@ -1126,7 +1127,7 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
                         builder: (context) => VisualPacientes(actualPage: 0)));
                   }
                 },
-              ),
+              ) : null,
               actions: isMobile(context)
                   ? [
                       GrandIcon(
@@ -2063,8 +2064,15 @@ class _OperacionesPacientesState extends State<OperacionesPacientes> {
             MaterialPageRoute(builder: (context) => const GestionPacientes()));
         break;
       case Constantes.Update:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const GestionPacientes()));
+        if (widget.withReturnOption!) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => VisualPacientes(actualPage: 0)));
+        } else {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ReportesMedicos(analysis: 2)));
+        }
+
+        // Navigator.push(context,
+        //     MaterialPageRoute(builder: (context) => const GestionPacientes()));
         break;
       default:
     }

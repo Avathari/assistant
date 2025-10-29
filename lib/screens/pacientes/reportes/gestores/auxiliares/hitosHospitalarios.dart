@@ -6,6 +6,7 @@ import 'package:assistant/conexiones/controladores/Pacientes.dart';
 import 'package:assistant/screens/operadores/pdfViewer.dart';
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/widgets/AppBarText.dart';
+import 'package:assistant/widgets/CrossLine.dart';
 import 'package:assistant/widgets/EditTextArea.dart';
 import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
@@ -32,20 +33,28 @@ class _HitoshospitalariosState extends State<Hitoshospitalarios> {
   String? filePath;
   static Uint8List? _pdfBytes;
   late PdfViewerController _pdfViewerController;
+  String textoAcumulado = "";
 
   @override
   void initState() {
-    setState(() {
-      hitosTextController.text = Reportes.reportes['Hitos_Hospitalarios'] != ""
-          ? Reportes.reportes['Hitos_Hospitalarios']
-          : Reportes.hitosHospitalarios;
-    });
-    //
-    _timer = Timer.periodic(
-        Duration(seconds: 7), (timer) => _saveToFile(hitosTextController.text));
     super.initState();
+
+    // Inicialización del controlador del visor PDF
     _pdfViewerController = PdfViewerController();
+
+    // Cargar texto inicial sin usar setState
+    final textoHitos = Reportes.reportes['Hitos_Hospitalarios'];
+    hitosTextController.text = (textoHitos != null && textoHitos.isNotEmpty)
+        ? textoHitos
+        : Reportes.hitosHospitalarios;
+
+    // Guardado periódico del texto
+    _timer = Timer.periodic(
+      const Duration(seconds: 7),
+          (timer) => _saveToFile(hitosTextController.text),
+    );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,38 +63,88 @@ class _HitoshospitalariosState extends State<Hitoshospitalarios> {
     if (isMobile(context)) {
       return Column(
         children: [
+          // Visualizador PDF si existe ruta de archivo
           if (filePath != null)
-            SfPdfViewer.file(
-              File(filePath!),
-              controller: _pdfViewerController,
-              onTextSelectionChanged: (details) {
-                // if (details.selectedText != null && details.selectedText!.isNotEmpty) {
-                //   setState(() {
-                //     textoAcumulado += details.selectedText! + "\n";
-                //     _notaController.text = textoAcumulado;
-                //   });
-                //   _pdfViewerController.clearSelection(); // Oculta el botón "Copy"
-                // }
-              },
+            Expanded(
+              flex: filePath != null? 4 : 1,
+              child: SfPdfViewer.file(
+                File(filePath!),
+                controller: _pdfViewerController,
+                onTextSelectionChanged: (details) {
+                  // Puedes descomentar este bloque si deseas acumular texto seleccionado
+                  // if (details.selectedText != null && details.selectedText!.isNotEmpty) {
+                  //   setState(() {
+                  //     textoAcumulado += "${details.selectedText!}\n";
+                  //     hitosTextController.text = textoAcumulado;
+                  //   });
+                  //   _pdfViewerController.clearSelection(); // Oculta el botón "Copy"
+                  // }
+                },
+              ),
             ),
+          CrossLine(thickness: 4, height: 30),
           Expanded(
-              flex: 4,
-              child: EditTextArea(
-                  textController: hitosTextController,
-                  labelEditText: "Hitos de la Hospitalización",
-                  keyBoardType: TextInputType.multiline,
-                  numOfLines: 35,
-                  limitOfChars: 3000,
-                  fontSize: widget.fontSize!,
-                  withShowOption: true,
-                  onSelected: () => _readFromFile(),
-                  onChange: (value) => setState(() =>
-                  Reportes.hitosHospitalarios =
-                  Reportes.reportes['Hitos_Hospitalarios'] = value),
-                  inputFormat: MaskTextInputFormatter())),
+            flex: 4,
+            child: EditTextArea(
+              textController: hitosTextController,
+              labelEditText: "Hitos de la Hospitalización",
+              keyBoardType: TextInputType.multiline,
+              numOfLines: 35,
+              limitOfChars: 3000,
+              fontSize: widget.fontSize!,
+              withShowOption: false,
+              onSelected: () => _readFromFile(),
+              onChange: (value) => setState(() {
+                Reportes.hitosHospitalarios =
+                Reportes.reportes['Hitos_Hospitalarios'] = value;
+              }),
+              inputFormat: MaskTextInputFormatter(),
+            ),
+          ),
+          Expanded(child: Row(
+            children: [
+              Expanded(
+                flex: 4,
+                child: GrandButton(
+                  labelButton: "Cargar archivo de Historial . . . ",
+                  onPress: () async {
+                    final path =
+                    await Directorios.choiseFromInternalDocuments(
+                        context);
+                    //
+                    setState(() {
+                      filePath = path!.files.single.path!;
+                    });
+                  },
+                ),
+              ),
+              Expanded(
+                child: GrandIcon(
+                  iconData: Icons.update,
+                  labelButton:
+                  "Actualizar Hitos de la Hospitalización . . . ",
+                  onPress: () async {
+                    //TODO
+                    Repositorios.actualizarHitos(
+                      context: context,
+                    );
+                    // .onError((onError, stackTrace) =>
+                    // Operadores.alertActivity(
+                    //   context: context,
+                    //   tittle:
+                    //       "ERROR  Al Actualizar registro de Nota",
+                    //   message: "ERROR : $onError : : $stackTrace",
+                    //   onAcept: () => Navigator.of(context).pop(),
+                    // ));
+                  },
+                ),
+              ),
+            ],
+          ),),
         ],
       );
-    } else {
+    }
+    else {
       return Row(
         children: [
           Expanded(

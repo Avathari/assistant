@@ -54,7 +54,6 @@ class ReportesMedicos extends StatefulWidget {
   int? analysis;
   String? fechaRealizacion;
 
-
   ReportesMedicos({super.key, this.analysis = 0});
 
   @override
@@ -81,6 +80,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
           widget.indexNote = 0;
           listNotes = notas;
         });
+        Archivos.createJsonFromMap(Pacientes.Notas!,
+            filePath:
+            "${Pacientes.localRepositoryPath}/reportes/reportes.json");
       }
 
       /// Leer antecedentes patológicos
@@ -278,7 +280,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
             flex: 2,
             child: Column(
               children: [
-                Expanded(flex: 5, child: Hospitalizado(isVertical: true)),
+                Expanded(flex: 6, child: Hospitalizado(isVertical: true)),
                 Expanded(
                   child: GrandIcon(
                     iconData: Icons.history_edu,
@@ -324,9 +326,9 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               child: pantallasReportesMedicos(widget.actualPage),
             )),
         // Expanded(flex: 2, child: _notasPrevias(context)),
-        if (isDesktop(context))
+        if (isDesktop(context) ||isLargeDesktop(context))
           Expanded(
-            flex: isDesktop(context) ? 3 : 2,
+            flex: isDesktop(context)||isLargeDesktop(context) ? 3 : 2,
             child: Column(
               children: [
                 Expanded(
@@ -1740,7 +1742,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                     tittle: "Consultando Registro de Notas previas . . .",
                     message: "Actualizando . . . ");
                 //
-                Pacientes.ID_Hospitalizacion = idHospitalizacion ;
+                Pacientes.ID_Hospitalizacion = idHospitalizacion;
                 Reportes.consultarNotasHospitalizacion()
                     .then((value) => setState(() {
                           if (value.isNotEmpty) {
@@ -1832,6 +1834,7 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
               Pacientes.prosa(isTerapia: true, otherForm: true)
           : "";
       //
+
       Reportes.impresionesDiagnosticas =
           Reportes.reportes['Impresiones_Diagnosticas'] =
               listNotes![widget.indexNote]['Diagnosticos_Hospital'] ?? "";
@@ -1884,6 +1887,13 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
                   ? CrossLine(thickness: 3)
                   : Container(),
               // DIAGNOSTICOS ********************************************
+              Text(
+                  "${Pacientes.Paciente['Pace_Ses'] == "Masculino" ? "Hombre" : "Mujer"}, "
+                  "${Pacientes.Paciente['Pace_Eda']} años, "
+                  "DEH ${(listNotes![widget.indexNote]['FechaPadecimiento'] != null && listNotes![widget.indexNote]['FechaPadecimiento'].toString().isNotEmpty) ? DateTime.now().difference(DateTime.parse(listNotes![widget.indexNote]['FechaPadecimiento'])).inDays.clamp(0, 9999) : 0}día(s)",
+                  maxLines: 1,
+                  style: Styles.textSyleGrowth(fontSize: 9)),
+              //
               Text(
                   listNotes![widget.indexNote]['Diagnosticos_Hospital'] != null
                       ? listNotes![widget.indexNote]['Diagnosticos_Hospital']
@@ -2177,6 +2187,4 @@ class _ReportesMedicosState extends State<ReportesMedicos> {
       ],
     );
   }
-
-
 }
