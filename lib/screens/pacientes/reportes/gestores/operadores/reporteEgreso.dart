@@ -205,13 +205,7 @@ class _ReporteEgresoState extends State<ReporteEgreso> {
                     ],
                   ),
                 ),
-                SingleChildScrollView(
-                    controller: ScrollController(),
-                    child: Column(
-                      children: [
-                        Hitoshospitalarios(),
-                      ],
-                    )), // Hitos de la Hospitalización
+                Hitoshospitalarios(), // Hitos de la Hospitalización
                 ExploracionFisica(),
                 // AuxiliaresExploracion(isIngreso: true),
                 AnalisisMedico(),

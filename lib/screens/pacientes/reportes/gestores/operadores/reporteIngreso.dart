@@ -27,45 +27,54 @@ class ReporteIngreso extends StatefulWidget {
 
 class _ReporteIngresoState extends State<ReporteIngreso> {
   @override
+  @override
   void initState() {
-    //
-    // Repositorios.consultarAnalisis();
-    Vitales.ultimoRegistro();
-    // INICIAR . . .
-    setState(() {
-      Reportes.reportes['Datos_Generales'] =
-          initialTextController.text = Pacientes.prosa();
-      Reportes.reportes['Padecimiento_Actual'] =
-          padesTextController.text = Reportes.padecimientoActual;
-      //
-      if (Reportes.reportes['Antecedentes_No_Patologicos'] != "" ||
-          Reportes.reportes['Antecedentes_No_Patologicos'] != null) {
-        noPatolTextController.text =
-            Reportes.reportes['Antecedentes_No_Patologicos'];
-      } else {
-        Reportes.personalesNoPatologicos = Reportes
-                .reportes['Antecedentes_No_Patologicos'] =
-            noPatolTextController.text = Pacientes.noPatologicosSimplificado();
-      }
-      //
-      Reportes.reportes['Antecedentes_Heredofamiliares'] = heredoTextController
-          .text = Pacientes.heredofamiliares().toLowerCase();
-
-      // Reportes.personalesNoPatologicos =
-      Reportes.reportes['Antecedentes_Quirurgicos'] =
-          hospiTextController.text = Pacientes.hospitalarios();
-      // .toLowerCase(); // Contiene el antecedente de cirugias.
-      //
-      Reportes.reportes['Antecedentes_Patologicos_Otros'] =
-          Reportes.reportes['Antecedentes_Patologicos_Ingreso'] =
-              Reportes.reportes['Antecedentes_Patologicos'] =
-                  patoloTextController.text = Pacientes.patologicos();
-      //
-      Reportes.reportes['Antecedentes_Alergicos'] =
-          alergoTextController.text = Pacientes.alergicos().toLowerCase();
-    });
     super.initState();
+
+    // Inicializa vitales
+    Vitales.ultimoRegistro();
+
+    // Asignaciones iniciales sin necesidad de setState
+    Reportes.reportes['Datos_Generales'] =
+        initialTextController.text = Pacientes.prosa();
+
+    Reportes.reportes['Padecimiento_Actual'] =
+        padesTextController.text = Reportes.padecimientoActual;
+
+    // Antecedentes No Patológicos
+    final noPat = Reportes.reportes['Antecedentes_No_Patologicos'];
+    if (noPat != null && noPat.isNotEmpty) {
+      noPatolTextController.text = noPat;
+    } else {
+      final np = Pacientes.noPatologicosSimplificado();
+      noPatolTextController.text = np;
+      Reportes.personalesNoPatologicos =
+      Reportes.reportes['Antecedentes_No_Patologicos'] = np;
+    }
+
+    // Heredofamiliares
+    final heredo = Pacientes.heredofamiliares().toLowerCase();
+    heredoTextController.text = heredo;
+    Reportes.reportes['Antecedentes_Heredofamiliares'] = heredo;
+
+    // Hospitalarios (quirúrgicos)
+    final hospi = Pacientes.hospitalarios();
+    hospiTextController.text = hospi;
+    Reportes.reportes['Antecedentes_Quirurgicos'] = hospi;
+
+    // Patológicos
+    final patol = Pacientes.patologicos();
+    patoloTextController.text = patol;
+    Reportes.reportes['Antecedentes_Patologicos'] = patol;
+    Reportes.reportes['Antecedentes_Patologicos_Otros'] = patol;
+    Reportes.reportes['Antecedentes_Patologicos_Ingreso'] = patol;
+
+    // Alergias
+    final alerg = Pacientes.alergicos().toLowerCase();
+    alergoTextController.text = alerg;
+    Reportes.reportes['Antecedentes_Alergicos'] = alerg;
   }
+
 //
 //   void buscar() {
 //     Archivos.readJsonToMap(
