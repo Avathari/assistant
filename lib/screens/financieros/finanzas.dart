@@ -22,6 +22,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:data_table_2/data_table_2.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 // # Clase .dart para la creación predeterminada de interfaces de registro, consulta y actualización.
 // Contiene un botón que enn _OperacionesActivosState.build que desplega una ventana emergente,
@@ -498,7 +500,8 @@ class _operacionesActivosState extends State<operacionesActivos> {
                                         widget.fileBytes = await Directorios
                                             .choiseFromDirectory();
                                         setState(() {
-                                          stringImage = base64Encode(widget.fileBytes!);
+                                          stringImage =
+                                              base64Encode(widget.fileBytes!);
                                         });
                                       }),
                                   GrandIcon(
@@ -518,7 +521,8 @@ class _operacionesActivosState extends State<operacionesActivos> {
                                         widget.fileBytes = await Directorios
                                             .choiseFromCamara();
                                         setState(() {
-                                          stringImage = base64Encode(widget.fileBytes!);
+                                          stringImage =
+                                              base64Encode(widget.fileBytes!);
                                         });
                                       }),
                                 ],
@@ -653,7 +657,6 @@ class _operacionesActivosState extends State<operacionesActivos> {
 
   void onClose(BuildContext context) {
     Activos.registros().whenComplete(() {
-
       switch (isMobile(context)) {
         case true:
           Navigator.push(
@@ -710,60 +713,68 @@ class _operacionesActivosState extends State<operacionesActivos> {
 
 class GestionActivos extends StatefulWidget {
   Widget? actualSidePage;
+  late List registros;
 
-  bool? reverse, esActualized;
+  late bool? reverse, esActualized;
 // ****************** *** ****** **************
   GestionActivos(
       {super.key,
       this.reverse = false,
       this.actualSidePage,
-      this.esActualized = true});
+      required this.esActualized});
 
   @override
   State<GestionActivos> createState() => _GestionActivosState();
 }
 
 class _GestionActivosState extends State<GestionActivos> {
-  @override
-  void initState() {
-    Activos.fileAssocieted = '${Financieros.localRepositoryPath}activos.json';
-    // ****************************************** * *** ******* *** *
-    if (widget.esActualized!) {
-      Actividades.detalles(Databases.siteground_database_regfine,
-              Activos.activos['activosStadistics'])
-          .then((value) {
-        // *************************************** * *** ******* *** *
-        Terminal.printSuccess(
-            message:
-                "Actualizando repositorio de Activos y Estadisticas . . . ");
-        // *************************************** * *** ******* *** *
-        Archivos.createJsonFromMap([value], filePath: Activos.fileStadistics);
-      }).whenComplete(() => iniciar());
-    } else {
-      iniciar();
-    }
-    super.initState();
-  }
+  bool cargando = true;
   // @override
   // void initState() {
-  //   if (widget.esActualized!) {
-  //     if (widget.reverse!) {
-  //       reiniciar(withStats: false);
-  //     } else {
-  //       Operadores.loadingActivity(
-  //           context: context,
-  //           tittle: "Registrado Información",
-  //           message: "Registrando información . . . ");
-  //       reiniciar(withStats: true);
-  //     }
-  //   } else {
-  //     if (widget.reverse!) {
-  //       iniciar();
-  //     } else {
-  //       reiniciar(withStats: false);
-  //     }
-  //   }
   //   super.initState();
+  //
+  //   // Inicializamos la ruta de archivo local
+  //   Activos.fileAssocieted = '${Financieros.localRepositoryPath}activos.json';
+  //
+  //   // Se ejecuta el flujo principal asíncrono después del build inicial
+  //   if (widget.esActualized!) {
+  //     Future.microtask(() async {
+  //       try {
+  //         if (widget.esActualized ?? false) {
+  //           final value = await Actividades.detalles(
+  //             Databases.siteground_database_regfine,
+  //             Activos.activos['activosStadistics'],
+  //           );
+  //           await Archivos.createJsonFromMap([value],
+  //               filePath: Activos.fileStadistics);
+  //         }
+  //         // iniciar();
+  //
+  //       } catch (e, s) {
+  //         Terminal.printAlert(message: 'Error en initState: $e\n$s');
+  //       }
+  //     });
+  //   }
+  // }
+
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _cargarDatos();
+  // }
+  //
+  // Future<void> _cargarDatos() async {
+  //   try {
+  //     await FinancierosRepo().cargarDesdeLocal();
+  //     setState(() {
+  //       widget.registros = FinancierosRepo().registros;
+  //       cargando = false;
+  //     });
+  //   } catch (e, s) {
+  //     Terminal.printAlert(message: '❌ Error al cargar registros: $e\n$s');
+  //     setState(() => cargando = false);
+  //   }
   // }
 
   @override
@@ -771,7 +782,7 @@ class _GestionActivosState extends State<GestionActivos> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        foregroundColor: Colors.grey,
+          foregroundColor: Colors.grey,
           backgroundColor: Theming.primaryColor,
           leading: IconButton(
             icon: const Icon(
@@ -813,7 +824,7 @@ class _GestionActivosState extends State<GestionActivos> {
                 } else {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (BuildContext context) => GestionActivos(
-                            actualSidePage: const EstadisticasActivos(),
+                            actualSidePage: const EstadisticasActivos(), esActualized: false,
                           )));
                 }
               },
@@ -830,219 +841,135 @@ class _GestionActivosState extends State<GestionActivos> {
           ]),
       body: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         Expanded(
+          flex: isDesktop(context) || isTablet(context) || isLargeDesktop(context) ? 2 : 1,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                        flex: 4,
-                        child: GrandButton(
-                          weigth: 1000,
-                          labelButton: "Por Fecha",
-                          onPress: () {
-                            reiniciar(withStats: false);
-                            Operadores.selectOptionsActivity(
-                                context: context,
-                                options: Listas.listWithoutRepitedValues(
-                                    Listas.listFromMapWithOneKey(foundedItems!,
-                                        keySearched: 'Fecha_Pago_Programado')),
-                                onClose: (value) {
-                                  Navigator.of(context).pop();
-                                  Terminal.printSuccess(message: value);
-                                  _runFilterSearch(
-                                      enteredKeyword: value,
-                                      keySearched: 'Fecha_Pago_Programado');
-                                });
-                          },
-                        )),
-                    Expanded(
-                        child: GrandIcon(
-                      iconData: Icons.select_all,
-                      labelButton: 'Saldado',
-                      onPress: () {
-                        _runActiveSearch(
-                            enteredKeyword: 'Saldado',
-                            keySearched: 'Estado_Actual');
-                      },
-                    )),
-                    Expanded(
-                        child: GrandIcon(
-                      labelButton: 'Vigente',
-                      iconData: Icons.video_label,
-                      onPress: () {
-                        _runActiveSearch(
-                            enteredKeyword: 'Vigente',
-                            keySearched: 'Estado_Actual');
-                      },
-                    )),
-                    // Expanded(child: CrossLine(isHorizontal: false, thickness: 6, color: Colors.grey,)),
-                    Expanded(
-                        child: GrandIcon(
-                      labelButton: 'Al Final . . . ',
-                      iconData: Icons.invert_colors_on,
-                      onPress: () {
-                        setState(() {
-                          if (widget.reverse == true) {
-                            widget.reverse = false;
-                            gestionScrollController.jumpTo(
-                                gestionScrollController
-                                    .position.minScrollExtent);
-                          } else {
-                            widget.reverse = true;
-                            gestionScrollController.jumpTo(
-                                gestionScrollController
-                                    .position.maxScrollExtent);
-                          }
-                        });
-                      },
-                    )),
-                  ],
-                ),
                 Expanded(
-                  flex: 9,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: isDesktop(context) ? 8 : 4,
-                        child: RefreshIndicator(
-                          color: Colors.white,
-                          backgroundColor: Colors.black,
-                          onRefresh: _pullListRefresh,
-                          child: FutureBuilder<List>(
-                            initialData: foundedItems!,
-                            future: Future.value(foundedItems!),
-                            builder: (context, AsyncSnapshot snapshot) {
-                              if (snapshot.hasError) print(snapshot.error);
-                              return snapshot.hasData
-                                  ? ListView.builder(
-                                padding: EdgeInsets.all(5.0),
-                                      reverse: widget.reverse!,
-                                      controller: gestionScrollController,
-                                      shrinkWrap: true,
-                                      itemCount: snapshot.data == null
-                                          ? 0
-                                          : snapshot.data.length,
-                                      itemBuilder: (context, posicion) {
-                                        return itemListView(
-                                            snapshot, posicion, context);
-                                      },
-                                    )
-                                  : Center(
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          const CircularProgressIndicator(),
-                                          const SizedBox(height: 50),
-                                          Text(
-                                            snapshot.hasError
-                                                ? snapshot.error.toString()
-                                                : snapshot.error.toString(),
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 10),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                            },
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                          child: Container(
-                        padding: const EdgeInsets.only(right: 8.0, left: 8.0),
-                        margin: const EdgeInsets.only(left: 8.0),
-                        decoration: ContainerDecoration.roundedDecoration(),
-                        child: Column(
-                          children: [
-                            Expanded(
-                                child: GrandIcon(
-                              iconData: Icons.move_up_outlined,
-                              labelButton: 'Al principio . . .',
-                              onPress: () {
-                                setState(() {
-                                  gestionScrollController.jumpTo(
-                                      gestionScrollController
-                                          .position.minScrollExtent);
-                                });
-                              },
-                            )),
-                            CrossLine(),
-                            Expanded(
-                                child: GrandIcon(
-                              iconData: Icons.insights,
-                              labelButton: 'Ingresos',
-                              onPress: () {
-                                _runActiveSearch(enteredKeyword: 'Ingresos');
-                              },
-                            )),
-                            Expanded(
-                                child: GrandIcon(
-                              labelButton: 'Egresos',
-                              iconData: Icons.leaderboard_sharp,
-                              onPress: () {
-                                _runActiveSearch(enteredKeyword: 'Egresos');
-                              },
-                            )),
-                            Expanded(
-                                child: GrandIcon(
-                              labelButton: 'Activos',
-                              iconData: Icons.ac_unit,
-                              onPress: () {
-                                _runActiveSearch(enteredKeyword: 'Activos');
-                              },
-                            )),
-                            Expanded(
-                                child: GrandIcon(
-                              iconData: Icons.pages_sharp,
-                              labelButton: 'Pasivos',
-                              onPress: () {
-                                _runActiveSearch(enteredKeyword: 'Pasivos');
-                              },
-                            )),
-                            Expanded(
-                                child: GrandIcon(
-                              labelButton: 'Patrimonio',
-                              iconData: Icons.hdr_weak_sharp,
-                              onPress: () {
-                                _runActiveSearch(enteredKeyword: 'Patrimonio');
-                              },
-                            )),
-                            Expanded(
-                                child: GrandIcon(
-                              labelButton: 'Todo',
-                              iconData: Icons.all_out,
-                              onPress: () {
-                                _pullListRefresh();
-                              },
-                            )),
-                            CrossLine(),
-                            Expanded(
-                                child: GrandIcon(
-                              iconData: Icons.move_down_outlined,
-                              labelButton: 'Al final . . .',
-                              onPress: () {
-                                setState(() {
-                                  gestionScrollController.jumpTo(
-                                      gestionScrollController
-                                          .position.maxScrollExtent);
-                                });
-                              },
-                            )),
-                          ],
-                        ),
-                      ))
-                    ],
+                  flex: 1,
+                  child: FutureBuilder(
+                    future: FinancierosRepo().cargarDesdeLocal(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      if (snapshot.hasError) {
+                        return Center(
+                            child: Text(
+                                'Error al cargar datos: ${snapshot.error}'));
+                      }
+
+                      widget.registros = FinancierosRepo().registros;
+                      if (widget.registros.isEmpty) {
+                        return const Center(
+                            child: Text('Sin registros disponibles'));
+                      }
+
+                      return GraficaFinanciera(registros: widget.registros, esActualizado: false);
+                    },
+                  ),
+                ),
+                // Row(
+                //   children: [
+                //     Expanded(
+                //         flex: 4,
+                //         child: GrandButton(
+                //           weigth: 1000,
+                //           labelButton: "Por Fecha",
+                //           onPress: () {
+                //             reiniciar(withStats: false);
+                //             Operadores.selectOptionsActivity(
+                //                 context: context,
+                //                 options: Listas.listWithoutRepitedValues(
+                //                     Listas.listFromMapWithOneKey(foundedItems!,
+                //                         keySearched: 'Fecha_Pago_Programado')),
+                //                 onClose: (value) {
+                //                   Navigator.of(context).pop();
+                //                   Terminal.printSuccess(message: value);
+                //                   _runFilterSearch(
+                //                       enteredKeyword: value,
+                //                       keySearched: 'Fecha_Pago_Programado');
+                //                 });
+                //           },
+                //         )),
+                //     Expanded(
+                //         child: GrandIcon(
+                //       iconData: Icons.select_all,
+                //       labelButton: 'Saldado',
+                //       onPress: () {
+                //         _runActiveSearch(
+                //             enteredKeyword: 'Saldado',
+                //             keySearched: 'Estado_Actual');
+                //       },
+                //     )),
+                //     Expanded(
+                //         child: GrandIcon(
+                //       labelButton: 'Vigente',
+                //       iconData: Icons.video_label,
+                //       onPress: () {
+                //         _runActiveSearch(
+                //             enteredKeyword: 'Vigente',
+                //             keySearched: 'Estado_Actual');
+                //       },
+                //     )),
+                //     // Expanded(child: CrossLine(isHorizontal: false, thickness: 6, color: Colors.grey,)),
+                //     Expanded(
+                //         child: GrandIcon(
+                //       labelButton: 'Al Final . . . ',
+                //       iconData: Icons.invert_colors_on,
+                //       onPress: () {
+                //         setState(() {
+                //           if (widget.reverse == true) {
+                //             widget.reverse = false;
+                //             gestionScrollController.jumpTo(
+                //                 gestionScrollController
+                //                     .position.minScrollExtent);
+                //           } else {
+                //             widget.reverse = true;
+                //             gestionScrollController.jumpTo(
+                //                 gestionScrollController
+                //                     .position.maxScrollExtent);
+                //           }
+                //         });
+                //       },
+                //     )),
+                //   ],
+                // ),
+                // ##############################################################
+                Expanded(
+                  flex: 1,
+                  child: FutureBuilder(
+                    future: FinancierosRepo().cargarDesdeLocal(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      if (snapshot.hasError) {
+                        return Center(
+                            child: Text(
+                                'Error al cargar datos: ${snapshot.error}'));
+                      }
+
+                      widget.registros = FinancierosRepo().registros;
+                      if (widget.registros.isEmpty) {
+                        return const Center(
+                            child: Text('Sin registros disponibles'));
+                      }
+
+                      if (isLargeDesktop(context)) {
+                        return ListaFinanciera(registros: widget.registros);
+                      } else {
+                        return TablaFinanciera(registros: widget.registros, esActualizado: widget.esActualized!);
+                      }
+                    },
                   ),
                 ),
               ],
             ),
           ),
         ),
-        isDesktop(context) || isTablet(context)
+        isDesktop(context) || isTablet(context) || isLargeDesktop(context)
             ? Expanded(flex: 1, child: widget.actualSidePage!)
             : Container()
       ]),
@@ -1066,7 +993,7 @@ class _GestionActivosState extends State<GestionActivos> {
     });
   }
 
-  void reiniciar({bool withStats = false}) {
+  Future<void> reiniciar({bool withStats = false}) async {
     Operadores.loadingActivity(
         context: context,
         tittle: "Consultando Información",
@@ -1075,14 +1002,15 @@ class _GestionActivosState extends State<GestionActivos> {
         message: "REINICIAR : Iniciando actividad : : \n "
             "\tConsulta de Activos del Usuario . . .");
     // **************************************************************************
-    Activos.registros().whenComplete(() {
-      setState(() {
-        Navigator.pop(context);
-        // Activos.fromJsonItem(Financieros.Activos);
-        foundedItems = Financieros.Activos;
-      });
-    })
-        // **************************************************************************
+    // Activos.registros().whenComplete(() {
+    //   setState(() {
+    //     Navigator.pop(context);
+    //     // Activos.fromJsonItem(Financieros.Activos);
+    //     foundedItems = Financieros.Activos;
+    //   });
+    // })
+    // **************************************************************************
+    await FinancierosRepo().reiniciar()
         .onError((error, stackTrace) {
       Terminal.printAlert(
           message:
@@ -1149,19 +1077,7 @@ class _GestionActivosState extends State<GestionActivos> {
     // }
   }
 
-  // .whenComplete(() => Operadores.alertActivity(
-  //     context: context,
-  //     tittle: "Datos Recargados",
-  //     message: "Registro Actualizado",
-  //     onAcept: () {
-  //       Navigator.of(context).push(
-  //         MaterialPageRoute(
-  //           builder: (BuildContext context) => GestionActivos(
-  //             actualSidePage: const EstadisticasActivos(),
-  //           ),
-  //         ),
-  //       );
-  //     }));
+  //
   void deleteRegister(
       AsyncSnapshot<dynamic> snapshot, int posicion, BuildContext context) {
     try {
@@ -1456,3 +1372,1086 @@ class _GestionActivosState extends State<GestionActivos> {
   var gestionScrollController = ScrollController();
   var searchTextController = TextEditingController();
 }
+
+// #########################################################
+class TablaFinanciera extends StatefulWidget {
+  late List registros;
+  late bool esActualizado;
+
+  TablaFinanciera({super.key, required this.registros, required this.esActualizado, });
+
+  @override
+  State<TablaFinanciera> createState() => _TablaFinancieraState();
+}
+
+class _TablaFinancieraState extends State<TablaFinanciera> {
+  String filtroTipo = 'Todos';
+  String filtroTexto = '';
+  DateTime? fechaInicio;
+  DateTime? fechaFin;
+  bool cargando = true;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.esActualizado) {
+      _cargarDatos();
+    }
+  }
+
+  Future<void> _cargarDatos() async {
+    try {
+      await FinancierosRepo().cargarDesdeLocal();
+      setState(() {
+        widget.registros = FinancierosRepo().registros;
+        cargando = false;
+      });
+    } catch (e, s) {
+      Terminal.printAlert(message: '❌ Error al cargar registros: $e\n$s');
+      setState(() => cargando = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (cargando) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    final filtrados = widget.registros.where((e) {
+      final tipo = (e['Tipo_Recurso'] ?? '').toString().toLowerCase();
+      final fechaStr = e['Fecha_Pago_Programado']?.toString() ?? '';
+      final desc = (e['Concepto_Recurso'] ?? '').toString().toLowerCase();
+
+      DateTime? fecha;
+      try {
+        fecha = DateTime.tryParse(fechaStr);
+      } catch (_) {
+        fecha = null;
+      }
+
+      final coincideTipo =
+          filtroTipo == 'Todos' || tipo == filtroTipo.toLowerCase();
+      final coincideTexto =
+          filtroTexto.isEmpty || desc.contains(filtroTexto.toLowerCase());
+      final coincideFecha = (fechaInicio == null && fechaFin == null) ||
+          (fecha != null &&
+              (fechaInicio == null || fecha.isAfter(fechaInicio!)) &&
+              (fechaFin == null || fecha.isBefore(fechaFin!)));
+
+      return coincideTipo && coincideTexto && coincideFecha;
+    }).toList();
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          _buildFiltros(context),
+          const SizedBox(height: 8),
+          Expanded(
+            child: DataTable2(
+              columnSpacing: 10,
+              horizontalMargin: 12,
+              dividerThickness: 0.5,
+              headingRowColor:
+              MaterialStateProperty.all(Colors.blueGrey.shade900),
+              dataRowColor: MaterialStateProperty.all(Colors.grey.shade900),
+              columns: const [
+                DataColumn(
+                    label: Text('Fecha',
+                        style: TextStyle(color: Colors.white, fontSize: 13))),
+                DataColumn(
+                    label: Text('Tipo',
+                        style: TextStyle(color: Colors.white, fontSize: 13))),
+                DataColumn(
+                    label: Text('Categoría',
+                        style: TextStyle(color: Colors.white, fontSize: 13))),
+                DataColumn(
+                    label: Text('Monto',
+                        style: TextStyle(color: Colors.white, fontSize: 13))),
+                DataColumn(
+                    label: Text('Acciones',
+                        style: TextStyle(color: Colors.white, fontSize: 13))),
+              ],
+              rows: filtrados.map((item) {
+                final tipo = (item['Tipo_Recurso'] ?? '').toString();
+                final monto = double.tryParse(item['Monto_Pagado'].toString()) ??
+                    0;
+                final color = _colorPorTipo(tipo);
+
+                return DataRow(cells: [
+                  DataCell(Text(item['Fecha_Pago_Programado'] ?? '',
+                      style: const TextStyle(color: Colors.white70))),
+                  DataCell(
+                      Text(tipo, style: const TextStyle(color: Colors.white))),
+                  DataCell(Text(item['Concepto_Recurso'] ?? '',
+                      style: const TextStyle(color: Colors.white70))),
+                  DataCell(Text("\$${monto.toStringAsFixed(2)}",
+                      style: TextStyle(
+                          color: color, fontWeight: FontWeight.bold))),
+                  DataCell(Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: IconButton(
+                          icon: const Icon(Icons.edit, color: Colors.amber),
+                          onPressed: () => _editar(item, context),
+                        ),
+                      ),
+                      Expanded(
+                        child: IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.redAccent),
+                          onPressed: () => _borrar(item, context),
+                        ),
+                      ),
+                    ],
+                  )),
+                ]);
+              }).toList(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 🎨 Colores según tipo
+  Color _colorPorTipo(String tipo) {
+          final normalized = tipo.toLowerCase().trim();
+      if (normalized.startsWith('ingreso')) return Colors.greenAccent;
+      if (normalized.startsWith('egreso')) return Colors.redAccent;
+      if (normalized.startsWith('activo')) return Colors.yellowAccent;
+      if (normalized.startsWith('pasivo')) return Colors.lightBlueAccent;
+      return Colors.white70;
+
+  }
+
+  // 🧭 Filtros superiores
+  Widget _buildFiltros(BuildContext context) =>
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
+        child: Wrap(
+          alignment: WrapAlignment.spaceBetween,
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            DropdownButton<String>(
+              dropdownColor: Colors.grey.shade900,
+              style: const TextStyle(color: Colors.white),
+              value: filtroTipo,
+              items: const [
+                'Todos',
+                'Ingresos',
+                'Egresos',
+                'Activos',
+                'Pasivos'
+              ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+              onChanged: (v) => setState(() => filtroTipo = v!),
+            ),
+            _botonFecha(context, true),
+            _botonFecha(context, false),
+            SizedBox(
+              width: 200,
+              child: TextField(
+                decoration: InputDecoration(
+                  labelText: 'Buscar categoría...',
+                  labelStyle: const TextStyle(color: Colors.white70),
+                  prefixIcon: const Icon(Icons.search, color: Colors.white70),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white24),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blueAccent),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                style: const TextStyle(color: Colors.white),
+                onChanged: (t) => setState(() => filtroTexto = t),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  Widget _botonFecha(BuildContext context, bool esInicio) {
+    final fecha = esInicio ? fechaInicio : fechaFin;
+    final label = esInicio ? "Desde" : "Hasta";
+    return ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blueGrey.shade800,
+      ),
+      icon: const Icon(Icons.date_range, size: 16),
+      label: Text(
+        fecha == null ? label : "$label: ${fecha.toString().split(' ')[0]}",
+        style: const TextStyle(color: Colors.white),
+      ),
+      onPressed: () async {
+        final seleccion = await showDatePicker(
+          context: context,
+          initialDate: fecha ?? DateTime.now(),
+          firstDate: DateTime(2020),
+          lastDate: DateTime(2030),
+          builder: (context, child) =>
+              Theme(
+                data: Theme.of(context).copyWith(
+                  colorScheme: const ColorScheme.dark(
+                    primary: Colors.blueAccent,
+                    onPrimary: Colors.white,
+                    surface: Colors.black,
+                    onSurface: Colors.white,
+                  ),
+                ),
+                child: child!,
+              ),
+        );
+        if (seleccion != null) {
+          setState(() {
+            if (esInicio) {
+              fechaInicio = seleccion;
+            } else {
+              fechaFin = seleccion;
+            }
+          });
+        }
+      },
+    );
+  }
+
+  // ✏️ EDITAR → ejecuta flujo GestoresActivos.onSelected()
+
+  void _editar(Map<String, dynamic> item, BuildContext context) {
+    try {
+      final int posicion = widget.registros.indexOf(item);
+
+      // Asigna el activo actual y la lista completa
+      Activos.Activo = widget.registros[posicion];
+      Financieros.Activos = widget.registros;
+      Activos.ID_Financieros = item['ID_Registro'];
+
+      // Muestra indicador de carga
+      Operadores.loadingActivity(
+        context: context,
+        tittle: "Consultando Información",
+        message:
+        "Consultando información del Registro #${Activos.ID_Financieros} . . . ",
+      );
+
+      // Obtiene la imagen asociada y continúa
+      Activos.getImage().then((value) {
+        Activos.imagenActivo = value['Fine_IMG'];
+
+        Terminal.printSuccess(
+            message: "Imagen : ${Activos.imagenActivo}");
+
+        Navigator.pop(context); // Cierra el diálogo de carga
+
+        // Abre la vista correspondiente
+        toOperaciones(context, Constantes.Update);
+      }).onError((error, stackTrace) {
+        Operadores.notifyActivity(
+          context: context,
+          tittle: "Error - No Se pudo Consultar Imagen",
+          message: "ERROR - $error : $stackTrace",
+          onAcept: () =>Navigator.pop(context),
+          onClose: () => Navigator.pop(context),
+        );
+
+        Terminal.printAlert(message: "ERROR - $error : $stackTrace");
+      });
+    } catch (e, s) {
+      Terminal.printAlert(message: "❌ Error al editar: $e\n$s");
+    }
+  }
+
+  // 🗑 BORRAR → ejecuta flujo GestoresActivos.deleteRegister()
+  void _borrar(Map<String, dynamic> item, BuildContext context) {
+    try {
+      Actividades.eliminar(Databases.siteground_database_regfine,
+          Activos.activos['deleteQuery'], item['ID_Registro']);
+      setState(() {
+        widget.registros.remove(item);
+      });
+      Terminal.printWarning(
+          message: "🗑 Registro eliminado: ${item['Concepto_Recurso']}");
+    } catch (e) {
+      Operadores.alertActivity(
+        context: context,
+        tittle: "Error al Eliminar Registro . . .",
+        message: "ERROR - $e",
+        onClose: () => Navigator.pop(context),
+        onAcept: () => Navigator.pop(context),
+      );
+    }
+  }
+
+  // try {
+  //   Actividades.eliminar(Databases.siteground_database_regfine,
+  //       Activos.activos['deleteQuery'], item['ID_Registro']);
+  //   setState(() {
+  //     widget.registros.remove(item);
+  //   });
+  //   Terminal.printWarning(
+  //       message: "🗑 Registro eliminado: ${item['Concepto_Recurso']}");
+  // } catch (e) {
+  //   Operadores.alertActivity(
+  //     context: context,
+  //     tittle: "Error al Eliminar Registro . . .",
+  //     message: "ERROR - $e",
+  //     onClose: () => Navigator.pop(context),
+  //     onAcept: () => Navigator.pop(context),
+  //   );
+  // } finally {
+  //   Navigator.of(context).pop();
+  // }
+
+
+  void toOperaciones(BuildContext context, String operationActivity) {
+    if (isMobile(context)) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) =>
+              operacionesActivos(
+                operationActivity: operationActivity,
+              )));
+    } else {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) =>
+              GestionActivos(
+                esActualized: false,
+                actualSidePage: operacionesActivos(
+                  operationActivity: operationActivity,
+                ),
+              )));
+    }
+  }
+}
+
+// #########################################################
+class ListaFinanciera extends StatefulWidget {
+  late List registros;
+  late bool? reverse = false;
+
+  ListaFinanciera({super.key, required this.registros});
+
+  @override
+  State<ListaFinanciera> createState() => _ListaFinancieraState();
+}
+
+class _ListaFinancieraState extends State<ListaFinanciera> {
+  String filtroTipo = 'Todos';
+  String filtroTexto = '';
+  DateTime? fechaInicio;
+  DateTime? fechaFin;
+  bool cargando = true;
+
+    @override
+    void initState() {
+      super.initState();
+      _cargarDatos();
+    }
+
+    Future<void> _cargarDatos() async {
+      try {
+        await FinancierosRepo().cargarDesdeLocal();
+        setState(() {
+          widget.registros = FinancierosRepo().registros;
+          cargando = false;
+        });
+      } catch (e, s) {
+        Terminal.printAlert(message: '❌ Error al cargar registros: $e\n$s');
+        setState(() => cargando = false);
+      }
+    }
+
+  @override
+  Widget build(BuildContext context) {
+    if (cargando) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+          children: [
+            // 📋 PANEL PRINCIPAL DE REGISTROS
+            Expanded(
+              flex: isDesktop(context) || isLargeDesktop(context)? 8 : 4,
+              child: Column(
+                children: [
+                  // 🔍 FILTROS SUPERIORES
+                  _buildFiltrosCompactos(context),
+
+                  // 🧾 LISTA DE ELEMENTOS
+                  Expanded(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(5.0),
+                      reverse: widget.reverse!,
+                      controller: gestionScrollController,
+                      shrinkWrap: true,
+                      itemCount: widget.registros.length,
+                      itemBuilder: (context, posicion) {
+                        final item = widget.registros[posicion];
+                        final tipo = (item['Tipo_Recurso'] ?? '').toString();
+                        final color = _colorPorTipo(tipo);
+                        final fecha = item['Fecha_Pago_Programado'] ?? '';
+                        final categoria = item['Concepto_Recurso'] ?? '';
+                        final monto = item['Monto_Pagado']?.toString() ?? '0';
+
+                        // Filtro activo
+                        if (!_coincideFiltros(item)) return const SizedBox.shrink();
+
+                        return Card(
+                          color: Colors.grey.shade900,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: color.withOpacity(0.25),
+                              child: Icon(
+                                Icons.monetization_on,
+                                color: color,
+                              ),
+                            ),
+                            title: Text(
+                              categoria,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            subtitle: Text(
+                              "$fecha — $tipo",
+                              style: TextStyle(color: Colors.white70, fontSize: 12),
+                            ),
+                            trailing: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Expanded(child: Text(
+                                  "\$${monto.toString()}",
+                                  style: TextStyle(
+                                    color: color,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
+                                ),),
+                                Expanded(child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.edit,
+                                          color: Colors.amber, size: 20),
+                                      onPressed: () => _editar(item, context),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.delete,
+                                          color: Colors.redAccent, size: 20),
+                                      onPressed: () => _borrar(item, context),
+                                    ),
+                                  ],
+                                ),),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            // 📊 PANEL LATERAL DE ACCIONES RÁPIDAS
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                margin: const EdgeInsets.only(left: 8),
+                decoration: ContainerDecoration.roundedDecoration(),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: GrandIcon(
+                        iconData: Icons.move_up_outlined,
+                        labelButton: 'Al principio . . .',
+                        onPress: () => gestionScrollController.jumpTo(
+                          gestionScrollController.position.minScrollExtent,
+                        ),
+                      ),
+                    ),
+                    CrossLine(),
+                    _buildQuickAction(
+                        icon: Icons.insights,
+                        label: 'Ingresos',
+                        keyword: 'Ingresos'),
+                    _buildQuickAction(
+                        icon: Icons.leaderboard_sharp,
+                        label: 'Egresos',
+                        keyword: 'Egresos'),
+                    _buildQuickAction(
+                        icon: Icons.ac_unit, label: 'Activos', keyword: 'Activos'),
+                    _buildQuickAction(
+                        icon: Icons.pages_sharp, label: 'Pasivos', keyword: 'Pasivos'),
+                    _buildQuickAction(
+                        icon: Icons.hdr_weak_sharp,
+                        label: 'Patrimonio',
+                        keyword: 'Patrimonio'),
+                    _buildQuickAction(
+                        icon: Icons.all_out, label: 'Todo', keyword: ''),
+                    CrossLine(),
+                    Expanded(
+                      child: GrandIcon(
+                        iconData: Icons.move_down_outlined,
+                        labelButton: 'Al final . . .',
+                        onPress: () => gestionScrollController.jumpTo(
+                          gestionScrollController.position.maxScrollExtent,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+    );
+  }
+
+  Widget _buildFiltrosCompactos(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      child: Wrap(
+        spacing: 10,
+        runSpacing: 6,
+        alignment: WrapAlignment.spaceBetween,
+        children: [
+          DropdownButton<String>(
+            dropdownColor: Colors.grey.shade900,
+            style: const TextStyle(color: Colors.white),
+            value: filtroTipo,
+            items: const [
+              'Todos',
+              'Ingresos',
+              'Egresos',
+              'Activos',
+              'Pasivos',
+              'Patrimonio',
+            ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
+            onChanged: (v) => setState(() => filtroTipo = v!),
+          ),
+          _botonFecha(context, true),
+          _botonFecha(context, false),
+          SizedBox(
+            width: 180,
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: 'Buscar...',
+                labelStyle: const TextStyle(color: Colors.white70),
+                prefixIcon: const Icon(Icons.search, color: Colors.white70),
+                isDense: true,
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white24),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.blueAccent),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              style: const TextStyle(color: Colors.white),
+              onChanged: (t) => setState(() => filtroTexto = t),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  bool _coincideFiltros(Map<String, dynamic> e) {
+    final tipo = (e['Tipo_Recurso'] ?? '').toString().toLowerCase();
+    final desc = (e['Concepto_Recurso'] ?? '').toString().toLowerCase();
+    final fechaStr = e['Fecha_Pago_Programado']?.toString() ?? '';
+    DateTime? fecha = DateTime.tryParse(fechaStr);
+
+    final coincideTipo =
+        filtroTipo == 'Todos' || tipo == filtroTipo.toLowerCase();
+    final coincideTexto =
+        filtroTexto.isEmpty || desc.contains(filtroTexto.toLowerCase());
+    final coincideFecha = (fechaInicio == null && fechaFin == null) ||
+        (fecha != null &&
+            (fechaInicio == null || !fecha.isBefore(fechaInicio!)) &&
+            (fechaFin == null || !fecha.isAfter(fechaFin!)));
+
+    return coincideTipo && coincideTexto && coincideFecha;
+
+  }
+
+  Widget _buildQuickAction(
+      {required IconData icon,
+        required String label,
+        required String keyword}) {
+    return Expanded(
+      child: GrandIcon(
+        iconData: icon,
+        labelButton: label,
+        onPress: () {
+          setState(() {
+            filtroTipo = keyword.isEmpty ? 'Todos' : keyword;
+            // filtroTexto = keyword;
+          });
+        },
+      ),
+    );
+  }
+
+  Color _colorPorTipo(String tipo) {
+    final normalized = tipo.toLowerCase().trim();
+    if (normalized.startsWith('ingreso')) return Colors.greenAccent;
+    if (normalized.startsWith('egreso')) return Colors.redAccent;
+    if (normalized.startsWith('activo')) return Colors.yellowAccent;
+    if (normalized.startsWith('pasivo')) return Colors.purple;
+    if (normalized.startsWith('patrimonio')) return Colors.lightBlueAccent;
+    return Colors.white70;
+  }
+
+  Widget _botonFecha(BuildContext context, bool esInicio) {
+    final fecha = esInicio ? fechaInicio : fechaFin;
+    final label = esInicio ? "Desde" : "Hasta";
+    return ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blueGrey.shade800,
+      ),
+      icon: const Icon(Icons.date_range, size: 16),
+      label: Text(
+        fecha == null ? label : "$label: ${fecha.toString().split(' ')[0]}",
+        style: const TextStyle(color: Colors.white),
+      ),
+      onPressed: () async {
+        final seleccion = await showDatePicker(
+          context: context,
+          initialDate: fecha ?? DateTime.now(),
+          firstDate: DateTime(2020),
+          lastDate: DateTime(2030),
+          builder: (context, child) =>
+              Theme(
+                data: Theme.of(context).copyWith(
+                  colorScheme: const ColorScheme.dark(
+                    primary: Colors.blueAccent,
+                    onPrimary: Colors.white,
+                    surface: Colors.black,
+                    onSurface: Colors.white,
+                  ),
+                ),
+                child: child!,
+              ),
+        );
+        if (seleccion != null) {
+          setState(() {
+            if (esInicio) {
+              fechaInicio = seleccion;
+            } else {
+              fechaFin = seleccion;
+            }
+          });
+        }
+      },
+    );
+  }
+
+  // ✏️ EDITAR → ejecuta flujo GestoresActivos.onSelected()
+
+  void _editar(Map<String, dynamic> item, BuildContext context) {
+    try {
+      final int posicion = widget.registros.indexOf(item);
+
+      // Asigna el activo actual y la lista completa
+      Activos.Activo = widget.registros[posicion];
+      Financieros.Activos = widget.registros;
+      Activos.ID_Financieros = item['ID_Registro'];
+
+      // Muestra indicador de carga
+      Operadores.loadingActivity(
+        context: context,
+        tittle: "Consultando Información",
+        message:
+        "Consultando información del Registro #${Activos.ID_Financieros} . . . ",
+      );
+
+      // Obtiene la imagen asociada y continúa
+      Activos.getImage().then((value) {
+        Activos.imagenActivo = value['Fine_IMG'];
+
+        Terminal.printSuccess(
+            message: "Imagen : ${Activos.imagenActivo}");
+
+        Navigator.pop(context); // Cierra el diálogo de carga
+
+        // Abre la vista correspondiente
+        toOperaciones(context, Constantes.Update);
+      }).onError((error, stackTrace) {
+        Operadores.notifyActivity(
+          context: context,
+          tittle: "Error - No Se pudo Consultar Imagen",
+          message: "ERROR - $error : $stackTrace",
+          onAcept: () =>Navigator.pop(context),
+          onClose: () => Navigator.pop(context),
+        );
+
+        Terminal.printAlert(message: "ERROR - $error : $stackTrace");
+      });
+    } catch (e, s) {
+      Terminal.printAlert(message: "❌ Error al editar: $e\n$s");
+    }
+  }
+
+  // 🗑 BORRAR → ejecuta flujo GestoresActivos.deleteRegister()
+  void _borrar(Map<String, dynamic> item, BuildContext context) {
+    try {
+      Actividades.eliminar(Databases.siteground_database_regfine,
+          Activos.activos['deleteQuery'], item['ID_Registro']);
+      setState(() {
+        widget.registros.remove(item);
+      });
+      Terminal.printWarning(
+          message: "🗑 Registro eliminado: ${item['Concepto_Recurso']}");
+    } catch (e) {
+      Operadores.alertActivity(
+        context: context,
+        tittle: "Error al Eliminar Registro . . .",
+        message: "ERROR - $e",
+        onClose: () => Navigator.pop(context),
+        onAcept: () => Navigator.pop(context),
+      );
+    }
+  }
+
+  void toOperaciones(BuildContext context, String operationActivity) {
+    if (isMobile(context)) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) =>
+              operacionesActivos(
+                operationActivity: operationActivity,
+              )));
+    } else {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) =>
+              GestionActivos(
+                esActualized: false,
+                actualSidePage: operacionesActivos(
+                  operationActivity: operationActivity,
+                ),
+              )));
+    }
+  }
+
+  var gestionScrollController = ScrollController();
+}
+
+// #########################################################
+class GraficaFinanciera extends StatefulWidget {
+  late List registros;
+  final bool esActualizado;
+
+  GraficaFinanciera({
+    super.key,
+    required this.registros,
+    required this.esActualizado,
+  });
+
+  @override
+  State<GraficaFinanciera> createState() => _GraficaFinancieraState();
+}
+
+class _GraficaFinancieraState extends State<GraficaFinanciera> {
+  bool cargando = true;
+  String periodo = "Meses"; // 🔹 ['Semanas', 'Meses', 'Últimos 12 Meses', 'Años', 'Lustros']
+  List filtrados = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _cargarDatos();
+  }
+
+  Future<void> _cargarDatos() async {
+    try {
+      await FinancierosRepo().cargarDesdeLocal();
+      setState(() {
+        widget.registros = FinancierosRepo().registros;
+        filtrados = widget.registros; // 🔹 Inicializa lista base
+        cargando = false;
+      });
+    } catch (e, s) {
+      Terminal.printAlert(message: '❌ Error al cargar registros: $e\n$s');
+      setState(() => cargando = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (cargando) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    final registrosFiltrados = _filtrarPorPeriodo(widget.registros, periodo);
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          _buildSelectorPeriodo(),
+          const SizedBox(height: 10),
+          Expanded(
+            flex: 4,
+            child: _buildGraficoTendencias(registrosFiltrados),
+          ),
+          const Divider(color: Colors.white24),
+          Text(
+            "📅 Mostrando últimos ${_descripcionPeriodo(periodo)}",
+            style: const TextStyle(color: Colors.white70, fontSize: 11),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 🔹 Selector de periodo
+  Widget _buildSelectorPeriodo() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text('Periodo:', style: TextStyle(color: Colors.white)),
+        const SizedBox(width: 8),
+        DropdownButton<String>(
+          dropdownColor: Colors.black,
+          value: periodo,
+          style: const TextStyle(color: Colors.white),
+          items: const ['Semanas', 'Meses', 'Últimos 12 Meses', 'Años', 'Lustros']
+              .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+              .toList(),
+          onChanged: (v) => setState(() => periodo = v!),
+        ),
+      ],
+    );
+  }
+
+  // 🔹 Gráfico de barras
+  Widget _buildGraficoTendencias(List registrosFiltrados) {
+    if (registrosFiltrados.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.all(16),
+        child: Text('Sin datos suficientes para graficar.',
+            style: TextStyle(color: Colors.white70)),
+      );
+    }
+
+    final ingresos = registrosFiltrados.map((e) => e['ingresos'] as double).toList();
+    final egresos = registrosFiltrados.map((e) => e['egresos'] as double).toList();
+    final etiquetas = registrosFiltrados.map((e) => e['etiqueta'] as String).toList();
+
+    return SizedBox(
+      height: 300,
+      child: BarChart(
+        key: ValueKey(periodo), // 👈 fuerza reconstrucción al cambiar "Semanas/Meses/Años/Lustros"
+        BarChartData(
+          backgroundColor: Colors.transparent,
+          borderData: FlBorderData(show: false),
+          gridData: const FlGridData(show: false),
+          titlesData: FlTitlesData(
+            leftTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                reservedSize: 40,
+                getTitlesWidget: (value, _) => Text(
+                  '\$${value.toInt()}',
+                  style: const TextStyle(color: Colors.white70, fontSize: 10),
+                ),
+              ),
+            ),
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                getTitlesWidget: (value, _) {
+                  final i = value.toInt();
+                  if (i < 0 || i >= etiquetas.length) return const SizedBox();
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(
+                      etiquetas[i],
+                      style:
+                      const TextStyle(color: Colors.white70, fontSize: 10),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+          barGroups: List.generate(etiquetas.length, (i) {
+            return BarChartGroupData(
+              x: i,
+              barRods: [
+                BarChartRodData(
+                  toY: ingresos[i],
+                  color: Colors.greenAccent,
+                  width: 6,
+                ),
+                BarChartRodData(
+                  toY: egresos[i],
+                  color: Colors.redAccent,
+                  width: 6,
+                ),
+              ],
+            );
+          }),
+        ),
+      ),
+    );
+  }
+
+  // 🔹 Filtro maestro: semanas, meses, años, lustros
+  List<Map<String, dynamic>> _filtrarPorPeriodo(List registros, String periodo) {
+    switch (periodo) {
+      case 'Semanas':
+        return _agruparPorPeriodo(registros, 'semana', 12);
+      case 'Meses':
+        return _agruparPorPeriodo(registros, 'mes', 12);
+      case 'Últimos 12 Meses':
+        return _agruparPorPeriodo(registros, 'ultimos12', 5);
+      case 'Años':
+        return _agruparPorPeriodo(registros, 'año', 5);
+      case 'Lustros':
+        return _agruparPorPeriodo(registros, 'lustro', 3);
+      default:
+        return [];
+    }
+  }
+
+  // 🔹 Agrupación genérica
+  List<Map<String, dynamic>> _agruparPorPeriodo(
+      List registros, String tipo, int cantidad) {
+    final ahora = DateTime.now();
+    late DateTime fechaInicio;
+
+    switch (tipo) {
+      case 'semana':
+        fechaInicio = ahora.subtract(Duration(days: 7 * cantidad));
+        break;
+      case 'mes':
+        fechaInicio = DateTime(ahora.year, ahora.month - cantidad, 1);
+        break;
+      case 'año':
+        fechaInicio = DateTime(ahora.year - cantidad, 1, 1);
+        break;
+      case 'ultimos12':
+        fechaInicio = DateTime(ahora.year, ahora.month - 11, 1);
+        break;
+      case 'lustro':
+      // Muestra 3 lustros = 15 años
+        fechaInicio = DateTime(ahora.year - 15, 1, 1);
+        break;
+      default:
+        fechaInicio = DateTime(ahora.year - 1);
+    }
+
+    final Map<String, Map<String, double>> mapa = {};
+
+    for (var e in registros) {
+      final tipoRecurso = (e['Tipo_Recurso'] ?? '').toString().toLowerCase();
+      final fechaStr = e['Fecha_Pago_Programado']?.toString() ?? '';
+      final fecha = DateTime.tryParse(fechaStr);
+      final monto = double.tryParse(e['Monto_Pagado'].toString()) ?? 0;
+      if (fecha == null || fecha.isBefore(fechaInicio)) continue;
+
+      late String etiqueta;
+      if (tipo == 'semana') {
+        final semana = ((fecha.day - 1) / 7).floor() + 1;
+        etiqueta = 'Sem $semana ${_nombreMes(fecha.month)}';
+      } else if (tipo == 'mes' || tipo == 'ultimos12') {
+        etiqueta = '${_nombreMes(fecha.month)} ${fecha.year}';
+      } else if (tipo == 'año') {
+        etiqueta = fecha.year.toString();
+      } else if (tipo == 'lustro') {
+        // 🧭 Agrupa correctamente por lustros reales (2020–2024, 2025–2029, etc.)
+        final lustroInicio = (fecha.year ~/ 5) * 5;
+        final lustroFin = lustroInicio + 4;
+        etiqueta = '$lustroInicio–$lustroFin';
+      }
+
+      mapa.putIfAbsent(etiqueta, () => {'ingresos': 0, 'egresos': 0});
+
+      if (tipoRecurso.startsWith('ingreso')) {
+        mapa[etiqueta]!['ingresos'] =
+            (mapa[etiqueta]!['ingresos'] ?? 0) + monto;
+      } else if (tipoRecurso.startsWith('egreso')) {
+        mapa[etiqueta]!['egresos'] =
+            (mapa[etiqueta]!['egresos'] ?? 0) + monto;
+      }
+    }
+
+    final lista = mapa.entries.map((e) {
+      return {
+        'etiqueta': e.key,
+        'ingresos': e.value['ingresos'] ?? 0,
+        'egresos': e.value['egresos'] ?? 0,
+      };
+    }).toList();
+
+    // 🔹 Orden cronológico real (por año y mes)
+    lista.sort((a, b) {
+      final partesA = (a['etiqueta'] as String).split(' ');
+      final partesB = (b['etiqueta'] as String).split(' ');
+      if (partesA.length < 2 || partesB.length < 2) {
+        return (a['etiqueta'] as String)
+            .compareTo(b['etiqueta'] as String);
+      }
+      final mesA = _mesNumero(partesA[0]);
+      final mesB = _mesNumero(partesB[0]);
+      final anioA = int.tryParse(partesA[1]) ?? 0;
+      final anioB = int.tryParse(partesB[1]) ?? 0;
+      return anioA == anioB ? mesA.compareTo(mesB) : anioA.compareTo(anioB);
+    });
+    return lista;
+  }
+
+  // 🔹 Utilidades
+  String _nombreMes(int m) {
+    const meses = [
+      '',
+      'Ene',
+      'Feb',
+      'Mar',
+      'Abr',
+      'May',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dic'
+    ];
+    return meses[m];
+  }
+
+  // 🔹 Auxiliar para ordenar los meses
+  int _mesNumero(String mes) {
+    const meses = {
+      'Ene': 1, 'Feb': 2, 'Mar': 3, 'Abr': 4, 'May': 5, 'Jun': 6,
+      'Jul': 7, 'Ago': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dic': 12
+    };
+    return meses[mes] ?? 0;
+  }
+
+  String _descripcionPeriodo(String p) {
+    switch (p) {
+      case 'Semanas':
+        return '12 semanas';
+      case 'Meses':
+        return '12 meses';
+      case 'Años':
+        return '5 años';
+      case 'Lustros':
+        return '3 lustros (15 años)';
+      default:
+        return '';
+    }
+  }
+}
+
+

@@ -2,7 +2,15 @@ import 'package:assistant/screens/home.dart';
 import 'package:assistant/values/WidgetValues.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(const App());
+import 'package:hive_flutter/hive_flutter.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  runApp(App());
+}
+
+// void main() => runApp(const App());
 
 class App extends StatelessWidget {
   const App({super.key});

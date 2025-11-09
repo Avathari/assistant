@@ -725,7 +725,7 @@ class PacientesPanel extends StatelessWidget {
               iconData: Icons.bar_chart,
               labelButton: "Actividades Financieras",
               onPress: () {
-                toNextScreen(context: context, screen: GestionActivos(actualSidePage: const EstadisticasActivos()));
+                toNextScreen(context: context, screen: GestionActivos(actualSidePage: const EstadisticasActivos(), esActualized: true,));
                 // Operadores.alertActivity(
                 //     context: context,
                 //     tittle: "Error",

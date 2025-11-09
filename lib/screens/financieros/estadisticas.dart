@@ -59,24 +59,32 @@ class _EstadisticasActivosState extends State<EstadisticasActivos> {
 
   @override
   void initState() {
-    Terminal.printWarning(
-        message: " INICIAR : "
-            "Iniciando Actividad - "
-            "Estádisticas del Repositorio");
-
-    Archivos.readJsonToMap(filePath: Activos.fileStadistics)
-        .then((value) => setState(() => data = value[0]))
-        .onError((onError, stackTrace) {
-      Operadores.alertActivity(
-          context: context,
-          tittle: "ERROR al Cuantificar Estadísticas . . .",
-          message: "ERROR : $onError : : $stackTrace",
-          onAcept: () => _reiniciar(context));
-    }).whenComplete(() =>
-            Terminal.printWarning(message: " . . . DATOS OBTENIDOS . $data"));
-
     super.initState();
+    FinancierosRepo()
+        .cargarEstadisticasCache()
+        .then((stats) => setState(() => data = stats));
   }
+
+  // @override
+  // void initState() {
+  //   Terminal.printWarning(
+  //       message: " INICIAR : "
+  //           "Iniciando Actividad - "
+  //           "Estádisticas del Repositorio");
+  //
+  //   Archivos.readJsonToMap(filePath: Activos.fileStadistics)
+  //       .then((value) => setState(() => data = value[0]))
+  //       .onError((onError, stackTrace) {
+  //     Operadores.alertActivity(
+  //         context: context,
+  //         tittle: "ERROR al Cuantificar Estadísticas . . .",
+  //         message: "ERROR : $onError : : $stackTrace",
+  //         onAcept: () => _reiniciar(context));
+  //   }).whenComplete(() =>
+  //           Terminal.printWarning(message: " . . . DATOS OBTENIDOS . $data"));
+  //
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +170,7 @@ class _EstadisticasActivosState extends State<EstadisticasActivos> {
                                 crossAxisCount:
                                     isTablet(context) || isMobile(context)
                                         ? 2
-                                        : 3,
+                                        :  (isDesktop(context) || isLargeDesktop(context)) ? 2 : 3,
                                 crossAxisSpacing: 20.0,
                                 mainAxisSpacing: 20.0,
                                 mainAxisExtent: 90.0),
@@ -241,7 +249,7 @@ class _EstadisticasActivosState extends State<EstadisticasActivos> {
                       ],
                     ),
                   ),
-                  isDesktop(context)
+                  isDesktop(context) || isLargeDesktop(context)
                       ? Expanded(
                           flex: 2,
                           child: SingleChildScrollView(
@@ -313,7 +321,7 @@ class _EstadisticasActivosState extends State<EstadisticasActivos> {
             color: Colors.grey,
             height: 15,
           ),
-          if (isTablet(context) || isDesktop(context))
+          if (isTablet(context) ||isDesktop(context) || isLargeDesktop(context))
             Expanded(
               child: Container(
                 decoration: ContainerDecoration.roundedDecoration(),
@@ -711,14 +719,26 @@ class _EstadisticasActivosState extends State<EstadisticasActivos> {
   }
 
   void _reiniciar(BuildContext context) {
-    Activos.getEstadisticasFinancieras()
-        .then((value) => setState(() => data = value))
+    FinancierosRepo()
+        .reiniciar(remoto: true)
+        .then((_) => setState(() => data = FinancierosRepo().estadisticas))
         .onError((onError, stackTrace) => Operadores.alertActivity(
-            context: context,
-            tittle: "ERROR al Cuantificar Estadísticas . . .",
-            message: "ERROR : $onError : : $stackTrace",
-            onAcept: () => Navigator.of(context).pop()))
-        .whenComplete(() => Archivos.createJsonFromMap([data],
-            filePath: Activos.fileStadistics));
+      context: context,
+      tittle: "ERROR al actualizar estadísticas",
+      message: "ERROR : $onError : : $stackTrace",
+      onAcept: () => Navigator.of(context).pop(),
+    ));
   }
+
+// void _reiniciar(BuildContext context) {
+  //   Activos.getEstadisticasFinancieras()
+  //       .then((value) => setState(() => data = value))
+  //       .onError((onError, stackTrace) => Operadores.alertActivity(
+  //           context: context,
+  //           tittle: "ERROR al Cuantificar Estadísticas . . .",
+  //           message: "ERROR : $onError : : $stackTrace",
+  //           onAcept: () => Navigator.of(context).pop()))
+  //       .whenComplete(() => Archivos.createJsonFromMap([data],
+  //           filePath: Activos.fileStadistics));
+  // }
 }

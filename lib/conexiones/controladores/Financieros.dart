@@ -1,5 +1,10 @@
+
+import 'dart:convert';
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
+import 'package:assistant/conexiones/controladores/Financieros.dart';
+import 'package:hive/hive.dart';
+import 'package:flutter/foundation.dart';
 
 class Financieros {
   static String localRepositoryPath = 'assets/'
@@ -609,3 +614,115 @@ class Activos {
     //         "");
   }
 }
+
+
+
+class FinancierosRepo extends ChangeNotifier {
+  static final FinancierosRepo _instance = FinancierosRepo._internal();
+  factory FinancierosRepo() => _instance;
+  FinancierosRepo._internal();
+
+  Map<String, dynamic> estadisticas = {};
+  List<Map<String, dynamic>> registros = [];
+
+  /// Abrir Hive box (cache persistente)
+  Future<void> _openBox() async {
+    if (!Hive.isBoxOpen('financieros')) {
+      await Hive.openBox('financieros');
+    }
+  }
+
+  /// Carga los registros desde JSON local (assets/activos/{id}/activos.json)
+  Future<void> cargarDesdeLocal() async {
+    final data = await Archivos.readJsonToMap(filePath: Activos.fileAssocieted);
+    registros = List<Map<String, dynamic>>.from(data);
+    notifyListeners();
+  }
+
+  /// Sincroniza con la BD remota y guarda el JSON local + Hive
+  Future<void> sincronizarRemoto() async {
+    final data = await Actividades.consultarAllById(
+      Databases.siteground_database_regfine,
+      Activos.activos['consultIdQuery'],
+      Financieros.ID_Financieros,
+    );
+    registros = List<Map<String, dynamic>>.from(data);
+    await Archivos.createJsonFromMap(data, filePath: Activos.fileAssocieted);
+    final box = await Hive.openBox('financieros');
+    await box.put('registros', data);
+    notifyListeners();
+  }
+
+  /// Calcula estadísticas locales sin depender del backend SQL
+  Future<Map<String, dynamic>> calcularEstadisticasLocales() async {
+    double ingreso = 0, egreso = 0, activos = 0, pasivos = 0;
+    for (final item in registros) {
+      final tipo = item['Tipo_Recurso'];
+      final monto = double.tryParse(item['Monto_Pagado'].toString()) ?? 0;
+      switch (tipo) {
+        case 'Ingresos': ingreso += monto; break;
+        case 'Egresos': egreso += monto; break;
+        case 'Activos': activos += monto; break;
+        case 'Pasivos': pasivos += monto; break;
+      }
+    }
+    final balance = ingreso - egreso;
+    final patrimonio = (ingreso + activos) - (egreso + pasivos);
+
+    estadisticas = {
+      'Ingreso_Global': ingreso,
+      'Egreso_Global': egreso,
+      'Balance_Global': balance,
+      'Activos_Global': activos,
+      'Pasivos_Global': pasivos,
+      'Patrimonio': patrimonio,
+    };
+
+    await Archivos.createJsonFromMap([estadisticas],
+        filePath: Activos.fileStadistics);
+    notifyListeners();
+    return estadisticas;
+  }
+
+  /// Consulta las estadísticas desde el servidor remoto
+  Future<Map<String, dynamic>> obtenerEstadisticasRemotas() async {
+    final data = await Actividades.detalles(
+      Databases.siteground_database_regfine,
+      Activos.activos['activosStadistics'],
+    );
+    estadisticas = Map<String, dynamic>.from(data);
+    await Archivos.createJsonFromMap([estadisticas],
+        filePath: Activos.fileStadistics);
+    final box = await Hive.openBox('financieros');
+    await box.put('estadisticas', estadisticas);
+    notifyListeners();
+    return estadisticas;
+  }
+
+  /// Carga estadísticas desde Hive o JSON
+  Future<Map<String, dynamic>> cargarEstadisticasCache() async {
+    await _openBox();
+    final box = Hive.box('financieros');
+    if (box.containsKey('estadisticas')) {
+      estadisticas = Map<String, dynamic>.from(box.get('estadisticas'));
+    } else {
+      final local =
+      await Archivos.readJsonToMap(filePath: Activos.fileStadistics);
+      if (local.isNotEmpty) estadisticas = local.first;
+    }
+    notifyListeners();
+    return estadisticas;
+  }
+
+  /// Reiniciar / forzar actualización (combina todo)
+  Future<void> reiniciar({bool remoto = false}) async {
+    if (remoto) {
+      await sincronizarRemoto();
+      await obtenerEstadisticasRemotas();
+    } else {
+      await cargarDesdeLocal();
+      await calcularEstadisticasLocales();
+    }
+  }
+}
+
