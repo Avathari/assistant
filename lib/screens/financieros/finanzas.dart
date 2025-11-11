@@ -3,11 +3,14 @@ import 'dart:convert';
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
 import 'package:assistant/conexiones/controladores/Financieros.dart';
+
 import 'package:assistant/screens/financieros/estadisticas.dart';
 import 'package:assistant/screens/home.dart';
+
 import 'package:assistant/values/SizingInfo.dart';
 import 'package:assistant/values/Strings.dart';
 import 'package:assistant/values/WidgetValues.dart';
+
 import 'package:assistant/widgets/AppBarText.dart';
 import 'package:assistant/widgets/CircleIcon.dart';
 import 'package:assistant/widgets/CircleLabel.dart';
@@ -17,7 +20,9 @@ import 'package:assistant/widgets/GrandButton.dart';
 import 'package:assistant/widgets/GrandIcon.dart';
 import 'package:assistant/widgets/TittlePanel.dart';
 import 'package:assistant/widgets/WidgetsModels.dart';
+
 import 'package:carousel_slider/carousel_slider.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -729,56 +734,41 @@ class GestionActivos extends StatefulWidget {
 
 class _GestionActivosState extends State<GestionActivos> {
   bool cargando = true;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //
-  //   // Inicializamos la ruta de archivo local
-  //   Activos.fileAssocieted = '${Financieros.localRepositoryPath}activos.json';
-  //
-  //   // Se ejecuta el flujo principal asíncrono después del build inicial
-  //   if (widget.esActualized!) {
-  //     Future.microtask(() async {
-  //       try {
-  //         if (widget.esActualized ?? false) {
-  //           final value = await Actividades.detalles(
-  //             Databases.siteground_database_regfine,
-  //             Activos.activos['activosStadistics'],
-  //           );
-  //           await Archivos.createJsonFromMap([value],
-  //               filePath: Activos.fileStadistics);
-  //         }
-  //         // iniciar();
-  //
-  //       } catch (e, s) {
-  //         Terminal.printAlert(message: 'Error en initState: $e\n$s');
-  //       }
-  //     });
-  //   }
-  // }
+  // List<Map<String, dynamic>> registros = [];
 
+  @override
+  void initState() {
+    super.initState();
+    _cargarRegistros();
+  }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _cargarDatos();
-  // }
-  //
-  // Future<void> _cargarDatos() async {
-  //   try {
-  //     await FinancierosRepo().cargarDesdeLocal();
-  //     setState(() {
-  //       widget.registros = FinancierosRepo().registros;
-  //       cargando = false;
-  //     });
-  //   } catch (e, s) {
-  //     Terminal.printAlert(message: '❌ Error al cargar registros: $e\n$s');
-  //     setState(() => cargando = false);
-  //   }
-  // }
+  Future<void> _cargarRegistros() async {
+    final data = await FinancierosRepo().cargarDesdeLocal();
+    if (mounted) {
+      setState(() {
+        widget.registros = data; // List<Map<String, dynamic>>.from(data);
+        cargando = false;
+      });
+    }
+  }
+
+  void _refrescar() async {
+    await FinancierosRepo()
+        .reiniciar(remoto: true)
+        .onError((error, stackTrace) {
+      Terminal.printAlert(
+          message:
+              ": : : Error al Conectar con la Base de Datos - $error : : $stackTrace");
+    });
+    await _cargarRegistros();
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (cargando) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -824,7 +814,8 @@ class _GestionActivosState extends State<GestionActivos> {
                 } else {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (BuildContext context) => GestionActivos(
-                            actualSidePage: const EstadisticasActivos(), esActualized: false,
+                            actualSidePage: const EstadisticasActivos(),
+                            esActualized: false,
                           )));
                 }
               },
@@ -841,130 +832,143 @@ class _GestionActivosState extends State<GestionActivos> {
           ]),
       body: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
         Expanded(
-          flex: isDesktop(context) || isTablet(context) || isLargeDesktop(context) ? 2 : 1,
+          flex:
+              isDesktop(context) || isTablet(context) || isLargeDesktop(context)
+                  ? 2
+                  : 1,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
                 Expanded(
-                  flex: 1,
-                  child: FutureBuilder(
-                    future: FinancierosRepo().cargarDesdeLocal(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      if (snapshot.hasError) {
-                        return Center(
-                            child: Text(
-                                'Error al cargar datos: ${snapshot.error}'));
-                      }
-
-                      widget.registros = FinancierosRepo().registros;
-                      if (widget.registros.isEmpty) {
-                        return const Center(
-                            child: Text('Sin registros disponibles'));
-                      }
-
-                      return GraficaFinanciera(registros: widget.registros, esActualizado: false);
-                    },
-                  ),
-                ),
-                // Row(
-                //   children: [
-                //     Expanded(
-                //         flex: 4,
-                //         child: GrandButton(
-                //           weigth: 1000,
-                //           labelButton: "Por Fecha",
-                //           onPress: () {
-                //             reiniciar(withStats: false);
-                //             Operadores.selectOptionsActivity(
-                //                 context: context,
-                //                 options: Listas.listWithoutRepitedValues(
-                //                     Listas.listFromMapWithOneKey(foundedItems!,
-                //                         keySearched: 'Fecha_Pago_Programado')),
-                //                 onClose: (value) {
-                //                   Navigator.of(context).pop();
-                //                   Terminal.printSuccess(message: value);
-                //                   _runFilterSearch(
-                //                       enteredKeyword: value,
-                //                       keySearched: 'Fecha_Pago_Programado');
-                //                 });
-                //           },
-                //         )),
-                //     Expanded(
-                //         child: GrandIcon(
-                //       iconData: Icons.select_all,
-                //       labelButton: 'Saldado',
-                //       onPress: () {
-                //         _runActiveSearch(
-                //             enteredKeyword: 'Saldado',
-                //             keySearched: 'Estado_Actual');
-                //       },
-                //     )),
-                //     Expanded(
-                //         child: GrandIcon(
-                //       labelButton: 'Vigente',
-                //       iconData: Icons.video_label,
-                //       onPress: () {
-                //         _runActiveSearch(
-                //             enteredKeyword: 'Vigente',
-                //             keySearched: 'Estado_Actual');
-                //       },
-                //     )),
-                //     // Expanded(child: CrossLine(isHorizontal: false, thickness: 6, color: Colors.grey,)),
-                //     Expanded(
-                //         child: GrandIcon(
-                //       labelButton: 'Al Final . . . ',
-                //       iconData: Icons.invert_colors_on,
-                //       onPress: () {
-                //         setState(() {
-                //           if (widget.reverse == true) {
-                //             widget.reverse = false;
-                //             gestionScrollController.jumpTo(
-                //                 gestionScrollController
-                //                     .position.minScrollExtent);
-                //           } else {
-                //             widget.reverse = true;
-                //             gestionScrollController.jumpTo(
-                //                 gestionScrollController
-                //                     .position.maxScrollExtent);
-                //           }
-                //         });
-                //       },
-                //     )),
-                //   ],
+                    child: GraficaFinanciera(
+                        registros: widget.registros, esActualizado: false)),
+                isLargeDesktop(context)
+                    ? Expanded(
+                        child: ListaFinanciera(registros: widget.registros))
+                    : Expanded(
+                        child: TablaFinanciera(
+                            registros: widget.registros,
+                            esActualizado: widget.esActualized!)),
+                // Expanded(
+                //   flex: 1,
+                //   child: FutureBuilder(
+                //     future: FinancierosRepo().cargarDesdeLocal(),
+                //     builder: (context, snapshot) {
+                //       if (snapshot.connectionState == ConnectionState.waiting) {
+                //         return const Center(child: CircularProgressIndicator());
+                //       }
+                //       if (snapshot.hasError) {
+                //         return Center(
+                //             child: Text(
+                //                 'Error al cargar datos: ${snapshot.error}'));
+                //       }
+                //
+                //       widget.registros = FinancierosRepo().registros;
+                //       if (widget.registros.isEmpty) {
+                //         return const Center(
+                //             child: Text('Sin registros disponibles'));
+                //       }
+                //
+                //       return GraficaFinanciera(registros: widget.registros, esActualizado: false);
+                //     },
+                //   ),
                 // ),
-                // ##############################################################
-                Expanded(
-                  flex: 1,
-                  child: FutureBuilder(
-                    future: FinancierosRepo().cargarDesdeLocal(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      if (snapshot.hasError) {
-                        return Center(
-                            child: Text(
-                                'Error al cargar datos: ${snapshot.error}'));
-                      }
-
-                      widget.registros = FinancierosRepo().registros;
-                      if (widget.registros.isEmpty) {
-                        return const Center(
-                            child: Text('Sin registros disponibles'));
-                      }
-
-                      if (isLargeDesktop(context)) {
-                        return ListaFinanciera(registros: widget.registros);
-                      } else {
-                        return TablaFinanciera(registros: widget.registros, esActualizado: widget.esActualized!);
-                      }
-                    },
-                  ),
-                ),
+                // // Row(
+                // //   children: [
+                // //     Expanded(
+                // //         flex: 4,
+                // //         child: GrandButton(
+                // //           weigth: 1000,
+                // //           labelButton: "Por Fecha",
+                // //           onPress: () {
+                // //             reiniciar(withStats: false);
+                // //             Operadores.selectOptionsActivity(
+                // //                 context: context,
+                // //                 options: Listas.listWithoutRepitedValues(
+                // //                     Listas.listFromMapWithOneKey(foundedItems!,
+                // //                         keySearched: 'Fecha_Pago_Programado')),
+                // //                 onClose: (value) {
+                // //                   Navigator.of(context).pop();
+                // //                   Terminal.printSuccess(message: value);
+                // //                   _runFilterSearch(
+                // //                       enteredKeyword: value,
+                // //                       keySearched: 'Fecha_Pago_Programado');
+                // //                 });
+                // //           },
+                // //         )),
+                // //     Expanded(
+                // //         child: GrandIcon(
+                // //       iconData: Icons.select_all,
+                // //       labelButton: 'Saldado',
+                // //       onPress: () {
+                // //         _runActiveSearch(
+                // //             enteredKeyword: 'Saldado',
+                // //             keySearched: 'Estado_Actual');
+                // //       },
+                // //     )),
+                // //     Expanded(
+                // //         child: GrandIcon(
+                // //       labelButton: 'Vigente',
+                // //       iconData: Icons.video_label,
+                // //       onPress: () {
+                // //         _runActiveSearch(
+                // //             enteredKeyword: 'Vigente',
+                // //             keySearched: 'Estado_Actual');
+                // //       },
+                // //     )),
+                // //     // Expanded(child: CrossLine(isHorizontal: false, thickness: 6, color: Colors.grey,)),
+                // //     Expanded(
+                // //         child: GrandIcon(
+                // //       labelButton: 'Al Final . . . ',
+                // //       iconData: Icons.invert_colors_on,
+                // //       onPress: () {
+                // //         setState(() {
+                // //           if (widget.reverse == true) {
+                // //             widget.reverse = false;
+                // //             gestionScrollController.jumpTo(
+                // //                 gestionScrollController
+                // //                     .position.minScrollExtent);
+                // //           } else {
+                // //             widget.reverse = true;
+                // //             gestionScrollController.jumpTo(
+                // //                 gestionScrollController
+                // //                     .position.maxScrollExtent);
+                // //           }
+                // //         });
+                // //       },
+                // //     )),
+                // //   ],
+                // // ),
+                // // ##############################################################
+                // Expanded(
+                //   flex: 1,
+                //   child: FutureBuilder(
+                //     future: FinancierosRepo().cargarDesdeLocal(),
+                //     builder: (context, snapshot) {
+                //       if (snapshot.connectionState == ConnectionState.waiting) {
+                //         return const Center(child: CircularProgressIndicator());
+                //       }
+                //       if (snapshot.hasError) {
+                //         return Center(
+                //             child: Text(
+                //                 'Error al cargar datos: ${snapshot.error}'));
+                //       }
+                //
+                //       widget.registros = FinancierosRepo().registros;
+                //       if (widget.registros.isEmpty) {
+                //         return const Center(
+                //             child: Text('Sin registros disponibles'));
+                //       }
+                //
+                //       if (isLargeDesktop(context)) {
+                //         return ListaFinanciera(registros: widget.registros);
+                //       } else {
+                //         return TablaFinanciera(registros: widget.registros, esActualizado: widget.esActualized!);
+                //       }
+                //     },
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -977,105 +981,6 @@ class _GestionActivosState extends State<GestionActivos> {
   }
 
   // OPERACIONES DE LA INTERFAZ ****************** ******** * * * *
-  void iniciar() {
-    Terminal.printAlert(
-        message:
-            "INICIAR : Iniciando Actividad - Repositorio de Activos y Valores  \n"
-            ": : : ${Activos.fileAssocieted}");
-    Archivos.readJsonToMap(filePath: Activos.fileAssocieted).then((value) {
-      setState(() {
-        Activos.fromJsonItem(value);
-        foundedItems = value;
-      });
-    }).onError((error, stackTrace) {
-      Terminal.printOther(message: "ERROR - $error :  $stackTrace");
-      reiniciar();
-    });
-  }
-
-  Future<void> reiniciar({bool withStats = false}) async {
-    Operadores.loadingActivity(
-        context: context,
-        tittle: "Consultando Información",
-        message: "Consultando información . . . ");
-    Terminal.printOther(
-        message: "REINICIAR : Iniciando actividad : : \n "
-            "\tConsulta de Activos del Usuario . . .");
-    // **************************************************************************
-    // Activos.registros().whenComplete(() {
-    //   setState(() {
-    //     Navigator.pop(context);
-    //     // Activos.fromJsonItem(Financieros.Activos);
-    //     foundedItems = Financieros.Activos;
-    //   });
-    // })
-    // **************************************************************************
-    await FinancierosRepo().reiniciar()
-        .onError((error, stackTrace) {
-      Terminal.printAlert(
-          message:
-              ": : : Error al Conectar con la Base de Datos - $error : : $stackTrace");
-      // **************************************************************************
-      Operadores.alertActivity(
-        context: context,
-        tittle: "Error al Conectar con la Base de Datos",
-        message: "ERROR - $error : : $stackTrace",
-        onAcept: () {
-          Navigator.pop(context);
-        },
-      );
-    });
-    // *****************************************************************
-    // if (withStats) {
-    //   Actividades.detalles(Databases.siteground_database_regfine,
-    //           Activos.activos['activosStadistics'])
-    //       .then((value) {
-    //     Terminal.printSuccess(
-    //         message:
-    //             "Actualizando repositorio de Activos y Estadisticas . . . ");
-    //     Archivos.createJsonFromMap([value], filePath: Activos.fileStadistics);
-    //     //
-    //     if (widget.esActualized!) {
-    //       Actividades.consultarAllById(Databases.siteground_database_regfine,
-    //               consultQuery!, Financieros.ID_Financieros)
-    //           .then((value) {
-    //         Archivos.createJsonFromMap(value, filePath: Activos.fileAssocieted);
-    //         setState(() {
-    //           foundedItems = value;
-    //         });
-    //       }).onError((error, stackTrace) {
-    //         Operadores.alertActivity(
-    //             context: context,
-    //             tittle: "Error al Conectar con la Base de Datos",
-    //             message: "ERROR - $error : : $stackTrace");
-    //       });
-    //     } else {
-    //       setState(() {
-    //         foundedItems = Financieros.Activos;
-    //       });
-    //     }
-    //   });
-    // } else {
-    //   Actividades.consultarAllById(Databases.siteground_database_regfine,
-    //           consultQuery!, Financieros.ID_Financieros)
-    //       .then((value) {
-    //     Terminal.printSuccess(message: "Value : : $value : REINICIAR ");
-    //     Archivos.createJsonFromMap(value, filePath: Activos.fileAssocieted);
-    //     Terminal.printSuccess(
-    //         message: "Actualizando repositorio de Activos . . . ");
-    //     setState(() {
-    //       foundedItems = value;
-    //     });
-    //   }).whenComplete(() {
-    //     iniciar();
-    //   }).onError((error, stackTrace) {
-    //     Operadores.alertActivity(
-    //         context: context,
-    //         tittle: "Error al Conectar con la Base de Datos",
-    //         message: "ERROR - $error : : $stackTrace");
-    //   });
-    // }
-  }
 
   //
   void deleteRegister(
@@ -1309,58 +1214,10 @@ class _GestionActivosState extends State<GestionActivos> {
           context: context,
           tittle: "Registrado Información",
           message: "Registrando información . . . ");
-      reiniciar(withStats: true);
+      _refrescar();
     } else {
-      iniciar();
+      _cargarRegistros();
     }
-  }
-
-  void _runFilterSearch(
-      {required String enteredKeyword, String keySearched = 'Tipo_Recurso'}) {
-    List? results = [];
-
-    if (enteredKeyword.isEmpty) {
-      _pullListRefresh();
-    } else {
-      results = Listas.listFromMap(
-          lista: foundedItems!,
-          keySearched: keySearched,
-          elementSearched: enteredKeyword);
-
-      setState(() {
-        foundedItems = results;
-      });
-    }
-  }
-
-  void _runActiveSearch(
-      {required String enteredKeyword, String keySearched = 'Tipo_Recurso'}) {
-    Terminal.printWarning(
-        message: " . . . Iniciando Actividad - Activos del Usuario");
-    Archivos.readJsonToMap(filePath: Activos.fileAssocieted).then((value) {
-      setState(() {
-        foundedItems = value;
-      });
-    }).onError((error, stackTrace) {
-      reiniciar();
-    }).whenComplete(() {
-      Terminal.printWarning(message: " . . . Actividad Iniciada");
-      List? results = [];
-
-      if (enteredKeyword.isEmpty) {
-        _pullListRefresh();
-      } else {
-        results = Listas.listFromMap(
-            lista: foundedItems!,
-            keySearched: keySearched,
-            elementSearched: Sentences.capitalize(enteredKeyword));
-
-        // Terminal.printNotice(message: " . . . ${results.length} Pacientes Encontrados".toUpperCase());
-        setState(() {
-          foundedItems = results;
-        });
-      }
-    });
   }
 
   // VARIABLES ************************************************
@@ -1378,7 +1235,11 @@ class TablaFinanciera extends StatefulWidget {
   late List registros;
   late bool esActualizado;
 
-  TablaFinanciera({super.key, required this.registros, required this.esActualizado, });
+  TablaFinanciera({
+    super.key,
+    required this.registros,
+    required this.esActualizado,
+  });
 
   @override
   State<TablaFinanciera> createState() => _TablaFinancieraState();
@@ -1390,27 +1251,27 @@ class _TablaFinancieraState extends State<TablaFinanciera> {
   DateTime? fechaInicio;
   DateTime? fechaFin;
   bool cargando = true;
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.esActualizado) {
-      _cargarDatos();
-    }
-  }
-
-  Future<void> _cargarDatos() async {
-    try {
-      await FinancierosRepo().cargarDesdeLocal();
-      setState(() {
-        widget.registros = FinancierosRepo().registros;
-        cargando = false;
-      });
-    } catch (e, s) {
-      Terminal.printAlert(message: '❌ Error al cargar registros: $e\n$s');
-      setState(() => cargando = false);
-    }
-  }
+  //
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   if (widget.esActualizado) {
+  //     _cargarDatos();
+  //   }
+  // }
+  //
+  // Future<void> _cargarDatos() async {
+  //   try {
+  //     await FinancierosRepo().cargarDesdeLocal();
+  //     setState(() {
+  //       widget.registros = FinancierosRepo().registros;
+  //       cargando = false;
+  //     });
+  //   } catch (e, s) {
+  //     Terminal.printAlert(message: '❌ Error al cargar registros: $e\n$s');
+  //     setState(() => cargando = false);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -1454,7 +1315,7 @@ class _TablaFinancieraState extends State<TablaFinanciera> {
               horizontalMargin: 12,
               dividerThickness: 0.5,
               headingRowColor:
-              MaterialStateProperty.all(Colors.blueGrey.shade900),
+                  MaterialStateProperty.all(Colors.blueGrey.shade900),
               dataRowColor: MaterialStateProperty.all(Colors.grey.shade900),
               columns: const [
                 DataColumn(
@@ -1475,8 +1336,8 @@ class _TablaFinancieraState extends State<TablaFinanciera> {
               ],
               rows: filtrados.map((item) {
                 final tipo = (item['Tipo_Recurso'] ?? '').toString();
-                final monto = double.tryParse(item['Monto_Pagado'].toString()) ??
-                    0;
+                final monto =
+                    double.tryParse(item['Monto_Pagado'].toString()) ?? 0;
                 final color = _colorPorTipo(tipo);
 
                 return DataRow(cells: [
@@ -1500,7 +1361,8 @@ class _TablaFinancieraState extends State<TablaFinanciera> {
                       ),
                       Expanded(
                         child: IconButton(
-                          icon: const Icon(Icons.delete, color: Colors.redAccent),
+                          icon:
+                              const Icon(Icons.delete, color: Colors.redAccent),
                           onPressed: () => _borrar(item, context),
                         ),
                       ),
@@ -1517,18 +1379,16 @@ class _TablaFinancieraState extends State<TablaFinanciera> {
 
   // 🎨 Colores según tipo
   Color _colorPorTipo(String tipo) {
-          final normalized = tipo.toLowerCase().trim();
-      if (normalized.startsWith('ingreso')) return Colors.greenAccent;
-      if (normalized.startsWith('egreso')) return Colors.redAccent;
-      if (normalized.startsWith('activo')) return Colors.yellowAccent;
-      if (normalized.startsWith('pasivo')) return Colors.lightBlueAccent;
-      return Colors.white70;
-
+    final normalized = tipo.toLowerCase().trim();
+    if (normalized.startsWith('ingreso')) return Colors.greenAccent;
+    if (normalized.startsWith('egreso')) return Colors.redAccent;
+    if (normalized.startsWith('activo')) return Colors.yellowAccent;
+    if (normalized.startsWith('pasivo')) return Colors.lightBlueAccent;
+    return Colors.white70;
   }
 
   // 🧭 Filtros superiores
-  Widget _buildFiltros(BuildContext context) =>
-      Padding(
+  Widget _buildFiltros(BuildContext context) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
         child: Wrap(
           alignment: WrapAlignment.spaceBetween,
@@ -1592,18 +1452,17 @@ class _TablaFinancieraState extends State<TablaFinanciera> {
           initialDate: fecha ?? DateTime.now(),
           firstDate: DateTime(2020),
           lastDate: DateTime(2030),
-          builder: (context, child) =>
-              Theme(
-                data: Theme.of(context).copyWith(
-                  colorScheme: const ColorScheme.dark(
-                    primary: Colors.blueAccent,
-                    onPrimary: Colors.white,
-                    surface: Colors.black,
-                    onSurface: Colors.white,
-                  ),
-                ),
-                child: child!,
+          builder: (context, child) => Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: const ColorScheme.dark(
+                primary: Colors.blueAccent,
+                onPrimary: Colors.white,
+                surface: Colors.black,
+                onSurface: Colors.white,
               ),
+            ),
+            child: child!,
+          ),
         );
         if (seleccion != null) {
           setState(() {
@@ -1634,15 +1493,14 @@ class _TablaFinancieraState extends State<TablaFinanciera> {
         context: context,
         tittle: "Consultando Información",
         message:
-        "Consultando información del Registro #${Activos.ID_Financieros} . . . ",
+            "Consultando información del Registro #${Activos.ID_Financieros} . . . ",
       );
 
       // Obtiene la imagen asociada y continúa
       Activos.getImage().then((value) {
         Activos.imagenActivo = value['Fine_IMG'];
 
-        Terminal.printSuccess(
-            message: "Imagen : ${Activos.imagenActivo}");
+        Terminal.printSuccess(message: "Imagen : ${Activos.imagenActivo}");
 
         Navigator.pop(context); // Cierra el diálogo de carga
 
@@ -1653,7 +1511,7 @@ class _TablaFinancieraState extends State<TablaFinanciera> {
           context: context,
           tittle: "Error - No Se pudo Consultar Imagen",
           message: "ERROR - $error : $stackTrace",
-          onAcept: () =>Navigator.pop(context),
+          onAcept: () => Navigator.pop(context),
           onClose: () => Navigator.pop(context),
         );
 
@@ -1705,18 +1563,15 @@ class _TablaFinancieraState extends State<TablaFinanciera> {
   //   Navigator.of(context).pop();
   // }
 
-
   void toOperaciones(BuildContext context, String operationActivity) {
     if (isMobile(context)) {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) =>
-              operacionesActivos(
+          builder: (BuildContext context) => operacionesActivos(
                 operationActivity: operationActivity,
               )));
     } else {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) =>
-              GestionActivos(
+          builder: (BuildContext context) => GestionActivos(
                 esActualized: false,
                 actualSidePage: operacionesActivos(
                   operationActivity: operationActivity,
@@ -1744,24 +1599,24 @@ class _ListaFinancieraState extends State<ListaFinanciera> {
   DateTime? fechaFin;
   bool cargando = true;
 
-    @override
-    void initState() {
-      super.initState();
-      _cargarDatos();
-    }
+  @override
+  void initState() {
+    super.initState();
+    _cargarDatos();
+  }
 
-    Future<void> _cargarDatos() async {
-      try {
-        await FinancierosRepo().cargarDesdeLocal();
-        setState(() {
-          widget.registros = FinancierosRepo().registros;
-          cargando = false;
-        });
-      } catch (e, s) {
-        Terminal.printAlert(message: '❌ Error al cargar registros: $e\n$s');
-        setState(() => cargando = false);
-      }
+  Future<void> _cargarDatos() async {
+    try {
+      await FinancierosRepo().cargarDesdeLocal();
+      setState(() {
+        widget.registros = FinancierosRepo().registros;
+        cargando = false;
+      });
+    } catch (e, s) {
+      Terminal.printAlert(message: '❌ Error al cargar registros: $e\n$s');
+      setState(() => cargando = false);
     }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1772,67 +1627,72 @@ class _ListaFinancieraState extends State<ListaFinanciera> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
-          children: [
-            // 📋 PANEL PRINCIPAL DE REGISTROS
-            Expanded(
-              flex: isDesktop(context) || isLargeDesktop(context)? 8 : 4,
-              child: Column(
-                children: [
-                  // 🔍 FILTROS SUPERIORES
-                  _buildFiltrosCompactos(context),
+        children: [
+          // 📋 PANEL PRINCIPAL DE REGISTROS
+          Expanded(
+            flex: isDesktop(context) || isLargeDesktop(context) ? 8 : 4,
+            child: Column(
+              children: [
+                // 🔍 FILTROS SUPERIORES
+                _buildFiltrosCompactos(context),
 
-                  // 🧾 LISTA DE ELEMENTOS
-                  Expanded(
-                    child: ListView.builder(
-                      padding: const EdgeInsets.all(5.0),
-                      reverse: widget.reverse!,
-                      controller: gestionScrollController,
-                      shrinkWrap: true,
-                      itemCount: widget.registros.length,
-                      itemBuilder: (context, posicion) {
-                        final item = widget.registros[posicion];
-                        final tipo = (item['Tipo_Recurso'] ?? '').toString();
-                        final color = _colorPorTipo(tipo);
-                        final fecha = item['Fecha_Pago_Programado'] ?? '';
-                        final categoria = item['Concepto_Recurso'] ?? '';
-                        final monto = item['Monto_Pagado']?.toString() ?? '0';
+                // 🧾 LISTA DE ELEMENTOS
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.all(5.0),
+                    reverse: widget.reverse!,
+                    controller: gestionScrollController,
+                    shrinkWrap: true,
+                    itemCount: widget.registros.length,
+                    itemBuilder: (context, posicion) {
+                      final item = widget.registros[posicion];
+                      final tipo = (item['Tipo_Recurso'] ?? '').toString();
+                      final color = _colorPorTipo(tipo);
+                      final fecha = item['Fecha_Pago_Programado'] ?? '';
+                      final categoria = item['Concepto_Recurso'] ?? '';
+                      final monto = item['Monto_Pagado']?.toString() ?? '0';
 
-                        // Filtro activo
-                        if (!_coincideFiltros(item)) return const SizedBox.shrink();
+                      // Filtro activo
+                      if (!_coincideFiltros(item))
+                        return const SizedBox.shrink();
 
-                        return Card(
-                          color: Colors.grey.shade900,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                      return Card(
+                        color: Colors.grey.shade900,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: color.withOpacity(0.25),
+                            child: Icon(
+                              Icons.monetization_on,
+                              color: color,
+                            ),
                           ),
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: color.withOpacity(0.25),
-                              child: Icon(
-                                Icons.monetization_on,
-                                color: color,
-                              ),
-                            ),
-                            title: Text(
-                              categoria,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            subtitle: Text(
-                              "$fecha — $tipo",
-                              style: TextStyle(color: Colors.white70, fontSize: 12),
-                            ),
-                            trailing: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Expanded(child: Text(
+                          title: Text(
+                            categoria,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                          subtitle: Text(
+                            "$fecha — $tipo",
+                            style:
+                                TextStyle(color: Colors.white70, fontSize: 12),
+                          ),
+                          trailing: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Expanded(
+                                child: Text(
                                   "\$${monto.toString()}",
                                   style: TextStyle(
                                     color: color,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
                                   ),
-                                ),),
-                                Expanded(child: Row(
+                                ),
+                              ),
+                              Expanded(
+                                child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     IconButton(
@@ -1846,70 +1706,75 @@ class _ListaFinancieraState extends State<ListaFinanciera> {
                                       onPressed: () => _borrar(item, context),
                                     ),
                                   ],
-                                ),),
-                              ],
-                            ),
+                                ),
+                              ),
+                            ],
                           ),
-                        );
-                      },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // 📊 PANEL LATERAL DE ACCIONES RÁPIDAS
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              margin: const EdgeInsets.only(left: 8),
+              decoration: ContainerDecoration.roundedDecoration(),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: GrandIcon(
+                      iconData: Icons.move_up_outlined,
+                      labelButton: 'Al principio . . .',
+                      onPress: () => gestionScrollController.jumpTo(
+                        gestionScrollController.position.minScrollExtent,
+                      ),
+                    ),
+                  ),
+                  CrossLine(),
+                  _buildQuickAction(
+                      icon: Icons.insights,
+                      label: 'Ingresos',
+                      keyword: 'Ingresos'),
+                  _buildQuickAction(
+                      icon: Icons.leaderboard_sharp,
+                      label: 'Egresos',
+                      keyword: 'Egresos'),
+                  _buildQuickAction(
+                      icon: Icons.ac_unit,
+                      label: 'Activos',
+                      keyword: 'Activos'),
+                  _buildQuickAction(
+                      icon: Icons.pages_sharp,
+                      label: 'Pasivos',
+                      keyword: 'Pasivos'),
+                  _buildQuickAction(
+                      icon: Icons.hdr_weak_sharp,
+                      label: 'Patrimonio',
+                      keyword: 'Patrimonio'),
+                  _buildQuickAction(
+                      icon: Icons.all_out, label: 'Todo', keyword: ''),
+                  CrossLine(),
+                  Expanded(
+                    child: GrandIcon(
+                      iconData: Icons.move_down_outlined,
+                      labelButton: 'Al final . . .',
+                      onPress: () => gestionScrollController.jumpTo(
+                        gestionScrollController.position.maxScrollExtent,
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-
-            // 📊 PANEL LATERAL DE ACCIONES RÁPIDAS
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                margin: const EdgeInsets.only(left: 8),
-                decoration: ContainerDecoration.roundedDecoration(),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: GrandIcon(
-                        iconData: Icons.move_up_outlined,
-                        labelButton: 'Al principio . . .',
-                        onPress: () => gestionScrollController.jumpTo(
-                          gestionScrollController.position.minScrollExtent,
-                        ),
-                      ),
-                    ),
-                    CrossLine(),
-                    _buildQuickAction(
-                        icon: Icons.insights,
-                        label: 'Ingresos',
-                        keyword: 'Ingresos'),
-                    _buildQuickAction(
-                        icon: Icons.leaderboard_sharp,
-                        label: 'Egresos',
-                        keyword: 'Egresos'),
-                    _buildQuickAction(
-                        icon: Icons.ac_unit, label: 'Activos', keyword: 'Activos'),
-                    _buildQuickAction(
-                        icon: Icons.pages_sharp, label: 'Pasivos', keyword: 'Pasivos'),
-                    _buildQuickAction(
-                        icon: Icons.hdr_weak_sharp,
-                        label: 'Patrimonio',
-                        keyword: 'Patrimonio'),
-                    _buildQuickAction(
-                        icon: Icons.all_out, label: 'Todo', keyword: ''),
-                    CrossLine(),
-                    Expanded(
-                      child: GrandIcon(
-                        iconData: Icons.move_down_outlined,
-                        labelButton: 'Al final . . .',
-                        onPress: () => gestionScrollController.jumpTo(
-                          gestionScrollController.position.maxScrollExtent,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -1979,13 +1844,12 @@ class _ListaFinancieraState extends State<ListaFinanciera> {
             (fechaFin == null || !fecha.isAfter(fechaFin!)));
 
     return coincideTipo && coincideTexto && coincideFecha;
-
   }
 
   Widget _buildQuickAction(
       {required IconData icon,
-        required String label,
-        required String keyword}) {
+      required String label,
+      required String keyword}) {
     return Expanded(
       child: GrandIcon(
         iconData: icon,
@@ -2028,18 +1892,17 @@ class _ListaFinancieraState extends State<ListaFinanciera> {
           initialDate: fecha ?? DateTime.now(),
           firstDate: DateTime(2020),
           lastDate: DateTime(2030),
-          builder: (context, child) =>
-              Theme(
-                data: Theme.of(context).copyWith(
-                  colorScheme: const ColorScheme.dark(
-                    primary: Colors.blueAccent,
-                    onPrimary: Colors.white,
-                    surface: Colors.black,
-                    onSurface: Colors.white,
-                  ),
-                ),
-                child: child!,
+          builder: (context, child) => Theme(
+            data: Theme.of(context).copyWith(
+              colorScheme: const ColorScheme.dark(
+                primary: Colors.blueAccent,
+                onPrimary: Colors.white,
+                surface: Colors.black,
+                onSurface: Colors.white,
               ),
+            ),
+            child: child!,
+          ),
         );
         if (seleccion != null) {
           setState(() {
@@ -2070,15 +1933,14 @@ class _ListaFinancieraState extends State<ListaFinanciera> {
         context: context,
         tittle: "Consultando Información",
         message:
-        "Consultando información del Registro #${Activos.ID_Financieros} . . . ",
+            "Consultando información del Registro #${Activos.ID_Financieros} . . . ",
       );
 
       // Obtiene la imagen asociada y continúa
       Activos.getImage().then((value) {
         Activos.imagenActivo = value['Fine_IMG'];
 
-        Terminal.printSuccess(
-            message: "Imagen : ${Activos.imagenActivo}");
+        Terminal.printSuccess(message: "Imagen : ${Activos.imagenActivo}");
 
         Navigator.pop(context); // Cierra el diálogo de carga
 
@@ -2089,7 +1951,7 @@ class _ListaFinancieraState extends State<ListaFinanciera> {
           context: context,
           tittle: "Error - No Se pudo Consultar Imagen",
           message: "ERROR - $error : $stackTrace",
-          onAcept: () =>Navigator.pop(context),
+          onAcept: () => Navigator.pop(context),
           onClose: () => Navigator.pop(context),
         );
 
@@ -2124,14 +1986,12 @@ class _ListaFinancieraState extends State<ListaFinanciera> {
   void toOperaciones(BuildContext context, String operationActivity) {
     if (isMobile(context)) {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) =>
-              operacionesActivos(
+          builder: (BuildContext context) => operacionesActivos(
                 operationActivity: operationActivity,
               )));
     } else {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) =>
-              GestionActivos(
+          builder: (BuildContext context) => GestionActivos(
                 esActualized: false,
                 actualSidePage: operacionesActivos(
                   operationActivity: operationActivity,
@@ -2160,7 +2020,8 @@ class GraficaFinanciera extends StatefulWidget {
 
 class _GraficaFinancieraState extends State<GraficaFinanciera> {
   bool cargando = true;
-  String periodo = "Meses"; // 🔹 ['Semanas', 'Meses', 'Últimos 12 Meses', 'Años', 'Lustros']
+  String periodo =
+      "Meses"; // 🔹 ['Semanas', 'Meses', 'Últimos 12 Meses', 'Años', 'Lustros']
   List filtrados = [];
 
   @override
@@ -2222,9 +2083,13 @@ class _GraficaFinancieraState extends State<GraficaFinanciera> {
           dropdownColor: Colors.black,
           value: periodo,
           style: const TextStyle(color: Colors.white),
-          items: const ['Semanas', 'Meses', 'Últimos 12 Meses', 'Años', 'Lustros']
-              .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-              .toList(),
+          items: const [
+            'Semanas',
+            'Meses',
+            'Últimos 12 Meses',
+            'Años',
+            'Lustros'
+          ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
           onChanged: (v) => setState(() => periodo = v!),
         ),
       ],
@@ -2241,14 +2106,18 @@ class _GraficaFinancieraState extends State<GraficaFinanciera> {
       );
     }
 
-    final ingresos = registrosFiltrados.map((e) => e['ingresos'] as double).toList();
-    final egresos = registrosFiltrados.map((e) => e['egresos'] as double).toList();
-    final etiquetas = registrosFiltrados.map((e) => e['etiqueta'] as String).toList();
+    final ingresos =
+        registrosFiltrados.map((e) => e['ingresos'] as double).toList();
+    final egresos =
+        registrosFiltrados.map((e) => e['egresos'] as double).toList();
+    final etiquetas =
+        registrosFiltrados.map((e) => e['etiqueta'] as String).toList();
 
     return SizedBox(
       height: 300,
       child: BarChart(
-        key: ValueKey(periodo), // 👈 fuerza reconstrucción al cambiar "Semanas/Meses/Años/Lustros"
+        key: ValueKey(
+            periodo), // 👈 fuerza reconstrucción al cambiar "Semanas/Meses/Años/Lustros"
         BarChartData(
           backgroundColor: Colors.transparent,
           borderData: FlBorderData(show: false),
@@ -2275,7 +2144,7 @@ class _GraficaFinancieraState extends State<GraficaFinanciera> {
                     child: Text(
                       etiquetas[i],
                       style:
-                      const TextStyle(color: Colors.white70, fontSize: 10),
+                          const TextStyle(color: Colors.white70, fontSize: 10),
                     ),
                   );
                 },
@@ -2305,7 +2174,8 @@ class _GraficaFinancieraState extends State<GraficaFinanciera> {
   }
 
   // 🔹 Filtro maestro: semanas, meses, años, lustros
-  List<Map<String, dynamic>> _filtrarPorPeriodo(List registros, String periodo) {
+  List<Map<String, dynamic>> _filtrarPorPeriodo(
+      List registros, String periodo) {
     switch (periodo) {
       case 'Semanas':
         return _agruparPorPeriodo(registros, 'semana', 12);
@@ -2342,7 +2212,7 @@ class _GraficaFinancieraState extends State<GraficaFinanciera> {
         fechaInicio = DateTime(ahora.year, ahora.month - 11, 1);
         break;
       case 'lustro':
-      // Muestra 3 lustros = 15 años
+        // Muestra 3 lustros = 15 años
         fechaInicio = DateTime(ahora.year - 15, 1, 1);
         break;
       default:
@@ -2379,8 +2249,7 @@ class _GraficaFinancieraState extends State<GraficaFinanciera> {
         mapa[etiqueta]!['ingresos'] =
             (mapa[etiqueta]!['ingresos'] ?? 0) + monto;
       } else if (tipoRecurso.startsWith('egreso')) {
-        mapa[etiqueta]!['egresos'] =
-            (mapa[etiqueta]!['egresos'] ?? 0) + monto;
+        mapa[etiqueta]!['egresos'] = (mapa[etiqueta]!['egresos'] ?? 0) + monto;
       }
     }
 
@@ -2397,8 +2266,7 @@ class _GraficaFinancieraState extends State<GraficaFinanciera> {
       final partesA = (a['etiqueta'] as String).split(' ');
       final partesB = (b['etiqueta'] as String).split(' ');
       if (partesA.length < 2 || partesB.length < 2) {
-        return (a['etiqueta'] as String)
-            .compareTo(b['etiqueta'] as String);
+        return (a['etiqueta'] as String).compareTo(b['etiqueta'] as String);
       }
       final mesA = _mesNumero(partesA[0]);
       final mesB = _mesNumero(partesB[0]);
@@ -2432,8 +2300,18 @@ class _GraficaFinancieraState extends State<GraficaFinanciera> {
   // 🔹 Auxiliar para ordenar los meses
   int _mesNumero(String mes) {
     const meses = {
-      'Ene': 1, 'Feb': 2, 'Mar': 3, 'Abr': 4, 'May': 5, 'Jun': 6,
-      'Jul': 7, 'Ago': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dic': 12
+      'Ene': 1,
+      'Feb': 2,
+      'Mar': 3,
+      'Abr': 4,
+      'May': 5,
+      'Jun': 6,
+      'Jul': 7,
+      'Ago': 8,
+      'Sep': 9,
+      'Oct': 10,
+      'Nov': 11,
+      'Dic': 12
     };
     return meses[mes] ?? 0;
   }
@@ -2453,5 +2331,3 @@ class _GraficaFinancieraState extends State<GraficaFinanciera> {
     }
   }
 }
-
-

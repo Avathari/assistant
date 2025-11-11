@@ -7,33 +7,167 @@ import 'package:hive/hive.dart';
 import 'package:flutter/foundation.dart';
 
 class Financieros {
-  static String localRepositoryPath = 'assets/'
-      'activos/${ID_Financieros.toString()}/';
+  // =======================================================
+  // 🔹 CONFIGURACIÓN BASE
   static int ID_Financieros = 1;
-  // **************************************************************************
-  static List Ingresos = [];
-  static List Egresos = [];
-  static List Activos = [];
-  static List Pasivos = [];
-  static List Patrimonio = [];
-// **************************************************************************
-  static double? ingresosTotales;
-  static double? egresosTotales;
-  static double? activosTotales;
-  static double? pasivosTotales;
-  static double? patriminiosTotales;
-  // **************************************************************************
-  static double? ingresosMes, ingresosAno;
-  // **************************************************************************
-  static double? ingresosMesPrevio, ingresoMesAnteprevio, ingresosAnoPrevio;
-  // **************************************************************************
+  static String localRepositoryPath = 'assets/activos/$ID_Financieros/';
+
+  // =======================================================
+  // 🔹 LISTAS PRINCIPALES
+  static List Ingresos = [], Egresos = [], Activos = [], Pasivos = [], Patrimonio = [];
+
+  // =======================================================
+  // 🔹 VARIABLES AGREGADAS
+  static double ingresosTotales = 0;
+  static double egresosTotales = 0;
+  static double activosTotales = 0;
+  static double pasivosTotales = 0;
+  static double patrimonioTotales = 0;
+  //
+  // static double patrimonioTotal = 0;
+  static double balanceGlobal = 0;
+
+  static double ingresosAnual = 0;
+  static double egresosAnual = 0;
+  static double balanceAnual = 0;
+  static double ingresosAnualPrevio = 0;
+  static double egresosAnualPrevio = 0;
+  static double balanceAnualPrevio = 0;
+
+  // =======================================================
+  // 🔹 FUNCIONES AUXILIARES DE SEGURIDAD
+  // -------------------------------------------------------------------------
+// 🧩 Conversión segura y división protegida
+  static double _toNum(dynamic v) {
+    if (v == null) return 0.0;
+    if (v is num) return v.toDouble();
+    if (v is String) return double.tryParse(v.replaceAll(',', '').trim()) ?? 0.0;
+    return 0.0;
+  }
+
+  static double _safeDiv(dynamic a, dynamic b) {
+    final double x = _toNum(a);
+    final double y = _toNum(b);
+    return (y == 0) ? 0 : x / y;
+  }
+  static double _safeVal(dynamic v) {
+    if (v == null) return 0.0;
+    if (v is double) return v;
+    if (v is int) return v.toDouble();
+    if (v is String) return double.tryParse(v.replaceAll(',', '').trim()) ?? 0.0;
+    return 0.0;
+  }
+
+  // =======================================================
+  // 🔹 FUNCIONES ANALÍTICAS — INDICADORES FINANCIEROS
+
+  /// 🟢 Margen Neto = Balance / Ingresos
+  static double get margenNeto => _safeDiv(balanceGlobal, ingresosTotales) * 100;
+
+  /// 🔵 Liquidez = Ingreso / Egreso
+  static double get liquidez => _safeDiv(ingresosTotales, egresosTotales);
+
+  /// 🟢 Variación Anual = (Balance actual - Balance previo) / Balance previo
+  static double get variacionAnual =>
+      _safeDiv(balanceAnual - balanceAnualPrevio, balanceAnualPrevio) * 100;
+
+  /// 🟠 Margen Operativo = (Ingreso anual - Egreso anual) / Ingreso anual
+  static double get margenOperativo =>
+      _safeDiv(ingresosAnual - egresosAnual, ingresosAnual) * 100;
+
+  /// 🔴 Endeudamiento = Pasivos / Activos
+  static double get endeudamiento =>
+      _safeDiv(pasivosTotales, activosTotales) * 100;
+
+  /// 🟡 Ratio Patrimonial = Patrimonio / (Activos + Pasivos)
+  static double get ratioPatrimonial {
+    final double patrimonio = _toNum(patrimonioTotales);
+    final double activos = _toNum(activosTotales);
+    final double pasivos = _toNum(pasivosTotales);
+    return _safeDiv(patrimonio, activos + pasivos) * 100;
+  }
+
+
+  /// 🟣 Eficiencia Mensual = (Ingreso_Mensual / (Ingreso_Anual / 12))
+  static double get eficienciaMensual =>
+      _safeDiv(ingresosAnual == 0 ? 0 : (ingresosAnual / 12), ingresosAnual) *
+          100;
+
+  /// 🟢 Crecimiento del Ingreso = (Ingreso Anual - Ingreso Anual Previo) / Ingreso Anual Previo
+  static double get crecimientoIngreso =>
+      _safeDiv(ingresosAnual - ingresosAnualPrevio, ingresosAnualPrevio) * 100;
+
+  /// 🔴 Crecimiento del Egreso = (Egreso Anual - Egreso Anual Previo) / Egreso Anual Previo
+  static double get crecimientoEgreso =>
+      _safeDiv(egresosAnual - egresosAnualPrevio, egresosAnualPrevio) * 100;
+
+  /// 🟢 Rentabilidad sobre Patrimonio = Balance / Patrimonio
+  static double get rentabilidadPatrimonial =>
+      _safeDiv(balanceGlobal, patrimonioTotales) * 100;
+
+  // =======================================================
+  // 🔹 CATEGORÍAS BASE (para los labels existentes)
   static var Categorias = [
     'Ingresos Registrados',
     'Egresos Registrados',
     'Ingreso Global',
     'Egreso Global',
-    'Balance Global'
+    'Balance Global',
   ];
+
+
+  // -------------------------------------------------------------------------
+  static void actualizarDesdeMapa(Map<String, dynamic> stats) {
+    ingresosTotales = _toNum(stats['Ingreso_Global']);
+    egresosTotales = _toNum(stats['Egreso_Global']);
+    activosTotales = _toNum(stats['Activos_Registrados']);
+    pasivosTotales = _toNum(stats['Pasivos_Registrados']);
+    patrimonioTotales = _toNum(stats['Patrimonio']);
+    balanceGlobal = _toNum(stats['Balance_Global']);
+  }
+
+  // 🔄 Actualizar desde registros crudos
+  static void actualizarDesdeActivos(List registros) {
+    ingresosTotales = 0;
+    egresosTotales = 0;
+    activosTotales = 0;
+    pasivosTotales = 0;
+    patrimonioTotales = 0;
+
+    for (var e in registros) {
+      final tipo = (e['Tipo_Recurso'] ?? '').toString();
+      final monto = _toDouble(e['Monto_Pagado']);
+
+      switch (tipo) {
+        case 'Ingresos':
+          ingresosTotales += monto;
+          break;
+        case 'Egresos':
+          egresosTotales += monto;
+          break;
+        case 'Activos':
+          activosTotales += monto;
+          break;
+        case 'Pasivos':
+          pasivosTotales += monto;
+          break;
+        case 'Patrimonio':
+          patrimonioTotales += monto;
+          break;
+      }
+    }
+
+    balanceGlobal = (ingresosTotales + activosTotales) - (egresosTotales + pasivosTotales);
+  }
+
+  static _toDouble(dynamic value) {
+    if (value == null) return 0.0;
+    if (value is double) return value;
+    if (value is int) return value.toDouble();
+    if (value is String) return double.tryParse(value.replaceAll(',', '').trim()) ?? 0.0;
+    return 0.0;
+  }
+
 }
 
 class Activos {
@@ -134,6 +268,7 @@ class Activos {
 
   // **************************************************************************
   static Map<String, dynamic> Activo = {};
+
   static Future<Map<String, dynamic>> getImage() async {
     return Actividades.consultarId(Databases.siteground_database_regfine,
         Activos.activos['consultImageByIdQuery'], Activos.ID_Financieros);
@@ -491,133 +626,44 @@ class Activos {
   }
 
   static void fromJsonItem(List activos) {
-    Financieros.ingresosTotales = 0;
-    Financieros.egresosTotales = 0;
-    Financieros.activosTotales = 0;
-    Financieros.pasivosTotales = 0;
-    Financieros.patriminiosTotales = 0;
-    // MES PREVIO
-    Financieros.ingresosMes = 0;
-    Financieros.ingresosAno = 0;
-    Financieros.ingresosMesPrevio = 0;
-    Financieros.ingresoMesAnteprevio = 0;
-    Financieros.ingresosAnoPrevio = 0;
-    //
+    // Limpieza y sumas internas
+    Financieros.Ingresos.clear();
+    Financieros.Egresos.clear();
+    Financieros.Activos.clear();
+    Financieros.Pasivos.clear();
+    Financieros.Patrimonio.clear();
+
     for (var element in activos) {
-      // Terminal.printWarning(message: "Activos . . . : $element");
-      //
-      if (element['Tipo_Recurso'] == 'Ingresos') {
-        Financieros.Ingresos.add(element);
-        // Sumar montos . . .
-        // Terminal.printWarning(message: " . . . ${element}");
-        Financieros.ingresosTotales =
-            (Financieros.ingresosTotales! + element['Monto_Pagado']);
-
-        // Sumar montos por Mes . . .
-        DateTime fecha1 = DateTime.parse(element['Fecha_Pago_Programado']);
-        DateTime today = DateTime.now();
-        //
-        if (fecha1.month == today.month) {
-          Financieros.ingresosMes =
-              Financieros.ingresosMes! + element['Monto_Pagado'];
-        }
-        if (today.month - 1 != 0) {
-          if (fecha1.month == today.month - 1) {
-            Financieros.ingresosMesPrevio =
-                Financieros.ingresosMesPrevio! + element['Monto_Pagado'];
-          }
-        } else if (today.month - 1 == 0) {
-          if (fecha1.month == 12 && fecha1.year == today.year - 1) {
-            Financieros.ingresosMesPrevio =
-                Financieros.ingresosMesPrevio! + element['Monto_Pagado'];
-          }
-        } else {
-          if (fecha1.month == today.month - 1) {
-            Financieros.ingresosMesPrevio =
-                Financieros.ingresosMesPrevio! + element['Monto_Pagado'];
-          }
-        }
-
-        if (today.month - 2 != 0) {
-          if (fecha1.month == today.month - 2) {
-            Financieros.ingresoMesAnteprevio =
-                Financieros.ingresoMesAnteprevio! + element['Monto_Pagado'];
-          }
-        } else if (today.month - 2 == 0) {
-          if (fecha1.month == 12 && fecha1.year == today.year - 1) {
-            Financieros.ingresoMesAnteprevio =
-                Financieros.ingresoMesAnteprevio! + element['Monto_Pagado'];
-          }
-        } else {
-          if (fecha1.month == today.month - 2) {
-            Financieros.ingresoMesAnteprevio =
-                Financieros.ingresoMesAnteprevio! + element['Monto_Pagado'];
-          }
-        }
-
-        //
-        if (fecha1.year == today.year) {
-          Financieros.ingresosAno =
-              Financieros.ingresosAno! + element['Monto_Pagado'];
-        }
-        if (fecha1.year == today.year - 1) {
-          Financieros.ingresosAnoPrevio =
-              Financieros.ingresosAnoPrevio! + element['Monto_Pagado'];
-        }
-
-        // var mensual = Financieros.Ingresos.
+      switch (element['Tipo_Recurso']) {
+        case 'Ingresos':
+          Financieros.Ingresos.add(element);
+          break;
+        case 'Egresos':
+          Financieros.Egresos.add(element);
+          break;
+        case 'Activos':
+          Financieros.Activos.add(element);
+          break;
+        case 'Pasivos':
+          Financieros.Pasivos.add(element);
+          break;
+        case 'Patrimonio':
+          Financieros.Patrimonio.add(element);
+          break;
       }
-      if (element['Tipo_Recurso'] == 'Egresos') {
-        Financieros.Egresos.add(element);
-        Financieros.egresosTotales =
-            (Financieros.egresosTotales! + element['Monto_Pagado']);
-      }
-      if (element['Tipo_Recurso'] == 'Activos') {
-        Financieros.Activos.add(element);
-        Financieros.activosTotales =
-            (Financieros.activosTotales! + element['Monto_Pagado']);
-      }
-      if (element['Tipo_Recurso'] == 'Pasivos') {
-        Financieros.Pasivos.add(element);
-        Financieros.pasivosTotales =
-            (Financieros.pasivosTotales! + element['Monto_Pagado']);
-      }
-      if (element['Tipo_Recurso'] == 'Patrimonio') {
-        Financieros.Patrimonio.add(element);
-        Financieros.patriminiosTotales =
-            (Financieros.patriminiosTotales! + element['Monto_Pagado']);
-      }
-//
     }
 
-    // MUESTRA
-    // Terminal.printWarning(
-    //     message: " . . . "
-    //         " ### #### ###### ## # . . . . BALANCE REGISTRADO ### #### ###### ## # . . . ."
-    //         "\n ACTIVOS TOTALES : ${activos.length} : . . . "
-    //         "\n . . . : Ingresos : : ${Financieros.ingresosTotales} : : ${Financieros.Ingresos.length}"
-    //         "\n . . . : Egresos : : ${Financieros.egresosTotales} : : ${Financieros.Egresos.length}"
-    //         "\n . . . : Activos : : ${Financieros.activosTotales} : : ${Financieros.Activos.length}"
-    //         "\n . . . : Pasivos : : ${Financieros.pasivosTotales} : : ${Financieros.Pasivos.length}"
-    //         "\n . . . : Patrimonio : : ${Financieros.patriminiosTotales} : : ${Financieros.Patrimonio.length}"
-    //         "\n : : BALANCE GLOBAL . : : ${Financieros.ingresosTotales! - Financieros.egresosTotales!}"
-    //         "\n : : BALANCE GENERAL . : : ${(Financieros.ingresosTotales! + Financieros.activosTotales!) - (Financieros.egresosTotales! + Financieros.pasivosTotales!)}"
-    //         "\n : : PATRIMONIAL . : : ${Financieros.ingresosTotales! - (Financieros.egresosTotales! + Financieros.pasivosTotales!)}"
-    //         "\n"
-    //         "\n  INGRESOS : : . . . "
-    //         "\n . . . : Ingresos del Mes . : ${Financieros.ingresosMes} . "
-    //         "\n . . . : Ingresos del Mes previo . : ${Financieros.ingresosMesPrevio} . "
-    //         "\n . . . : Ingresos del Mes Anteprevio . : ${Financieros.ingresoMesAnteprevio} . "
-    //         "\n . . . : . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  . . . "
-    //         "\n . . . : Ingresos del Año . : ${Financieros.ingresosAno} . "
-    //         "\n . . . : Ingresos del Año previo . : ${Financieros.ingresosAnoPrevio} . "
-    //         "");
+    // ✅ Calcula totales y balance automáticamente
+    Financieros.actualizarDesdeActivos(activos);
   }
+
 }
 
 
-
 class FinancierosRepo extends ChangeNotifier {
+
+  static List<dynamic>? _cache;
+
   static final FinancierosRepo _instance = FinancierosRepo._internal();
   factory FinancierosRepo() => _instance;
   FinancierosRepo._internal();
@@ -633,10 +679,11 @@ class FinancierosRepo extends ChangeNotifier {
   }
 
   /// Carga los registros desde JSON local (assets/activos/{id}/activos.json)
-  Future<void> cargarDesdeLocal() async {
-    final data = await Archivos.readJsonToMap(filePath: Activos.fileAssocieted);
-    registros = List<Map<String, dynamic>>.from(data);
-    notifyListeners();
+  Future<List> cargarDesdeLocal({bool force = false}) async {
+    if (_cache != null && !force) return _cache!;
+    final data = await Archivos.readJsonToMap(filePath: "${Financieros.localRepositoryPath}activos.json");
+    _cache = data;
+    return data;
   }
 
   /// Sincroniza con la BD remota y guarda el JSON local + Hive
