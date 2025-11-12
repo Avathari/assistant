@@ -739,6 +739,7 @@ class _GestionActivosState extends State<GestionActivos> {
   @override
   void initState() {
     super.initState();
+
     _cargarRegistros();
   }
 

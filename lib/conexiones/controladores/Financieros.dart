@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'package:assistant/conexiones/actividades/auxiliares.dart';
 import 'package:assistant/conexiones/conexiones.dart';
@@ -13,8 +12,13 @@ class Financieros {
   static String localRepositoryPath = 'assets/activos/$ID_Financieros/';
 
   // =======================================================
-  // 🔹 LISTAS PRINCIPALES
-  static List Ingresos = [], Egresos = [], Activos = [], Pasivos = [], Patrimonio = [];
+  /// 🔹 LISTAS PRINCIPALES
+  ///  * * * Activos = [] Representa el recurso financiero que tenderá a generar ingresos.
+  static List Ingresos = [],
+      Egresos = [],
+      Activos = [],
+      Pasivos = [],
+      Patrimonio = [];
 
   // =======================================================
   // 🔹 VARIABLES AGREGADAS
@@ -41,7 +45,8 @@ class Financieros {
   static double _toNum(dynamic v) {
     if (v == null) return 0.0;
     if (v is num) return v.toDouble();
-    if (v is String) return double.tryParse(v.replaceAll(',', '').trim()) ?? 0.0;
+    if (v is String)
+      return double.tryParse(v.replaceAll(',', '').trim()) ?? 0.0;
     return 0.0;
   }
 
@@ -50,11 +55,13 @@ class Financieros {
     final double y = _toNum(b);
     return (y == 0) ? 0 : x / y;
   }
+
   static double _safeVal(dynamic v) {
     if (v == null) return 0.0;
     if (v is double) return v;
     if (v is int) return v.toDouble();
-    if (v is String) return double.tryParse(v.replaceAll(',', '').trim()) ?? 0.0;
+    if (v is String)
+      return double.tryParse(v.replaceAll(',', '').trim()) ?? 0.0;
     return 0.0;
   }
 
@@ -62,7 +69,8 @@ class Financieros {
   // 🔹 FUNCIONES ANALÍTICAS — INDICADORES FINANCIEROS
 
   /// 🟢 Margen Neto = Balance / Ingresos
-  static double get margenNeto => _safeDiv(balanceGlobal, ingresosTotales) * 100;
+  static double get margenNeto =>
+      _safeDiv(balanceGlobal, ingresosTotales) * 100;
 
   /// 🔵 Liquidez = Ingreso / Egreso
   static double get liquidez => _safeDiv(ingresosTotales, egresosTotales);
@@ -87,11 +95,10 @@ class Financieros {
     return _safeDiv(patrimonio, activos + pasivos) * 100;
   }
 
-
   /// 🟣 Eficiencia Mensual = (Ingreso_Mensual / (Ingreso_Anual / 12))
   static double get eficienciaMensual =>
       _safeDiv(ingresosAnual == 0 ? 0 : (ingresosAnual / 12), ingresosAnual) *
-          100;
+      100;
 
   /// 🟢 Crecimiento del Ingreso = (Ingreso Anual - Ingreso Anual Previo) / Ingreso Anual Previo
   static double get crecimientoIngreso =>
@@ -115,6 +122,7 @@ class Financieros {
     'Balance Global',
   ];
 
+  // -------------------------------------------------------------------------
 
   // -------------------------------------------------------------------------
   static void actualizarDesdeMapa(Map<String, dynamic> stats) {
@@ -157,17 +165,18 @@ class Financieros {
       }
     }
 
-    balanceGlobal = (ingresosTotales + activosTotales) - (egresosTotales + pasivosTotales);
+    balanceGlobal =
+        (ingresosTotales + activosTotales) - (egresosTotales + pasivosTotales);
   }
 
   static _toDouble(dynamic value) {
     if (value == null) return 0.0;
     if (value is double) return value;
     if (value is int) return value.toDouble();
-    if (value is String) return double.tryParse(value.replaceAll(',', '').trim()) ?? 0.0;
+    if (value is String)
+      return double.tryParse(value.replaceAll(',', '').trim()) ?? 0.0;
     return 0.0;
   }
-
 }
 
 class Activos {
@@ -267,6 +276,7 @@ class Activos {
   ];
 
   // **************************************************************************
+  /// Es el Activo Actual a tratar, determinado por ID_Financieros
   static Map<String, dynamic> Activo = {};
 
   static Future<Map<String, dynamic>> getImage() async {
@@ -314,8 +324,6 @@ class Activos {
       // Enfermedades de base del paciente, asi como las Hospitalarias.
       Financieros.Activos = value;
     });
-
-
   }
 
   static Future<Map<String, dynamic>> getEstadisticasFinancieras() async {
@@ -383,8 +391,7 @@ class Activos {
         "Descripcion = ?, Fine_IMG = from_base64(?) "
         "WHERE ID_Registro = ?",
     "deleteQuery": "DELETE FROM activos WHERE ID_Registro = ?",
-    "activosStadistics":
-    "SELECT "
+    "activosStadistics": "SELECT "
         "(SELECT IFNULL(COUNT(`Tipo_Recurso`), '0') FROM activos WHERE `ID_Usuario` = 1) as Total_Registrados, "
         "(SELECT IFNULL(COUNT(`Tipo_Recurso`), '0') FROM activos WHERE `ID_Usuario` = 1 AND Tipo_Recurso = 'Ingresos') as Ingresos_Registrados, "
         "(SELECT IFNULL(COUNT(`Tipo_Recurso`), '0') FROM activos WHERE `ID_Usuario` = 1 AND Tipo_Recurso = 'Egresos') as Egresos_Registrados, "
@@ -519,7 +526,7 @@ class Activos {
         "(SELECT (Ingreso_Global + Activos_Global) - (Egreso_Global + Pasivos_Global)) as Patrimonio, " // Patrimonio
         "(SELECT (Ingreso_Global + Activos_Global + Egreso_Global + Pasivos_Global)) as Total_Global, " // Sumatoria Global
         "(SELECT (Ingreso_Global) - (Egreso_Global + Pasivos_Global)) as Balance_Global, " // Patrimonio sin Activos
-    // ******************************  * **** *** ** * **
+        // ******************************  * **** *** ** * **
         "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 "
         "AND Tipo_Recurso = 'Ingresos' "
         "AND YEAR(`Fecha_Pago_Programado`) = YEAR(CURRENT_DATE)) as Ingreso_Anual, "
@@ -528,7 +535,7 @@ class Activos {
         "AND YEAR(`Fecha_Pago_Programado`) = YEAR(CURRENT_DATE)) as Egreso_Anual, "
         "(SELECT Ingreso_Anual + Egreso_Anual) as Total_Anual, "
         "(SELECT Ingreso_Anual - Egreso_Anual) as Balance_Anual, "
-    // ******************************  * **** *** ** * **
+        // ******************************  * **** *** ** * **
         "(SELECT IFNULL(SUM(`Monto_Pagado`), '0') FROM activos WHERE `ID_Usuario` = 1 "
         "AND Tipo_Recurso = 'Ingresos' "
         "AND YEAR(`Fecha_Pago_Programado`) = YEAR(DATE_SUB(CURRENT_DATE, INTERVAL 1 YEAR))) as Ingreso_Anual_Previo, "
@@ -656,20 +663,21 @@ class Activos {
     // ✅ Calcula totales y balance automáticamente
     Financieros.actualizarDesdeActivos(activos);
   }
-
 }
 
-
 class FinancierosRepo extends ChangeNotifier {
-
   static List<dynamic>? _cache;
 
-  static final FinancierosRepo _instance = FinancierosRepo._internal();
-  factory FinancierosRepo() => _instance;
-  FinancierosRepo._internal();
+  static final FinancierosRepo _instance =
+      FinancierosRepo._internal(); // 🧠 1️⃣ Instancia estática única
+  FinancierosRepo._internal(); // 🧩 2️⃣ Constructor privado
+  factory FinancierosRepo() =>
+      _instance; // 🔁 3️⃣ Constructor factory que devuelve siempre la misma instancia
 
-  Map<String, dynamic> estadisticas = {};
+  // 🧰 4️⃣ Variables de estado global
   List<Map<String, dynamic>> registros = [];
+  Map<String, dynamic> estadisticas = {};
+  Map<String, dynamic> resultadosPredictivos = {};
 
   /// Abrir Hive box (cache persistente)
   Future<void> _openBox() async {
@@ -681,7 +689,8 @@ class FinancierosRepo extends ChangeNotifier {
   /// Carga los registros desde JSON local (assets/activos/{id}/activos.json)
   Future<List> cargarDesdeLocal({bool force = false}) async {
     if (_cache != null && !force) return _cache!;
-    final data = await Archivos.readJsonToMap(filePath: "${Financieros.localRepositoryPath}activos.json");
+    final data = await Archivos.readJsonToMap(
+        filePath: "${Financieros.localRepositoryPath}activos.json");
     _cache = data;
     return data;
   }
@@ -693,7 +702,7 @@ class FinancierosRepo extends ChangeNotifier {
       Activos.activos['consultIdQuery'],
       Financieros.ID_Financieros,
     );
-    registros = List<Map<String, dynamic>>.from(data);
+    Financieros.Activos = registros = List<Map<String, dynamic>>.from(data);
     await Archivos.createJsonFromMap(data, filePath: Activos.fileAssocieted);
     final box = await Hive.openBox('financieros');
     await box.put('registros', data);
@@ -707,10 +716,18 @@ class FinancierosRepo extends ChangeNotifier {
       final tipo = item['Tipo_Recurso'];
       final monto = double.tryParse(item['Monto_Pagado'].toString()) ?? 0;
       switch (tipo) {
-        case 'Ingresos': ingreso += monto; break;
-        case 'Egresos': egreso += monto; break;
-        case 'Activos': activos += monto; break;
-        case 'Pasivos': pasivos += monto; break;
+        case 'Ingresos':
+          ingreso += monto;
+          break;
+        case 'Egresos':
+          egreso += monto;
+          break;
+        case 'Activos':
+          activos += monto;
+          break;
+        case 'Pasivos':
+          pasivos += monto;
+          break;
       }
     }
     final balance = ingreso - egreso;
@@ -754,7 +771,7 @@ class FinancierosRepo extends ChangeNotifier {
       estadisticas = Map<String, dynamic>.from(box.get('estadisticas'));
     } else {
       final local =
-      await Archivos.readJsonToMap(filePath: Activos.fileStadistics);
+          await Archivos.readJsonToMap(filePath: Activos.fileStadistics);
       if (local.isNotEmpty) estadisticas = local.first;
     }
     notifyListeners();
@@ -771,5 +788,316 @@ class FinancierosRepo extends ChangeNotifier {
       await calcularEstadisticasLocales();
     }
   }
+
+  //
+  /// 📆 Devuelve una lista con los montos totales por mes
+  List<double> historialMensual(String tipoRecurso) {
+    if (registros.isEmpty) return [];
+
+    final Map<String, double> totales = {};
+
+    for (var reg in registros) {
+      final tipo = (reg['Tipo_Recurso'] ?? '').toString().toLowerCase();
+      if (!tipo.contains(tipoRecurso.toLowerCase())) continue;
+
+      final fechaStr = reg['Fecha_Pago_Programado']?.toString() ?? '';
+      final monto = double.tryParse(reg['Monto_Pagado'].toString()) ?? 0;
+      final fecha = DateTime.tryParse(fechaStr);
+      if (fecha == null) continue;
+
+      final clave = '${fecha.year}-${fecha.month.toString().padLeft(2, '0')}';
+      totales[clave] = (totales[clave] ?? 0) + monto;
+    }
+
+    // 🔹 Convertir a lista ordenada por fecha
+    final ordenado = totales.entries.toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
+
+    // 🔹 Devolver solo los montos
+    return ordenado.map((e) => e.value).toList();
+  }
+
+  DateTime obtenerUltimaFecha(String tipo1, String tipo2) {
+    final registros = FinancierosRepo().registros;
+
+    if (registros.isEmpty) return DateTime.now();
+
+    final fechas = registros
+        .map((e) => DateTime.tryParse(e['Fecha_Pago_Programado'].toString()))
+        .where((f) => f != null)
+        .cast<DateTime>()
+        .toList();
+
+    if (fechas.isEmpty) return DateTime.now();
+
+    fechas.sort();
+    return fechas.last;
+  }
 }
 
+class FinancierosAnalisis {
+  // ---------------------------------------------------------------
+  /// 🔸 Conversión segura a double
+  static double _toDouble(dynamic v) => double.tryParse(v.toString()) ?? 0.0;
+
+  /// 🔸 División segura para evitar NaN o infinito
+  static double _safeDiv(double a, double b) => (b == 0) ? 0 : a / b;
+  // ---------------------------------------------------------------
+
+  /// 🧩 Clasifica un concepto en su tipo de recurso principal
+  static String clasificarTipo(String concepto) {
+    final c = concepto.toLowerCase();
+    if (Activos.conceptoIngresos.any((e) => c.contains(e.toLowerCase())))
+      return 'Ingresos';
+    if (Activos.conceptoEgresos.any((e) => c.contains(e.toLowerCase())))
+      return 'Egresos';
+    if (Activos.conceptoActivos.any((e) => c.contains(e.toLowerCase())))
+      return 'Activos';
+    if (Activos.conceptoPasivos.any((e) => c.contains(e.toLowerCase())))
+      return 'Pasivos';
+    return 'Desconocido';
+  }
+
+  // ---------------------------------------------------------------
+  // 🔹 ANÁLISIS DE FLUJOS
+  // ---------------------------------------------------------------
+
+  /// 💧 Liquidez Real = Ingresos - Pasivos
+  static double liquidezReal({
+    double? ingresos,
+    double? pasivos,
+  }) {
+    ingresos ??= Financieros.ingresosTotales ?? 0;
+    pasivos ??= Financieros.pasivosTotales ?? 0;
+    return ingresos - pasivos;
+  }
+
+  /// 📉 Elasticidad Financiera = Egresos / Ingresos
+  static double elasticidadFinanciera({
+    double? ingresos,
+    double? egresos,
+  }) {
+    ingresos ??= Financieros.ingresosTotales ?? 0;
+    egresos ??= Financieros.egresosTotales ?? 0;
+    return _safeDiv(egresos, ingresos) * 100;
+  }
+
+  /// 💡 Capacidad de Inversión = Ingresos - (Egresos + Pasivos)
+  static double capacidadInversion({
+    double? ingresos,
+    double? egresos,
+    double? pasivos,
+  }) {
+    ingresos ??= Financieros.ingresosTotales ?? 0;
+    egresos ??= Financieros.egresosTotales ?? 0;
+    pasivos ??= Financieros.pasivosTotales ?? 0;
+    return ingresos - (egresos + pasivos);
+  }
+
+  /// ⚖️ Balance Patrimonial = Activos - Pasivos
+  static double balancePatrimonial({
+    double? activos,
+    double? pasivos,
+  }) {
+    activos ??= Financieros.activosTotales ?? 0;
+    pasivos ??= Financieros.pasivosTotales ?? 0;
+    return activos - pasivos;
+  }
+
+  /// 📈 Dependencia Vital = Pasivos / Ingresos
+  static double dependenciaVital({
+    double? ingresos,
+    double? pasivos,
+  }) {
+    ingresos ??= Financieros.ingresosTotales ?? 0;
+    pasivos ??= Financieros.pasivosTotales ?? 0;
+    return _safeDiv(pasivos, ingresos) * 100;
+  }
+
+  /// 🟩 Punto de Equilibrio Vital = promedio mensual de pasivos
+  static double puntoEquilibrioVital(List registros) {
+    final pasivos = registros.where((r) =>
+        (r['Tipo_Recurso'] ?? '').toString().toLowerCase().contains('pasivo'));
+    return pasivos.fold(0, (sum, e) => sum + _toDouble(e['Monto_Pagado']));
+  }
+
+  // ---------------------------------------------------------------
+  // 🔹 ANÁLISIS DE RENDIMIENTO
+  // ---------------------------------------------------------------
+
+  /// 💰 Rentabilidad Patrimonial = Balance Global / Patrimonio
+  static double rentabilidadPatrimonial({
+    double? balanceGlobal,
+    double? patrimonio,
+  }) {
+    balanceGlobal ??= Financieros.egresosTotales ?? 0;
+    patrimonio ??= Financieros.patrimonioTotales ?? 0;
+    return _safeDiv(balanceGlobal, patrimonio) * 100;
+  }
+
+  /// 📊 Margen Neto = Balance Global / Ingreso Global
+  static double margenNeto({
+    double? ingresos,
+    double? balance,
+  }) {
+    ingresos ??= Financieros.ingresosTotales ?? 0;
+    balance ??=
+        (Financieros.ingresosTotales ?? 0) - (Financieros.egresosTotales ?? 0);
+    return _safeDiv(balance, ingresos) * 100;
+  }
+
+  /// 🧭 Ratio Patrimonial = Patrimonio / (Activos + Pasivos)
+  static double ratioPatrimonial({
+    double? activos,
+    double? pasivos,
+    double? patrimonio,
+  }) {
+    activos ??= Financieros.activosTotales ?? 0;
+    pasivos ??= Financieros.pasivosTotales ?? 0;
+    patrimonio ??= Financieros.patrimonioTotales ?? 0;
+    return _safeDiv(patrimonio, (activos + pasivos)) * 100;
+  }
+
+  // ---------------------------------------------------------------
+  // 🔹 ANÁLISIS DE RIESGO Y TENDENCIA
+  // ---------------------------------------------------------------
+
+  /// 🧮 Riesgo de Liquidez = Egresos + Pasivos - Ingresos
+  static double riesgoLiquidez({
+    double? ingresos,
+    double? egresos,
+    double? pasivos,
+  }) {
+    ingresos ??= Financieros.ingresosTotales ?? 0;
+    egresos ??= Financieros.egresosTotales ?? 0;
+    pasivos ??= Financieros.pasivosTotales ?? 0;
+    return (egresos + pasivos) - ingresos;
+  }
+
+  /// 🔁 Tendencia de Crecimiento = Δ Ingresos últimos 2 períodos
+  static double crecimientoIngresos({
+    double? actual,
+    double? previo,
+  }) {
+    actual ??= Financieros.ingresosAnual ?? 0;
+    previo ??= Financieros.ingresosAnualPrevio ?? 0;
+    return _safeDiv(actual - previo, previo) * 100;
+  }
+
+  /// 🔻 Índice de Endeudamiento = Pasivos / Patrimonio
+  static double endeudamiento({
+    double? pasivos,
+    double? patrimonio,
+  }) {
+    pasivos ??= Financieros.pasivosTotales ?? 0;
+    patrimonio ??= Financieros.patrimonioTotales ?? 0;
+    return _safeDiv(pasivos, patrimonio) * 100;
+  }
+
+  // ---------------------------------------------------------------
+  // 🔹 INTERPRETACIONES SEMÁNTICAS
+  // ---------------------------------------------------------------
+
+  static String interpretarLiquidez(double valor) {
+    if (valor > 0) return "Liquidez positiva: buena gestión del flujo.";
+    if (valor == 0) return "Liquidez neutra: equilibrio exacto.";
+    return "Liquidez negativa: exceso de gasto o pasivo.";
+  }
+
+  static String interpretarEndeudamiento(double tasa) {
+    if (tasa < 20) return "Zona verde (saludable)";
+    if (tasa < 35) return "Zona amarilla (precaución)";
+    return "Zona roja (riesgo alto)";
+  }
+
+  //
+  static Future<void> calcularProyeccion() async {
+    try {
+      // 1️⃣ Esperar a que los registros estén cargados
+      final repo = FinancierosRepo();
+      if (repo.registros.isEmpty) {
+        debugPrint(
+            "⏳ [FinancierosAnalisis] Sin registros disponibles, omitiendo proyección.");
+        return;
+      }
+
+      // 2️⃣ Esperar microtask para liberar el frame actual
+      await Future.delayed(Duration(milliseconds: 50));
+
+      // 3️⃣ Obtener los historiales
+      final ingresos = repo.historialMensual('Ingresos');
+      final egresos = repo.historialMensual('Egresos');
+
+      if (ingresos.isEmpty || egresos.isEmpty) {
+        debugPrint(
+            "⚠️ [FinancierosAnalisis] Datos insuficientes para proyección.");
+        return;
+      }
+
+      // 4️⃣ Calcular la proyección (usando tu clase predictiva)
+      final proy = FinancierosPredictivo.proyectarFlujo(ingresos, egresos);
+      final ind = FinancierosPredictivo.indicadores(
+        ingresoProy: proy['ingresoProyectado']!,
+        egresoProy: proy['egresoProyectado']!,
+        pasivosActuales: Financieros.pasivosTotales ?? 0,
+      );
+
+      debugPrint(
+          "✅ [FinancierosAnalisis] Proyección calculada correctamente: $proy");
+      debugPrint("📊 Indicadores: $ind");
+
+      // 5️⃣ Guardar o exponer si hace falta
+      // repo.resultadosPredictivos = {
+      //   'proyeccion': proy,
+      //   'indicadores': ind,
+      // };
+    } catch (e, s) {
+      debugPrint("❌ [FinancierosAnalisis] Error en calcularProyeccion: $e\n$s");
+    }
+  }
+}
+
+class FinancierosPredictivo {
+  /// 🧮 Suavizamiento exponencial simple
+  static double suavizar(List<double> datos, {double alpha = 0.4}) {
+    if (datos.isEmpty) return 0;
+    double pred = datos.first;
+    for (var i = 1; i < datos.length; i++) {
+      pred = alpha * datos[i] + (1 - alpha) * pred;
+    }
+    return pred;
+  }
+
+  /// 🔹 Proyecta ingresos y egresos mensuales
+  static Map<String, double> proyectarFlujo(
+      List<double> ingresosMensuales, List<double> egresosMensuales,
+      {double alpha = 0.4}) {
+    final ingresoProyectado = suavizar(ingresosMensuales, alpha: alpha);
+    final egresoProyectado = suavizar(egresosMensuales, alpha: alpha);
+    final liquidez = ingresoProyectado - egresoProyectado;
+    return {
+      'ingresoProyectado': ingresoProyectado,
+      'egresoProyectado': egresoProyectado,
+      'liquidezProyectada': liquidez,
+    };
+  }
+
+  /// 💸 Calcula indicadores predictivos
+  static Map<String, double> indicadores({
+    required double ingresoProy,
+    required double egresoProy,
+    required double pasivosActuales,
+  }) {
+    final liquidezFutura = egresoProy == 0 ? 0 : ingresoProy / egresoProy;
+    final riesgoDeficit = (egresoProy - ingresoProy) / ingresoProy * 100;
+    final capacidadEndeudamiento = ingresoProy * 0.35 - pasivosActuales;
+    final margenDisponible = ingresoProy - (egresoProy + pasivosActuales);
+
+    return {
+      'liquidezFutura': liquidezFutura.toDouble(),
+      'riesgoDeficit': riesgoDeficit,
+      'capacidadEndeudamiento': capacidadEndeudamiento,
+      'margenDisponible': margenDisponible,
+    };
+  }
+}
